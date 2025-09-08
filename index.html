@@ -1,118 +1,431 @@
-<html>
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-<link rel="stylesheet" href="style.css">
-<link rel="icon" href="icon.jpg">	
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аниме-сайт Курсовая работа</title>
+    <link rel="icon" href="icon.jpg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Comic Neue', cursive;
+            background-color: #ffe6f2;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ff9ed8' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+            margin: 0;
+            padding: 20px;
+            color: #5a3d5c;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+            border: 3px solid #ff69b4;
+        }
+        
+        /* Аниме-заголовок */
+        .anime-title {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .anime-title::before, .anime-title::after {
+            content: "★";
+            color: #ff69b4;
+            font-size: 24px;
+            margin: 0 10px;
+        }
+        
+        /* Радужный текст в аниме-стиле */
+        .rainbow-text {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 10px;
+            background: linear-gradient(45deg, #ff9ed8, #a166ff, #5cadff, #5cff9e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            border: 2px dashed #ff9ed8;
+        }
+        
+        /* 3D текст */
+        .css-3d-text {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #ff69b4;
+            text-shadow: 2px 2px 0 #ff9ed8, 4px 4px 0 rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+            transform: rotate(-3deg);
+        }
+        
+        /* Списки в аниме-стиле */
+        ol, ul {
+            background-color: #f9f0ff;
+            padding: 15px 15px 15px 40px;
+            border-radius: 10px;
+            border-left: 5px solid #a166ff;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            padding: 5px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+        }
+        
+        li::marker {
+            color: #ff69b4;
+        }
+        
+        /* Таблицы */
+        table.iksweb {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        table.iksweb td {
+            padding: 15px;
+            background-color: #e6f7ff;
+            border: 2px solid #b3e0ff;
+            text-align: center;
+            position: relative;
+        }
+        
+        table.iksweb td:empty::before {
+            content: "✎";
+            color: #ccc;
+            font-size: 20px;
+        }
+        
+        /* Формы и кнопки */
+        form {
+            background-color: #f0f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #b3e0ff;
+        }
+        
+        button, input[type="submit"], input[type="reset"] {
+            background: linear-gradient(to bottom, #ff9ed8, #ff69b4);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        
+        button:hover, input[type="submit"]:hover, input[type="reset"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:active, input[type="submit"]:active, input[type="reset"]:active {
+            transform: translateY(0);
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ff9ed8;
+            border-radius: 10px;
+            background-color: #fff;
+            margin-bottom: 10px;
+            font-family: 'Comic Neue', cursive;
+        }
+        
+        /* Панель инструментов */
+        form[name="panel instrumentov"] table {
+            width: 100%;
+        }
+        
+        form[name="panel instrumentov"] button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 24px;
+            background: linear-gradient(to bottom, #a166ff, #7b3fe4);
+        }
+        
+        /* Ссылки */
+        a {
+            color: #ff69b4;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        a:hover {
+            color: #a166ff;
+            transform: scale(1.05);
+            text-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
+        }
+        
+        /* Изображения */
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            border: 3px solid #ff69b4;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin: 10px 0;
+        }
+        
+        /* Заголовки */
+        h1, h2, h3, h4, h5, h6 {
+            color: #7b3fe4;
+            border-bottom: 2px dashed #ff9ed8;
+            padding-bottom: 5px;
+            position: relative;
+        }
+        
+        h1::after, h2::after, h3::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #ff69b4, transparent);
+        }
+        
+        /* Преформатированный текст */
+        pre {
+            background-color: #f9f0ff;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #a166ff;
+            overflow-x: auto;
+        }
+        
+        /* Химическая формула */
+        p {
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .rainbow-text {
+                font-size: 20px;
+            }
+            
+            .css-3d-text {
+                font-size: 24px;
+            }
+        }
+        
+        /* Анимации */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .css-3d-text {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Декоративные элементы */
+        .anime-decoration {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.2;
+            font-size: 50px;
+        }
+        
+        .decoration-1 {
+            top: 50px;
+            left: 5%;
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        .decoration-2 {
+            top: 150px;
+            right: 5%;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .decoration-3 {
+            bottom: 100px;
+            left: 10%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .decoration-4 {
+            bottom: 200px;
+            right: 10%;
+            animation: float 7s ease-in-out infinite;
+        }
+    </style>
 </head>
 <body>
-	<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-NSCST7CP');</script>
-<!-- End Google Tag Manager -->
-	<a href="https://www.figma.com/design/Z2mRQ0XNutD6h68tSrOuBc/Untitled?t=ALEpgL34jKduyR05-0">Ссылка на черновик</a>
-<div class="rainbow-text">
-	<span class="block-line"><span><span style="color:#ff0000">К</span><span style="color:#cc0000">у</span><span style="color:#990000">р</span><span style="color:#660000">с</span><span style="color:#330000">о</span><span style="color:#000000">в</span><span style="color:#003300">а</span><span style="color:#006600">я&nbsp;</span></span><span><span style="color:#009900">р</span><span style="color:#00cc00">а</span><span style="color:#00ff00">б</span><span style="color:#00cc00">о</span><span style="color:#009900">т</span><span style="color:#006600">а&nbsp;</span></span><span><span style="color:#003300">Б</span><span style="color:#000000">е</span><span style="color:#330000">л</span><span style="color:#660000">ь</span><span style="color:#990000">с</span><span style="color:#cc0000">к</span><span style="color:#990000">о</span><span style="color:#660000">г</span><span style="color:#330000">о&nbsp;</span></span><span><span style="color:#000000">Д</span><span style="color:#003300">а</span><span style="color:#006600">н</span><span style="color:#009900">и</span><span style="color:#00cc00">л</span><span style="color:#00ff00">ы</span></span></span>
-</div>
-<div class="css-3d-text">Бот бандит крутой</div>
-<pre>
+    <!-- Декоративные элементы -->
+    <div class="anime-decoration decoration-1">♥</div>
+    <div class="anime-decoration decoration-2">★</div>
+    <div class="anime-decoration decoration-3">♫</div>
+    <div class="anime-decoration decoration-4">☼</div>
+
+    <div class="container">
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NSCST7CP');</script>
+        <!-- End Google Tag Manager -->
+        
+        <div class="anime-title">
+            <a href="https://www.figma.com/design/Z2mRQ0XNutD6h68tSrOuBc/Untitled?t=ALEpgL34jKduyR05-0">Ссылка на черновик</a>
+        </div>
+        
+        <div class="rainbow-text">
+            <span class="block-line"><span><span style="color:#ff0000">К</span><span style="color:#cc0000">у</span><span style="color:#990000">р</span><span style="color:#660000">с</span><span style="color:#330000">о</span><span style="color:#000000">в</span><span style="color:#003300">а</span><span style="color:#006600">я&nbsp;</span></span><span><span style="color:#009900">р</span><span style="color:#00cc00">а</span><span style="color:#00ff00">б</span><span style="color:#00cc00">о</span><span style="color:#009900">т</span><span style="color:#006600">а&nbsp;</span></span><span><span style="color:#003300">Б</span><span style="color:#000000">е</span><span style="color:#330000">л</span><span style="color:#660000">ь</span><span style="color:#990000">с</span><span style="color:#cc0000">к</span><span style="color:#990000">о</span><span style="color:#660000">г</span><span style="color:#330000">о&nbsp;</span></span><span><span style="color:#000000">Д</span><span style="color:#003300">а</span><span style="color:#006600">н</span><span style="color:#009900">и</span><span style="color:#00cc00">л</span><span style="color:#00ff00">ы</span></span></span>
+        </div>
+        
+        <div class="css-3d-text">Бот бандит крутой</div>
+        
+        <pre>
 Эта таблица создана при помощи знака табуляции
 Фамилия Имя Отчество Год рождения
 Иванов Иван Иванович 1985
 Петров Петр Петрович 1878
-</pre>
-  <font color=’#FF0000’>Цвет текста красный</font>
-<font color=’red’>Цвет текста красный</font>
-  <p>H<sub>2</sub>SO<sub>4</sub><sup>конц.</sup></p>
-<h2>Типы списков</h2>
-<ol>
-<li>Нумерованный</li>
-<li>Маркированный</li>
-<li>Многоуровневый</li>
-</ol>
-<H2>Маркированный список</H2>
-<ul type=’circle’>
-<li>Яблоко</li>
-<li type=’disk’>Груша</li>
-<li>Слива</li>
-<li type=’square’>Вишня</li>
-<li>Черешня</li>
-</ul>
-  <H2>Многоуровневый список</H2>
-<ol>
-<li>Нумерованный</li>
-<ol>
-<li>Пункт 1</li>
-<li>Пункт 2</li>
-<li>Пункт 3</li>
-</ol>
-<li>Маркированный</li>
-<ul>
-<li>Первый вариант</li>
-<li>Второй варианmт</li>
-<li>Третий вариант</li>
-</ul>
-	<h6>oстылка на злую заю</h6>
-</ol>
-<table class="iksweb">
-	<tbody>
-		<tr>
-			<td></td>
-			<td rowspan="3"></td>
-			<td></td>
-			<td rowspan="2"></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-	</tbody>
-</table>
-<form>
-<button title="Просмотр версии обозревателя" accesskey=’Е’>Версия</button>
-<br>
-<input type="text" size=40><br><br>
-<input type="submit" DISABLED>
-<input type="reset">
-</form>	
-<form name="panel instrumentov">
-<table cellpadding="0"celspacing="0">
-<tr><td>
-<button title="Создать файл"></button><br>
-</td><td>
-<button title="Открыть"></button><br>
-</td><td>
-<button title="Сохранить"></button><br>
-</td><td>
-<button title="Печать"></button><br>
-</td>
-</tr>
-</table>
-</form>
-<Form name="text">
-<p>Оставьте свое сообщение в следующем окне и нажмите на кнопке для его 
-отправления</p>
-<textarea name="koment" rows="15" cols="30" wrap="off">Введите ваше сообщение сдесь</textarea><br>
-<p><input type="submit"></p>
-<p><input type="reset"></p>
-<a href="https://t.me/GPT_neirobot"><!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NSCST7CP"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->Чат GPT Который помог в создании сайта</a>
-	<h1>Отссылка на Сергея Викторовича</h1>
-	<img src="Kesha1.gif">
-<a href="https://keshik7.wordpress.com/?_gl=1*coknff*_gcl_au*MjA5MjQyNDk1LjE3NDU4NDE4MDc.">ccылка на ворпресс</a>
-	<h1>пример работы в блендере</h1>
-	<img src="lol.png">
-	<a href="https://www.minecraft.net/ru-ru"> MINECRAAAAAAAAAAAAAFT</a>
+        </pre>
+        
+        <p style="color:#FF0000;">Цвет текста красный</p>
+        <p style="color:red;">Цвет текста красный</p>
+        
+        <p>H<sub>2</sub>SO<sub>4</sub><sup>конц.</sup></p>
+        
+        <h2>Типы списков</h2>
+        <ol>
+            <li>Нумерованный</li>
+            <li>Маркированный</li>
+            <li>Многоуровневый</li>
+        </ol>
+        
+        <h2>Маркированный список</h2>
+        <ul style="list-style-type: circle;">
+            <li>Яблоко</li>
+            <li style="list-style-type: disc;">Груша</li>
+            <li>Слива</li>
+            <li style="list-style-type: square;">Вишня</li>
+            <li>Черешня</li>
+        </ul>
+        
+        <h2>Многоуровневый список</h2>
+        <ol>
+            <li>Нумерованный</li>
+            <ol>
+                <li>Пункт 1</li>
+                <li>Пункт 2</li>
+                <li>Пункт 3</li>
+            </ol>
+            <li>Маркированный</li>
+            <ul>
+                <li>Первый вариант</li>
+                <li>Второй вариант</li>
+                <li>Третий вариант</li>
+            </ul>
+            <h6>Ссылка на злую заю</h6>
+        </ol>
+        
+        <table class="iksweb">
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td rowspan="3"></td>
+                    <td></td>
+                    <td rowspan="2"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <form>
+            <button title="Просмотр версии обозревателя" accesskey="Е">Версия</button>
+            <br>
+            <input type="text" size="40"><br><br>
+            <input type="submit" disabled>
+            <input type="reset">
+        </form>
+        
+        <form name="panel instrumentov">
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <button title="Создать файл">📄</button><br>
+                    </td>
+                    <td>
+                        <button title="Открыть">📂</button><br>
+                    </td>
+                    <td>
+                        <button title="Сохранить">💾</button><br>
+                    </td>
+                    <td>
+                        <button title="Печать">🖨️</button><br>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        
+        <form name="text">
+            <p>Оставьте свое сообщение в следующем окне и нажмите на кнопке для его отправления</p>
+            <textarea name="koment" rows="15" cols="30" wrap="off">Введите ваше сообщение здесь</textarea><br>
+            <p><input type="submit" value="Отправить"></p>
+            <p><input type="reset" value="Очистить"></p>
+        </form>
+        
+        <a href="https://t.me/GPT_neirobot">
+            <!-- Google Tag Manager (noscript) -->
+            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NSCST7CP"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <!-- End Google Tag Manager (noscript) -->
+            Чат GPT Который помог в создании сайта
+        </a>
+        
+        <h1>Ссылка на Сергея Викторовича</h1>
+        <img src="Kesha1.gif" alt="Анимация">
+        
+        <a href="https://keshik7.wordpress.com/?_gl=1*coknff*_gcl_au*MjA5MjQyNDk1LjE3NDU4NDE4MDc.">ссылка на вордпресс</a>
+        
+        <h1>пример работы в блендере</h1>
+        <img src="lol.png" alt="Пример работы в Blender">
+        
+        <a href="https://www.minecraft.net/ru-ru">MINECRAAAAAAAAAAAAAFT</a>
+    </div>
 </body>
 </html>
