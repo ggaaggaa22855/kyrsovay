@@ -14,27 +14,41 @@
             --purple: #a166ff;
             --light-blue: #b3e0ff;
             --dark-purple: #7b3fe4;
+            --bg-color: #ffe6f2;
+            --text-color: #5a3d5c;
+            --container-bg: rgba(255, 255, 255, 0.9);
         }
         
         body {
             font-family: 'Comic Neue', cursive;
-            background-color: #ffe6f2;
+            background-color: var(--bg-color);
             background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ff9ed8' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
             margin: 0;
             padding: 20px;
-            color: #5a3d5c;
-            transition: background-color 0.5s ease;
+            color: var(--text-color);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        
+        body.night-mode {
+            --bg-color: #2a1a2a;
+            --text-color: #e6d0e6;
+            --container-bg: rgba(60, 40, 60, 0.9);
+            --main-pink: #ff85c8;
+            --light-pink: #ffb5e0;
+            --purple: #b58dff;
+            --light-blue: #c2e6ff;
+            --dark-purple: #9d6aff;
         }
         
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: var(--container-bg);
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
             border: 3px solid var(--main-pink);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
         }
         
         .container:hover {
@@ -68,7 +82,7 @@
             font-weight: bold;
             margin: 20px 0;
             padding: 10px;
-            background: linear-gradient(45deg, #ff9ed8, #a166ff, #5cadff, #5cff9e);
+            background: linear-gradient(45deg, var(--light-pink), var(--purple), #5cadff, #5cff9e);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -105,6 +119,11 @@
             transition: transform 0.3s ease;
         }
         
+        body.night-mode ol, 
+        body.night-mode ul {
+            background-color: #3a2a3a;
+        }
+        
         ol:hover, ul:hover {
             transform: translateX(5px);
         }
@@ -117,9 +136,17 @@
             transition: all 0.2s ease;
         }
         
+        body.night-mode li {
+            background-color: rgba(60, 50, 70, 0.7);
+        }
+        
         li:hover {
             background-color: rgba(255, 230, 242, 0.7);
             transform: scale(1.02);
+        }
+        
+        body.night-mode li:hover {
+            background-color: rgba(90, 70, 100, 0.7);
         }
         
         li::marker {
@@ -149,9 +176,17 @@
             transition: all 0.3s ease;
         }
         
+        body.night-mode table.iksweb td {
+            background-color: #2a3a4a;
+        }
+        
         table.iksweb td:hover {
             background-color: #d1f0ff;
             transform: scale(1.02);
+        }
+        
+        body.night-mode table.iksweb td:hover {
+            background-color: #3a4a5a;
         }
         
         table.iksweb td:empty::before {
@@ -168,6 +203,10 @@
             margin: 20px 0;
             border: 2px solid var(--light-blue);
             transition: all 0.3s ease;
+        }
+        
+        body.night-mode form {
+            background-color: #2a3a40;
         }
         
         form:hover {
@@ -206,6 +245,13 @@
             margin-bottom: 10px;
             font-family: 'Comic Neue', cursive;
             transition: all 0.3s ease;
+        }
+        
+        body.night-mode input[type="text"], 
+        body.night-mode textarea {
+            background-color: #3a2a3a;
+            color: #e6d0e6;
+            border-color: var(--purple);
         }
         
         input[type="text"]:focus, textarea:focus {
@@ -318,6 +364,10 @@
             transition: all 0.3s ease;
         }
         
+        body.night-mode pre {
+            background-color: #3a2a3a;
+        }
+        
         pre:hover {
             box-shadow: 0 5px 15px rgba(162, 102, 255, 0.3);
         }
@@ -345,6 +395,14 @@
             
             .container {
                 padding: 15px;
+            }
+            
+            .shooting-game {
+                height: 300px;
+            }
+            
+            #mario-game {
+                height: 300px;
             }
         }
         
@@ -499,6 +557,10 @@
             border: 2px dashed var(--light-pink);
         }
         
+        body.night-mode .interactive-section {
+            background: linear-gradient(45deg, #3a2a3a, #2a3a4a);
+        }
+        
         .color-picker {
             display: flex;
             justify-content: center;
@@ -539,6 +601,108 @@
         @keyframes blink-caret {
             from, to { border-color: transparent }
             50% { border-color: var(--main-pink) }
+        }
+        
+        /* Игра в стрельбу по мишеням */
+        .shooting-game {
+            background: linear-gradient(135deg, #e0f7ff, #f9f0ff);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            border: 3px solid var(--main-pink);
+            position: relative;
+            overflow: hidden;
+            height: 400px;
+        }
+        
+        body.night-mode .shooting-game {
+            background: linear-gradient(135deg, #2a3a4a, #3a2a3a);
+        }
+        
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .score-board {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--dark-purple);
+        }
+        
+        .target-area {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            border: 2px dashed var(--light-pink);
+            overflow: hidden;
+        }
+        
+        body.night-mode .target-area {
+            background-color: rgba(60, 50, 70, 0.5);
+        }
+        
+        .target {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, var(--light-pink), var(--main-pink));
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+            transition: transform 0.2s;
+        }
+        
+        .target:hover {
+            transform: scale(1.1);
+        }
+        
+        .target.hit {
+            animation: hit-animation 0.5s forwards;
+        }
+        
+        @keyframes hit-animation {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        
+        .game-controls {
+            margin-top: 20px;
+        }
+        
+        /* Игра Марио */
+        .mario-game-container {
+            background: linear-gradient(135deg, #e0f7ff, #f9f0ff);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            border: 3px solid var(--main-pink);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body.night-mode .mario-game-container {
+            background: linear-gradient(135deg, #2a3a4a, #3a2a3a);
+        }
+        
+        #mario-game {
+            width: 100%;
+            height: 480px;
+            border: 2px solid var(--main-pink);
+            border-radius: 10px;
+            background-color: #000;
+        }
+        
+        .game-instructions {
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--dark-purple);
         }
     </style>
 </head>
@@ -586,6 +750,32 @@
             Привет! Это анимированный текст с эффектом печати...
         </div>
         
+        <!-- Игра в стрельбу по мишеням -->
+        <div class="shooting-game">
+            <h2>🎯 Стрельба по мишеням</h2>
+            <div class="game-header">
+                <div class="score-board">Очки: <span id="score">0</span></div>
+                <div>Время: <span id="time">30</span>с</div>
+            </div>
+            <div class="target-area" id="targetArea">
+                <!-- Мишени будут добавляться здесь -->
+            </div>
+            <div class="game-controls">
+                <button onclick="startGame()">Начать игру</button>
+                <button onclick="resetGame()">Сбросить</button>
+            </div>
+        </div>
+        
+        <!-- Игра Марио -->
+        <div class="mario-game-container">
+            <h2>🍄 Super Mario Bros</h2>
+            <div id="mario-game"></div>
+            <div class="game-instructions">
+                Управление: Стрелки для движения, X для прыжка, Z для бега
+            </div>
+            <button onclick="loadMario()" style="margin-top: 15px;">Загрузить Марио</button>
+        </div>
+        
         <pre>
 Эта таблица создана при помощи знака табуляции
 Фамилия Имя Отчество Год рождения
@@ -626,7 +816,7 @@
             <li>Черешня</li>
         </ul>
         
-        <h2 onclick="toggleList(this)">Многоуровневый список <span class="counter">2</span></h2>
+        <h2 onclick="toggleList(this)">М многоуровневый список <span class="counter">2</span></h2>
         <ol>
             <li>Нумерованный</li>
             <ol>
@@ -651,164 +841,4 @@
                     <td rowspan="2" onclick="fillCell(this)"></td>
                     <td onclick="fillCell(this)"></td>
                 </tr>
-                <tr>
-                    <td onclick="fillCell(this)"></td>
-                    <td onclick="fillCell(this)"></td>
-                    <td onclick="fillCell(this)"></td>
-                </tr>
-                <tr>
-                    <td onclick="fillCell(this)"></td>
-                    <td onclick="fillCell(this)"></td>
-                    <td onclick="fillCell(this)"></td>
-                    <td onclick="fillCell(this)"></td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <form>
-            <button title="Просмотр версии обозревателя" accesskey="Е" onclick="showBrowserVersion()">Версия</button>
-            <br>
-            <input type="text" size="40" placeholder="Введите текст здесь..."><br><br>
-            <input type="submit" disabled>
-            <input type="reset">
-        </form>
-        
-        <form name="panel instrumentov">
-            <table cellpadding="0" cellspacing="0">
-                <tr>
-                    <td>
-                        <button title="Создать файл" onclick="createFile()">📄</button><br>
-                    </td>
-                    <td>
-                        <button title="Открыть" onclick="openFile()">📂</button><br>
-                    </td>
-                    <td>
-                        <button title="Сохранить" onclick="saveFile()">💾</button><br>
-                    </td>
-                    <td>
-                        <button title="Печать" onclick="printPage()">🖨️</button><br>
-                    </td>
-                </tr>
-            </table>
-        </form>
-        
-        <form name="text">
-            <p>Оставьте свое сообщение в следующем окне и нажмите на кнопке для его отправления</p>
-            <textarea name="koment" rows="15" cols="30" wrap="off" placeholder="Введите ваше сообщение здесь"></textarea><br>
-            <p><input type="submit" value="Отправить" onclick="submitForm(event)"></p>
-            <p><input type="reset" value="Очистить"></p>
-        </form>
-        
-        <a href="https://t.me/GPT_neirobot">
-            <!-- Google Tag Manager (noscript) -->
-            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NSCST7CP"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-            <!-- End Google Tag Manager (noscript) -->
-            Чат GPT Который помог в создании сайта
-        </a>
-        
-        <img src="Kesha1.gif" alt="Анимация" onclick="enlargeImage(this)">
-        
-        <a href="https://keshik7.wordpress.com/?_gl=1*coknff*_gcl_au*MjA5MjQyNDk1LjE3NDU4NDE4MDc.">ссылка на вордпресс</a>
-        
-        <h1>пример работы в блендере</h1>
-        <img src="lol.png" alt="Пример работы в Blender" onclick="enlargeImage(this)">
-        
-        <a href="https://www.minecraft.net/ru-ru">MINECRAAAAAAAAAAAAAFT</a>
-    </div>
-
-    <script>
-        // Функция для показа уведомления
-        function showNotification(message) {
-            const notification = document.querySelector('.notification');
-            if (message) {
-                notification.textContent = message;
-            }
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-        
-        // Показать приветственное уведомление при загрузке
-        document.addEventListener('DOMContentLoaded', function() {
-            showNotification('Добро пожаловать на аниме-сайт! 🎉');
-            
-            // Инициализация прогресс-бара
-            window.addEventListener('scroll', updateProgressBar);
-            
-            // Инициализация кнопки прокрутки наверх
-            const scrollButton = document.querySelector('.scroll-top');
-            window.addEventListener('scroll', toggleScrollButton);
-            scrollButton.addEventListener('click', scrollToTop);
-            
-            // Инициализация переключателя темы
-            const themeToggle = document.getElementById('themeToggle');
-            themeToggle.addEventListener('click', toggleTheme);
-        });
-        
-        // Обновление прогресс-бара при прокрутке
-        function updateProgressBar() {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.querySelector('.progress-bar').style.width = scrolled + '%';
-        }
-        
-        // Показать/скрыть кнопку прокрутки наверх
-        function toggleScrollButton() {
-            const scrollButton = document.querySelector('.scroll-top');
-            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-                scrollButton.classList.add('active');
-            } else {
-                scrollButton.classList.remove('active');
-            }
-        }
-        
-        // Прокрутка наверх
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Переключение темы
-        function toggleTheme() {
-            const body = document.body;
-            const themeBtn = document.getElementById('themeToggle');
-            
-            if (body.classList.contains('dark-theme')) {
-                body.classList.remove('dark-theme');
-                themeBtn.textContent = '🌙 Ночной режим';
-                body.style.backgroundColor = '#ffe6f2';
-            } else {
-                body.classList.add('dark-theme');
-                themeBtn.textContent = '☀️ Дневной режим';
-                body.style.backgroundColor = '#2a1a2a';
-            }
-        }
-        
-        // Воспроизведение звука
-        function playSound() {
-            // Создаем элемент audio
-            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3');
-            audio.play();
-            showNotification('Воспроизводится звук! 🔔');
-        }
-        
-        // Показать сообщение
-        function showMessage() {
-            showNotification('Вы нажали на звездочку! ⭐');
-        }
-        
-        // Изменить фон
-        function changeBackground() {
-            const colors = ['#ffe6f2', '#f0f9ff', '#f9f0ff', '#e6f7ff', '#fff0f5'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            document.body.style.backgroundColor = randomColor;
-            showNotification('Фон изменен! 🎨');
-        }
-        
-        // Конфетти (эффект)
+                <
