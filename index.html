@@ -8,6 +8,14 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
         
+        :root {
+            --main-pink: #ff69b4;
+            --light-pink: #ff9ed8;
+            --purple: #a166ff;
+            --light-blue: #b3e0ff;
+            --dark-purple: #7b3fe4;
+        }
+        
         body {
             font-family: 'Comic Neue', cursive;
             background-color: #ffe6f2;
@@ -15,6 +23,7 @@
             margin: 0;
             padding: 20px;
             color: #5a3d5c;
+            transition: background-color 0.5s ease;
         }
         
         .container {
@@ -24,7 +33,12 @@
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
-            border: 3px solid #ff69b4;
+            border: 3px solid var(--main-pink);
+            transition: transform 0.3s ease;
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
         }
         
         /* Аниме-заголовок */
@@ -36,9 +50,15 @@
         
         .anime-title::before, .anime-title::after {
             content: "★";
-            color: #ff69b4;
+            color: var(--main-pink);
             font-size: 24px;
             margin: 0 10px;
+            animation: spin 4s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         /* Радужный текст в аниме-стиле */
@@ -54,7 +74,14 @@
             color: transparent;
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
-            border: 2px dashed #ff9ed8;
+            border: 2px dashed var(--light-pink);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .rainbow-text:hover {
+            transform: scale(1.05);
+            border-style: solid;
         }
         
         /* 3D текст */
@@ -62,10 +89,11 @@
             text-align: center;
             font-size: 32px;
             font-weight: bold;
-            color: #ff69b4;
-            text-shadow: 2px 2px 0 #ff9ed8, 4px 4px 0 rgba(0, 0, 0, 0.2);
+            color: var(--main-pink);
+            text-shadow: 2px 2px 0 var(--light-pink), 4px 4px 0 rgba(0, 0, 0, 0.2);
             margin: 20px 0;
             transform: rotate(-3deg);
+            cursor: pointer;
         }
         
         /* Списки в аниме-стиле */
@@ -73,7 +101,12 @@
             background-color: #f9f0ff;
             padding: 15px 15px 15px 40px;
             border-radius: 10px;
-            border-left: 5px solid #a166ff;
+            border-left: 5px solid var(--purple);
+            transition: transform 0.3s ease;
+        }
+        
+        ol:hover, ul:hover {
+            transform: translateX(5px);
         }
         
         li {
@@ -81,10 +114,16 @@
             padding: 5px;
             background-color: rgba(255, 255, 255, 0.7);
             border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        li:hover {
+            background-color: rgba(255, 230, 242, 0.7);
+            transform: scale(1.02);
         }
         
         li::marker {
-            color: #ff69b4;
+            color: var(--main-pink);
         }
         
         /* Таблицы */
@@ -94,14 +133,25 @@
             border-spacing: 0;
             margin: 20px 0;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        table.iksweb:hover {
+            box-shadow: 0 0 15px rgba(162, 102, 255, 0.4);
         }
         
         table.iksweb td {
             padding: 15px;
             background-color: #e6f7ff;
-            border: 2px solid #b3e0ff;
+            border: 2px solid var(--light-blue);
             text-align: center;
             position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        table.iksweb td:hover {
+            background-color: #d1f0ff;
+            transform: scale(1.02);
         }
         
         table.iksweb td:empty::before {
@@ -116,11 +166,16 @@
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
-            border: 2px solid #b3e0ff;
+            border: 2px solid var(--light-blue);
+            transition: all 0.3s ease;
+        }
+        
+        form:hover {
+            box-shadow: 0 5px 15px rgba(179, 224, 255, 0.5);
         }
         
         button, input[type="submit"], input[type="reset"] {
-            background: linear-gradient(to bottom, #ff9ed8, #ff69b4);
+            background: linear-gradient(to bottom, var(--light-pink), var(--main-pink));
             border: none;
             color: white;
             padding: 10px 20px;
@@ -135,6 +190,7 @@
         button:hover, input[type="submit"]:hover, input[type="reset"]:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to bottom, var(--main-pink), var(--purple));
         }
         
         button:active, input[type="submit"]:active, input[type="reset"]:active {
@@ -144,11 +200,18 @@
         input[type="text"], textarea {
             width: 100%;
             padding: 10px;
-            border: 2px solid #ff9ed8;
+            border: 2px solid var(--light-pink);
             border-radius: 10px;
             background-color: #fff;
             margin-bottom: 10px;
             font-family: 'Comic Neue', cursive;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--purple);
+            box-shadow: 0 0 10px rgba(162, 102, 255, 0.5);
         }
         
         /* Панель инструментов */
@@ -161,39 +224,78 @@
             height: 60px;
             border-radius: 50%;
             font-size: 24px;
-            background: linear-gradient(to bottom, #a166ff, #7b3fe4);
+            background: linear-gradient(to bottom, var(--purple), var(--dark-purple));
+            transition: all 0.3s ease;
+        }
+        
+        form[name="panel instrumentov"] button:hover {
+            transform: rotate(15deg) scale(1.1);
         }
         
         /* Ссылки */
         a {
-            color: #ff69b4;
+            color: var(--main-pink);
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s;
             display: inline-block;
+            position: relative;
+        }
+        
+        a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--main-pink);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
         }
         
         a:hover {
-            color: #a166ff;
+            color: var(--purple);
             transform: scale(1.05);
             text-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
+        }
+        
+        a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
         }
         
         /* Изображения */
         img {
             max-width: 100%;
             border-radius: 10px;
-            border: 3px solid #ff69b4;
+            border: 3px solid var(--main-pink);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             margin: 10px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+            border-color: var(--purple);
         }
         
         /* Заголовки */
         h1, h2, h3, h4, h5, h6 {
-            color: #7b3fe4;
-            border-bottom: 2px dashed #ff9ed8;
+            color: var(--dark-purple);
+            border-bottom: 2px dashed var(--light-pink);
             padding-bottom: 5px;
             position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+            color: var(--purple);
+            letter-spacing: 1px;
         }
         
         h1::after, h2::after, h3::after {
@@ -203,7 +305,7 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: linear-gradient(90deg, #ff69b4, transparent);
+            background: linear-gradient(90deg, var(--main-pink), transparent);
         }
         
         /* Преформатированный текст */
@@ -211,8 +313,13 @@
             background-color: #f9f0ff;
             padding: 15px;
             border-radius: 10px;
-            border-left: 5px solid #a166ff;
+            border-left: 5px solid var(--purple);
             overflow-x: auto;
+            transition: all 0.3s ease;
+        }
+        
+        pre:hover {
+            box-shadow: 0 5px 15px rgba(162, 102, 255, 0.3);
         }
         
         /* Химическая формула */
@@ -235,6 +342,10 @@
             .css-3d-text {
                 font-size: 24px;
             }
+            
+            .container {
+                padding: 15px;
+            }
         }
         
         /* Анимации */
@@ -254,6 +365,8 @@
             z-index: -1;
             opacity: 0.2;
             font-size: 50px;
+            cursor: pointer;
+            user-select: none;
         }
         
         .decoration-1 {
@@ -279,14 +392,176 @@
             right: 10%;
             animation: float 7s ease-in-out infinite;
         }
+        
+        /* Новые элементы */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .theme-btn {
+            background: linear-gradient(to bottom, var(--purple), var(--dark-purple));
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .theme-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--light-pink), var(--purple));
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(to bottom, var(--light-pink), var(--main-pink));
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+        }
+        
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(to bottom, var(--main-pink), var(--purple));
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(to right, var(--purple), var(--dark-purple));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .counter {
+            display: inline-block;
+            padding: 5px 10px;
+            background: linear-gradient(to bottom, var(--light-pink), var(--main-pink));
+            color: white;
+            border-radius: 20px;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+        
+        .interactive-section {
+            background: linear-gradient(45deg, #f9f0ff, #e6f7ff);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px dashed var(--light-pink);
+        }
+        
+        .color-picker {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .color-option:hover {
+            transform: scale(1.2);
+        }
+        
+        .typing-demo {
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid;
+            margin: 20px auto;
+            font-size: 24px;
+            color: var(--dark-purple);
+            animation: typing 4s steps(30, end), blink-caret 0.5s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--main-pink) }
+        }
     </style>
 </head>
 <body>
+    <!-- Прогресс бар -->
+    <div class="progress-bar"></div>
+    
+    <!-- Кнопка прокрутки наверх -->
+    <div class="scroll-top">↑</div>
+    
+    <!-- Уведомление -->
+    <div class="notification">Добро пожаловать на аниме-сайт! 🎉</div>
+    
+    <!-- Переключатель темы -->
+    <div class="theme-switcher">
+        <button class="theme-btn" id="themeToggle">🌙 Ночной режим</button>
+    </div>
+
     <!-- Декоративные элементы -->
-    <div class="anime-decoration decoration-1">♥</div>
-    <div class="anime-decoration decoration-2">★</div>
-    <div class="anime-decoration decoration-3">♫</div>
-    <div class="anime-decoration decoration-4">☼</div>
+    <div class="anime-decoration decoration-1" onclick="playSound()">♥</div>
+    <div class="anime-decoration decoration-2" onclick="showMessage()">★</div>
+    <div class="anime-decoration decoration-3" onclick="changeBackground()">♫</div>
+    <div class="anime-decoration decoration-4" onclick="confetti()">☼</div>
 
     <div class="container">
         <!-- Google Tag Manager -->
@@ -301,11 +576,15 @@
             <a href="https://www.figma.com/design/Z2mRQ0XNutD6h68tSrOuBc/Untitled?t=ALEpgL34jKduyR05-0">Ссылка на черновик</a>
         </div>
         
-        <div class="rainbow-text">
+        <div class="rainbow-text" onclick="changeRainbow()">
             <span class="block-line"><span><span style="color:#ff0000">К</span><span style="color:#cc0000">у</span><span style="color:#990000">р</span><span style="color:#660000">с</span><span style="color:#330000">о</span><span style="color:#000000">в</span><span style="color:#003300">а</span><span style="color:#006600">я&nbsp;</span></span><span><span style="color:#009900">р</span><span style="color:#00cc00">а</span><span style="color:#00ff00">б</span><span style="color:#00cc00">о</span><span style="color:#009900">т</span><span style="color:#006600">а&nbsp;</span></span><span><span style="color:#003300">Б</span><span style="color:#000000">е</span><span style="color:#330000">л</span><span style="color:#660000">ь</span><span style="color:#990000">с</span><span style="color:#cc0000">к</span><span style="color:#990000">о</span><span style="color:#660000">г</span><span style="color:#330000">о&nbsp;</span></span><span><span style="color:#000000">Д</span><span style="color:#003300">а</span><span style="color:#006600">н</span><span style="color:#009900">и</span><span style="color:#00cc00">л</span><span style="color:#00ff00">ы</span></span></span>
         </div>
         
-        <div class="css-3d-text">Бот бандит крутой</div>
+        <div class="css-3d-text" onclick="rotateText(this)">Бот бандит крутой</div>
+        
+        <div class="typing-demo">
+            Привет! Это анимированный текст с эффектом печати...
+        </div>
         
         <pre>
 Эта таблица создана при помощи знака табуляции
@@ -319,14 +598,26 @@
         
         <p>H<sub>2</sub>SO<sub>4</sub><sup>конц.</sup></p>
         
-        <h2>Типы списков</h2>
+        <div class="interactive-section">
+            <h2>Интерактивная панель</h2>
+            <p>Выберите цвет фона для этой секции:</p>
+            <div class="color-picker">
+                <div class="color-option" style="background-color: #f9f0ff;" onclick="changeSectionColor(this)"></div>
+                <div class="color-option" style="background-color: #e6f7ff;" onclick="changeSectionColor(this)"></div>
+                <div class="color-option" style="background-color: #ffe6f2;" onclick="changeSectionColor(this)"></div>
+                <div class="color-option" style="background-color: #f0f9ff;" onclick="changeSectionColor(this)"></div>
+            </div>
+            <button onclick="resetColors()">Сбросить цвета</button>
+        </div>
+        
+        <h2 onclick="toggleList(this)">Типы списков <span class="counter">3</span></h2>
         <ol>
             <li>Нумерованный</li>
             <li>Маркированный</li>
             <li>Многоуровневый</li>
         </ol>
         
-        <h2>Маркированный список</h2>
+        <h2 onclick="toggleList(this)">Маркированный список <span class="counter">5</span></h2>
         <ul style="list-style-type: circle;">
             <li>Яблоко</li>
             <li style="list-style-type: disc;">Груша</li>
@@ -335,7 +626,7 @@
             <li>Черешня</li>
         </ul>
         
-        <h2>Многоуровневый список</h2>
+        <h2 onclick="toggleList(this)">Многоуровневый список <span class="counter">2</span></h2>
         <ol>
             <li>Нумерованный</li>
             <ol>
@@ -354,30 +645,30 @@
         <table class="iksweb">
             <tbody>
                 <tr>
-                    <td></td>
-                    <td rowspan="3"></td>
-                    <td></td>
-                    <td rowspan="2"></td>
-                    <td></td>
+                    <td onclick="fillCell(this)"></td>
+                    <td rowspan="3" onclick="fillCell(this)"></td>
+                    <td onclick="fillCell(this)"></td>
+                    <td rowspan="2" onclick="fillCell(this)"></td>
+                    <td onclick="fillCell(this)"></td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td onclick="fillCell(this)"></td>
+                    <td onclick="fillCell(this)"></td>
+                    <td onclick="fillCell(this)"></td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td onclick="fillCell(this)"></td>
+                    <td onclick="fillCell(this)"></td>
+                    <td onclick="fillCell(this)"></td>
+                    <td onclick="fillCell(this)"></td>
                 </tr>
             </tbody>
         </table>
         
         <form>
-            <button title="Просмотр версии обозревателя" accesskey="Е">Версия</button>
+            <button title="Просмотр версии обозревателя" accesskey="Е" onclick="showBrowserVersion()">Версия</button>
             <br>
-            <input type="text" size="40"><br><br>
+            <input type="text" size="40" placeholder="Введите текст здесь..."><br><br>
             <input type="submit" disabled>
             <input type="reset">
         </form>
@@ -386,16 +677,16 @@
             <table cellpadding="0" cellspacing="0">
                 <tr>
                     <td>
-                        <button title="Создать файл">📄</button><br>
+                        <button title="Создать файл" onclick="createFile()">📄</button><br>
                     </td>
                     <td>
-                        <button title="Открыть">📂</button><br>
+                        <button title="Открыть" onclick="openFile()">📂</button><br>
                     </td>
                     <td>
-                        <button title="Сохранить">💾</button><br>
+                        <button title="Сохранить" onclick="saveFile()">💾</button><br>
                     </td>
                     <td>
-                        <button title="Печать">🖨️</button><br>
+                        <button title="Печать" onclick="printPage()">🖨️</button><br>
                     </td>
                 </tr>
             </table>
@@ -403,8 +694,8 @@
         
         <form name="text">
             <p>Оставьте свое сообщение в следующем окне и нажмите на кнопке для его отправления</p>
-            <textarea name="koment" rows="15" cols="30" wrap="off">Введите ваше сообщение здесь</textarea><br>
-            <p><input type="submit" value="Отправить"></p>
+            <textarea name="koment" rows="15" cols="30" wrap="off" placeholder="Введите ваше сообщение здесь"></textarea><br>
+            <p><input type="submit" value="Отправить" onclick="submitForm(event)"></p>
             <p><input type="reset" value="Очистить"></p>
         </form>
         
@@ -416,15 +707,108 @@
             Чат GPT Который помог в создании сайта
         </a>
         
-        <img src="Kesha1.gif" alt="Анимация">
+        <img src="Kesha1.gif" alt="Анимация" onclick="enlargeImage(this)">
         
         <a href="https://keshik7.wordpress.com/?_gl=1*coknff*_gcl_au*MjA5MjQyNDk1LjE3NDU4NDE4MDc.">ссылка на вордпресс</a>
         
         <h1>пример работы в блендере</h1>
-        <img src="lol.png" alt="Пример работы в Blender">
+        <img src="lol.png" alt="Пример работы в Blender" onclick="enlargeImage(this)">
         
         <a href="https://www.minecraft.net/ru-ru">MINECRAAAAAAAAAAAAAFT</a>
     </div>
-</body>
-</html>
 
+    <script>
+        // Функция для показа уведомления
+        function showNotification(message) {
+            const notification = document.querySelector('.notification');
+            if (message) {
+                notification.textContent = message;
+            }
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Показать приветственное уведомление при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            showNotification('Добро пожаловать на аниме-сайт! 🎉');
+            
+            // Инициализация прогресс-бара
+            window.addEventListener('scroll', updateProgressBar);
+            
+            // Инициализация кнопки прокрутки наверх
+            const scrollButton = document.querySelector('.scroll-top');
+            window.addEventListener('scroll', toggleScrollButton);
+            scrollButton.addEventListener('click', scrollToTop);
+            
+            // Инициализация переключателя темы
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('click', toggleTheme);
+        });
+        
+        // Обновление прогресс-бара при прокрутке
+        function updateProgressBar() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+        }
+        
+        // Показать/скрыть кнопку прокрутки наверх
+        function toggleScrollButton() {
+            const scrollButton = document.querySelector('.scroll-top');
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollButton.classList.add('active');
+            } else {
+                scrollButton.classList.remove('active');
+            }
+        }
+        
+        // Прокрутка наверх
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Переключение темы
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.getElementById('themeToggle');
+            
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                themeBtn.textContent = '🌙 Ночной режим';
+                body.style.backgroundColor = '#ffe6f2';
+            } else {
+                body.classList.add('dark-theme');
+                themeBtn.textContent = '☀️ Дневной режим';
+                body.style.backgroundColor = '#2a1a2a';
+            }
+        }
+        
+        // Воспроизведение звука
+        function playSound() {
+            // Создаем элемент audio
+            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3');
+            audio.play();
+            showNotification('Воспроизводится звук! 🔔');
+        }
+        
+        // Показать сообщение
+        function showMessage() {
+            showNotification('Вы нажали на звездочку! ⭐');
+        }
+        
+        // Изменить фон
+        function changeBackground() {
+            const colors = ['#ffe6f2', '#f0f9ff', '#f9f0ff', '#e6f7ff', '#fff0f5'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.backgroundColor = randomColor;
+            showNotification('Фон изменен! 🎨');
+        }
+        
+        // Конфетти (эффект)
