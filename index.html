@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Очень странные дела | Кликер</title>
+    <title>Очень странные дела | Eggo Clicker</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔦</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Creepster&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -14,86 +14,173 @@
             background: #0a0a0a; 
             color: #fff;
             min-height: 100vh;
-            background-image: radial-gradient(circle at 20% 30%, rgba(139, 0, 0, 0.15) 0%, transparent 20%),
-                              radial-gradient(circle at 80% 80%, rgba(75, 0, 130, 0.15) 0%, transparent 20%);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(139, 0, 0, 0.2) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(75, 0, 130, 0.2) 0%, transparent 25%),
+                repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px);
         }
         
         /* КЛИКЕР */
-        .clicker-panel {
+        .clicker-container {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 300px;
-            background: rgba(26, 0, 51, 0.95);
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-            border: 2px solid #8b0000;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 350px;
+            background: linear-gradient(145deg, #1a0033, #2a0044);
+            border-radius: 20px 0 0 20px;
+            padding: 20px;
+            box-shadow: -5px 0 30px rgba(139, 0, 0, 0.4);
+            border: 3px solid #8b0000;
+            border-right: none;
             z-index: 1000;
-            backdrop-filter: blur(10px);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        
+        .clicker-container.collapsed {
+            transform: translateX(320px) translateY(-50%);
         }
         
         .clicker-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255,215,0,0.3);
         }
         
-        .clicker-header h3 {
-            font-family: 'Bebas Neue', cursive;
-            letter-spacing: 1px;
+        .clicker-title {
+            font-family: 'Creepster', cursive;
+            font-size: 1.8rem;
             color: #ffd700;
-        }
-        
-        .clicker-counter {
-            text-align: center;
-            margin: 15px 0;
-        }
-        
-        .clicker-count {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #ffd700;
+            letter-spacing: 2px;
             text-shadow: 0 0 10px rgba(255,215,0,0.5);
         }
         
-        .clicker-per-second {
-            color: #06d6a0;
+        .clicker-toggle {
+            background: #8b0000;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .clicker-toggle:hover {
+            background: #a30000;
+            transform: rotate(180deg);
+        }
+        
+        .clicker-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-box {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .stat-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255,215,0,0.5);
+        }
+        
+        .stat-label {
             font-size: 0.9rem;
+            color: #aaa;
             margin-top: 5px;
         }
         
         .clicker-main {
             text-align: center;
-            margin: 20px 0;
+            margin: 25px 0;
             cursor: pointer;
+            position: relative;
+        }
+        
+        .eggo-wrapper {
+            position: relative;
+            display: inline-block;
         }
         
         .eggo {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #ffd700, #ffb347);
+            width: 130px;
+            height: 130px;
+            background: linear-gradient(135deg, #ffd700, #ffb347, #ff8c00);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
-            font-size: 3.5rem;
-            border: 3px solid #8b0000;
-            transition: all 0.1s;
-            user-select: none;
+            font-size: 4rem;
+            border: 4px solid #8b0000;
+            transition: all 0.15s;
+            box-shadow: 
+                0 0 20px rgba(255,215,0,0.3),
+                inset 0 0 20px rgba(255,255,255,0.2);
+            animation: pulse 2s infinite;
         }
         
         .eggo:active {
-            transform: scale(0.9);
-            box-shadow: 0 0 25px rgba(255,215,0,0.8);
+            transform: scale(0.85);
+            box-shadow: 
+                0 0 40px rgba(255,215,0,0.8),
+                inset 0 0 30px rgba(255,255,255,0.4);
+        }
+        
+        .eggo-glow {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: glow 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .click-instruction {
+            margin-top: 15px;
+            color: #ffd700;
+            font-size: 1.1rem;
+            font-weight: bold;
         }
         
         .clicker-upgrades {
-            margin-top: 20px;
+            margin: 25px 0;
+        }
+        
+        .upgrades-title {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .upgrade {
@@ -101,199 +188,477 @@
             justify-content: space-between;
             align-items: center;
             background: rgba(255,255,255,0.05);
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s;
-            border: 1px solid transparent;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
         }
         
         .upgrade:hover {
             background: rgba(255,255,255,0.1);
             border-color: #8b0000;
-            transform: translateX(5px);
+            transform: translateX(-10px);
         }
         
-        .upgrade-info h4 {
+        .upgrade-locked {
+            opacity: 0.6;
+            filter: grayscale(1);
+            cursor: not-allowed;
+        }
+        
+        .upgrade-locked:hover {
+            transform: none;
+            border-color: transparent;
+        }
+        
+        .upgrade-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+        }
+        
+        .upgrade-info {
+            flex: 1;
+            margin: 0 15px;
+        }
+        
+        .upgrade-name {
+            font-weight: 700;
             color: #fff;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
+        }
+        
+        .upgrade-desc {
+            color: #06d6a0;
+            font-size: 0.85rem;
+            margin-top: 3px;
         }
         
         .upgrade-cost {
             color: #ffd700;
-            font-size: 0.85rem;
+            font-weight: 600;
+            font-size: 1.1rem;
         }
         
         .upgrade-count {
             background: #8b0000;
             color: white;
-            width: 25px;
-            height: 25px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-left: 10px;
+        }
+        
+        /* НОТИФИКАЦИИ */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 300px;
         }
         
         .notification {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
             background: linear-gradient(135deg, #8b0000, #4b0082);
             color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.3);
-            z-index: 1001;
-            display: none;
-            animation: fadeIn 0.3s;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            animation: slideIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            border-left: 5px solid #ffd700;
+            position: relative;
+            overflow: hidden;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .notification::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ffd700, #8b0000);
+            animation: progress 3s linear;
         }
         
-        .particle {
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+        
+        /* ПАРТИКЛЫ */
+        .particles {
             position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            font-size: 1.2rem;
-            font-weight: bold;
-            animation: particleUp 1s forwards;
             z-index: 9999;
         }
         
-        @keyframes particleUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-50px) scale(0.5); }
+        .particle {
+            position: absolute;
+            font-weight: 800;
+            pointer-events: none;
+            z-index: 9999;
+            text-shadow: 0 0 10px currentColor;
         }
         
         /* ОСНОВНОЙ КОНТЕНТ */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 100px 20px 20px;
+            padding: 40px 20px;
         }
         
         .stranger-banner {
             text-align: center;
-            padding: 60px 20px;
-            margin-bottom: 40px;
+            padding: 80px 20px;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, rgba(26,0,51,0.8), rgba(0,0,0,0.9));
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #8b0000;
+        }
+        
+        .stranger-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255,0,0,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0,255,255,0.1) 0%, transparent 50%);
         }
         
         .stranger-title {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 4rem;
+            font-family: 'Creepster', cursive;
+            font-size: 5rem;
             color: #ff0000;
-            text-shadow: 0 0 20px rgba(255,0,0,0.5);
-            letter-spacing: 3px;
+            text-shadow: 
+                0 0 20px #ff0000,
+                0 0 40px #ff0000,
+                0 0 60px #8b0000;
+            letter-spacing: 5px;
             margin-bottom: 20px;
+            animation: titleGlow 3s infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000, 0 0 60px #8b0000; }
+            100% { text-shadow: 0 0 25px #ff0000, 0 0 50px #ff0000, 0 0 75px #8b0000; }
         }
         
         .banner-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: #ccc;
             max-width: 800px;
-            margin: 0 auto 30px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
         }
         
-        .banner-btn {
-            background: linear-gradient(135deg, #8b0000, #4b0082);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-        
-        .banner-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(139,0,0,0.5);
-        }
-        
-        .decorations {
+        .banner-buttons {
             display: flex;
             justify-content: center;
             gap: 20px;
+            flex-wrap: wrap;
             margin: 30px 0;
         }
         
-        .decoration {
-            font-size: 2rem;
+        .banner-btn {
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s;
-            animation: float 3s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px;
+            justify-content: center;
         }
         
-        .decoration:hover {
+        .btn-primary {
+            background: linear-gradient(135deg, #8b0000, #4b0082);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #006400, #008b8b);
+            color: white;
+        }
+        
+        .btn-tertiary {
+            background: linear-gradient(135deg, #00008b, #8b008b);
+            color: white;
+        }
+        
+        .banner-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        /* ДЕКОРАЦИИ */
+        .decorations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+        }
+        
+        .decoration-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .decoration-item:hover {
+            transform: translateY(-10px) rotate(5deg);
+            border-color: #8b0000;
+            box-shadow: 0 10px 30px rgba(139,0,0,0.3);
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .decoration-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            display: block;
+            transition: all 0.3s;
+        }
+        
+        .decoration-item:hover .decoration-icon {
             transform: scale(1.3);
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .decoration-name {
+            font-weight: 600;
+            color: #fff;
+            font-size: 1.1rem;
         }
         
-        .decoration:nth-child(1) { color: #ff0000; animation-delay: 0s; }
-        .decoration:nth-child(2) { color: #00ff00; animation-delay: 0.5s; }
-        .decoration:nth-child(3) { color: #0000ff; animation-delay: 1s; }
-        .decoration:nth-child(4) { color: #ff00ff; animation-delay: 1.5s; }
+        .decoration-bonus {
+            color: #ffd700;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
         
         /* СЕКЦИИ */
-        section {
-            background: rgba(26, 0, 51, 0.3);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 40px 0;
-            border: 1px solid rgba(255,255,255,0.1);
+        .section {
+            background: linear-gradient(135deg, rgba(26,0,51,0.7), rgba(0,0,0,0.9));
+            border-radius: 25px;
+            padding: 40px;
+            margin: 60px 0;
+            border: 2px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
         }
         
-        section h2 {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 2rem;
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #8b0000, #4b0082, #006400);
+        }
+        
+        .section-title {
+            font-family: 'Creepster', cursive;
+            font-size: 2.8rem;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 3px;
+        }
+        
+        /* СТАТИСТИКА */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .stat-card {
+            background: rgba(0,0,0,0.3);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,215,0,0.2);
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+            box-shadow: 0 10px 20px rgba(255,215,0,0.1);
+        }
+        
+        .stat-icon {
+            font-size: 3rem;
             color: #ffd700;
             margin-bottom: 20px;
-            letter-spacing: 2px;
         }
         
-        .stats {
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            margin: 10px 0;
+        }
+        
+        /* ДОСТИЖЕНИЯ */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .achievement {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 25px;
             display: flex;
-            justify-content: space-around;
-            text-align: center;
-            margin: 20px 0;
+            align-items: center;
+            gap: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
         }
         
-        .stat-item {
-            padding: 15px;
+        .achievement.unlocked {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(139,0,0,0.1));
         }
         
-        .stat-value {
-            display: block;
-            font-size: 2rem;
-            font-weight: bold;
-            color: #06d6a0;
+        .achievement-icon {
+            font-size: 2.5rem;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            background: rgba(0,0,0,0.3);
         }
         
-        .stat-label {
+        .achievement-info {
+            flex: 1;
+        }
+        
+        .achievement-name {
+            font-weight: 700;
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .achievement-desc {
             color: #aaa;
             font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .achievement-progress {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #06d6a0, #04a777);
+            width: 0%;
+            transition: width 1s ease;
+        }
+        
+        /* ВИКТОРИНА */
+        .quiz-container {
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+        
+        .quiz-question {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            color: #fff;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .quiz-option {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .quiz-option:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #8b0000;
+            transform: translateY(-3px);
         }
         
         /* АДАПТИВНОСТЬ */
         @media (max-width: 768px) {
-            .clicker-panel {
+            .clicker-container {
                 position: relative;
                 top: 0;
-                right: 0;
+                transform: none;
                 width: 100%;
-                margin-bottom: 20px;
-                border-radius: 0 0 15px 15px;
+                border-radius: 0 0 20px 20px;
+                border-right: 3px solid #8b0000;
+                margin-bottom: 40px;
+            }
+            
+            .clicker-container.collapsed {
+                transform: translateX(0) translateY(-80%);
             }
             
             .container {
@@ -301,234 +666,364 @@
             }
             
             .stranger-title {
-                font-size: 2.5rem;
+                font-size: 3rem;
+            }
+            
+            .banner-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Уведомления -->
+    <div class="notification-container" id="notifications"></div>
+<a href="https://ggaaggaa22855.github.io/dfsdsfdsfs/">HTML квест</a>
+<a>href="https://www.figma.com/design/Z2mRQ0XNutD6h68tSrOuBc/Untitledt=ALEpgL34jKduyR05-0">Ссылка на макет в Figma</a>
     <!-- Кликер -->
-    <div class="clicker-panel">
+    <div class="clicker-container" id="clickerPanel">
         <div class="clicker-header">
-            <h3><i class="fas fa-gamepad"></i> Eggo Кликер</h3>
-            <span class="clicker-per-second">+<span id="perSecond">0</span>/сек</span>
+            <h2 class="clicker-title">EGGO КЛИКЕР</h2>
+            <button class="clicker-toggle" onclick="toggleClicker()">‹</button>
         </div>
         
-        <div class="clicker-counter">
-            <div class="clicker-count" id="clickerValue">0</div>
-            <div class="clicker-per-second">Вафли собрано</div>
+        <div class="clicker-stats">
+            <div class="stat-box">
+                <span class="stat-value" id="eggosCount">0</span>
+                <span class="stat-label">Вафли Eggo</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value" id="perSecond">0</span>
+                <span class="stat-label">В секунду</span>
+            </div>
         </div>
         
         <div class="clicker-main" onclick="clickEggo()">
-            <div class="eggo">🧇</div>
-            <div style="margin-top: 10px; color: #aaa; font-size: 0.9rem;">Кликни!</div>
+            <div class="eggo-wrapper">
+                <div class="eggo-glow"></div>
+                <div class="eggo">🧇</div>
+            </div>
+            <div class="click-instruction">КЛИКАЙ ДЛЯ СБОРА ВАФЕЛЬ!</div>
         </div>
         
         <div class="clicker-upgrades">
-            <div class="upgrade" onclick="buyUpgrade('hopper')">
+            <div class="upgrades-title">
+                <i class="fas fa-arrow-up"></i> УЛУЧШЕНИЯ
+            </div>
+            
+            <div class="upgrade" onclick="buyUpgrade('hopper')" id="upgradeHopper">
+                <div class="upgrade-icon">🚨</div>
                 <div class="upgrade-info">
-                    <h4>🚨 Хоппер</h4>
-                    <div class="upgrade-cost">Цена: <span id="hopperCost">50</span></div>
+                    <div class="upgrade-name">Шериф Хоппер</div>
+                    <div class="upgrade-desc">+1 вафля в секунду</div>
                 </div>
+                <div class="upgrade-cost" id="hopperCost">50</div>
                 <div class="upgrade-count" id="hopperCount">0</div>
             </div>
             
-            <div class="upgrade" onclick="buyUpgrade('dustin')">
+            <div class="upgrade" onclick="buyUpgrade('dustin')" id="upgradeDustin">
+                <div class="upgrade-icon">👓</div>
                 <div class="upgrade-info">
-                    <h4>👓 Дастин</h4>
-                    <div class="upgrade-cost">Цена: <span id="dustinCost">200</span></div>
+                    <div class="upgrade-name">Дастин</div>
+                    <div class="upgrade-desc">+5 вафель в секунду</div>
                 </div>
+                <div class="upgrade-cost" id="dustinCost">200</div>
                 <div class="upgrade-count" id="dustinCount">0</div>
             </div>
             
-            <div class="upgrade" onclick="buyUpgrade('eleven')">
+            <div class="upgrade" onclick="buyUpgrade('eleven')" id="upgradeEleven">
+                <div class="upgrade-icon">🦸</div>
                 <div class="upgrade-info">
-                    <h4>🦸 Одиннадцать</h4>
-                    <div class="upgrade-cost">Цена: <span id="elevenCost">1000</span></div>
+                    <div class="upgrade-name">Одиннадцать</div>
+                    <div class="upgrade-desc">+15 вафель в секунду</div>
                 </div>
+                <div class="upgrade-cost" id="elevenCost">1000</div>
                 <div class="upgrade-count" id="elevenCount">0</div>
             </div>
         </div>
     </div>
-
-    <!-- Уведомление -->
-    <div class="notification" id="notification"></div>
+    
+    <!-- Частицы -->
+    <div class="particles" id="particles"></div>
 
     <!-- Основной контент -->
     <div class="container">
+        <!-- Баннер -->
         <div class="stranger-banner">
             <h1 class="stranger-title">ОЧЕНЬ СТРАННЫЕ ДЕЛА</h1>
-            <p class="banner-subtitle">Соберите как можно больше вафель Eggo, чтобы помочь Одиннадцать! Каждая вафля дает энергию для борьбы с Верхопотным миром.</p>
-            <button class="banner-btn" onclick="startGame()">Начать игру</button>
+            <p class="banner-subtitle">Добро пожаловать в Хоукинс! Собирайте вафли Eggo, чтобы помочь героям бороться с угрозами из Верхопотного мира. Каждая вафля - это энергия для Одиннадцать!</p>
             
-            <div class="decorations">
-                <div class="decoration" onclick="collectBonus(1)">🌀</div>
-                <div class="decoration" onclick="collectBonus(5)">🧪</div>
-                <div class="decoration" onclick="collectBonus(10)">🔦</div>
-                <div class="decoration" onclick="collectBonus(20)">🎸</div>
+            <div class="banner-buttons">
+                <button class="banner-btn btn-primary" onclick="startGame()">
+                    <i class="fas fa-play"></i> НАЧАТЬ ИГРУ
+                </button>
+                <button class="banner-btn btn-secondary" onclick="resetGame()">
+                    <i class="fas fa-redo"></i> СБРОСИТЬ ИГРУ
+                </button>
+                <button class="banner-btn btn-tertiary" onclick="exportSave()">
+                    <i class="fas fa-save"></i> СОХРАНИТЬ
+                </button>
+            </div>
+            
+            <div class="decorations-grid">
+                <div class="decoration-item" onclick="collectBonus(5, '🌀')">
+                    <span class="decoration-icon">🌀</span>
+                    <div class="decoration-name">Портал</div>
+                    <div class="decoration-bonus">+5 вафель</div>
+                </div>
+                <div class="decoration-item" onclick="collectBonus(10, '🧪')">
+                    <span class="decoration-icon">🧪</span>
+                    <div class="decoration-name">Реактив</div>
+                    <div class="decoration-bonus">+10 вафель</div>
+                </div>
+                <div class="decoration-item" onclick="collectBonus(15, '🔦')">
+                    <span class="decoration-icon">🔦</span>
+                    <div class="decoration-name">Фонарик</div>
+                    <div class="decoration-bonus">+15 вафель</div>
+                </div>
+                <div class="decoration-item" onclick="collectBonus(25, '🎸')">
+                    <span class="decoration-icon">🎸</span>
+                    <div class="decoration-name">Гитара</div>
+                    <div class="decoration-bonus">+25 вафель</div>
+                </div>
+                <div class="decoration-item" onclick="collectBonus(50, '👹')">
+                    <span class="decoration-icon">👹</span>
+                    <div class="decoration-name">Демогоргон</div>
+                    <div class="decoration-bonus">+50 вафель</div>
+                </div>
             </div>
         </div>
 
-        <section>
-            <h2><i class="fas fa-chart-line"></i> Статистика</h2>
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-value" id="totalClicks">0</span>
-                    <span class="stat-label">Всего кликов</span>
+        <!-- Статистика -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-chart-bar"></i> СТАТИСТИКА ИГРЫ</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🧇</div>
+                    <div class="stat-number" id="totalEggos">0</div>
+                    <div class="stat-label">Всего собрано вафель</div>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="record">0</span>
-                    <span class="stat-label">Рекорд</span>
+                <div class="stat-card">
+                    <div class="stat-icon">👆</div>
+                    <div class="stat-number" id="totalClicks">0</div>
+                    <div class="stat-label">Всего кликов</div>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="timePlayed">0</span>
-                    <span class="stat-label">Минут игры</span>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-number" id="playTime">0</div>
+                    <div class="stat-label">Минут в игре</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-number" id="recordEggos">0</div>
+                    <div class="stat-label">Рекорд вафель</div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section>
-            <h2><i class="fas fa-trophy"></i> Достижения</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+        <!-- Достижения -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-trophy"></i> ДОСТИЖЕНИЯ ХОУКИНСА</h2>
+            <div class="achievements-grid">
                 <div class="achievement" id="achieve100">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.5rem;">🥉</span>
-                        <div>
-                            <div style="font-weight: bold;">Новичок</div>
-                            <div style="font-size: 0.8rem; color: #aaa;">Собрать 100 вафель</div>
+                    <div class="achievement-icon">🥉</div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Новичок Хоукинса</div>
+                        <div class="achievement-desc">Соберите 100 вафель Eggo</div>
+                        <div class="achievement-progress">
+                            <div class="progress-bar" id="progress100"></div>
                         </div>
                     </div>
-                    <div class="achieve-progress" style="height: 5px; background: #333; border-radius: 3px; margin-top: 5px; overflow: hidden;">
-                        <div id="progress100" style="height: 100%; background: #06d6a0; width: 0%;"></div>
+                </div>
+                <div class="achievement" id="achieve500">
+                    <div class="achievement-icon">🥈</div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Исследователь</div>
+                        <div class="achievement-desc">Соберите 500 вафель Eggo</div>
+                        <div class="achievement-progress">
+                            <div class="progress-bar" id="progress500"></div>
+                        </div>
                     </div>
                 </div>
-                
                 <div class="achievement" id="achieve1000">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.5rem;">🥈</span>
-                        <div>
-                            <div style="font-weight: bold;">Профи</div>
-                            <div style="font-size: 0.8rem; color: #aaa;">Собрать 1000 вафель</div>
+                    <div class="achievement-icon">🥇</div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Герой Хоукинса</div>
+                        <div class="achievement-desc">Соберите 1000 вафель Eggo</div>
+                        <div class="achievement-progress">
+                            <div class="progress-bar" id="progress1000"></div>
                         </div>
-                    </div>
-                    <div class="achieve-progress" style="height: 5px; background: #333; border-radius: 3px; margin-top: 5px; overflow: hidden;">
-                        <div id="progress1000" style="height: 100%; background: #06d6a0; width: 0%;"></div>
                     </div>
                 </div>
-                
-                <div class="achievement" id="achieve10000">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.5rem;">🥇</span>
-                        <div>
-                            <div style="font-weight: bold;">Легенда</div>
-                            <div style="font-size: 0.8rem; color: #aaa;">Собрать 10000 вафель</div>
+                <div class="achievement" id="achieve5000">
+                    <div class="achievement-icon">👑</div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Легенда</div>
+                        <div class="achievement-desc">Соберите 5000 вафель Eggo</div>
+                        <div class="achievement-progress">
+                            <div class="progress-bar" id="progress5000"></div>
                         </div>
                     </div>
-                    <div class="achieve-progress" style="height: 5px; background: #333; border-radius: 3px; margin-top: 5px; overflow: hidden;">
-                        <div id="progress10000" style="height: 100%; background: #06d6a0; width: 0%;"></div>
+                </div>
+                <div class="achievement" id="achieve10000">
+                    <div class="achievement-icon">🌟</div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Властелин Eggo</div>
+                        <div class="achievement-desc">Соберите 10000 вафель Eggo</div>
+                        <div class="achievement-progress">
+                            <div class="progress-bar" id="progress10000"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="achievement" id="achieve50000">
+                    <div class="achievement-icon">⚡</div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Сила Одиннадцать</div>
+                        <div class="achievement-desc">Соберите 50000 вафель Eggo</div>
+                        <div class="achievement-progress">
+                            <div class="progress-bar" id="progress50000"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+
+        <!-- Викторина -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-question-circle"></i> ВИКТОРИНА ПО СЕРИАЛУ</h2>
+            <div class="quiz-container">
+                <div class="quiz-question" id="quizQuestion">
+                    Как зовут девочку со сверхспособностями, сбежавшую из лаборатории?
+                </div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="answerQuiz('A')">
+                        <strong>A)</strong> Одиннадцать (Эль)
+                    </div>
+                    <div class="quiz-option" onclick="answerQuiz('B')">
+                        <strong>B)</strong> Двенадцать
+                    </div>
+                    <div class="quiz-option" onclick="answerQuiz('C')">
+                        <strong>C)</strong> Восемь (Кали)
+                    </div>
+                    <div class="quiz-option" onclick="answerQuiz('D')">
+                        <strong>D)</strong> Джейн
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // ========== ПЕРЕМЕННЫЕ КЛИКЕРА ==========
-        let eggos = 0;
-        let perSecond = 0;
-        let totalClicks = 0;
-        let startTime = Date.now();
-        let upgrades = {
-            hopper: { cost: 50, count: 0, prod: 1 },
-            dustin: { cost: 200, count: 0, prod: 5 },
-            eleven: { cost: 1000, count: 0, prod: 15 }
+        // ========== ИГРОВЫЕ ПЕРЕМЕННЫЕ ==========
+        let game = {
+            eggos: 0,           // Текущее количество вафель
+            perSecond: 0,       // Автоматический доход в секунду
+            totalClicks: 0,     // Всего кликов
+            totalEggos: 0,      // Всего собрано за все время
+            startTime: Date.now(), // Время начала игры
+            playTime: 0,        // Время в игре (минуты)
+            record: 0           // Рекорд вафель
         };
 
-        // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
+        let upgrades = {
+            hopper: { cost: 50, count: 0, production: 1 },
+            dustin: { cost: 200, count: 0, production: 5 },
+            eleven: { cost: 1000, count: 0, production: 15 }
+        };
+
+        // ========== ОСНОВНЫЕ ФУНКЦИИ КЛИКЕРА ==========
         function clickEggo() {
-            eggos++;
-            totalClicks++;
+            game.eggos += 1;        // ТОЛЬКО +1 за клик
+            game.totalClicks += 1;
+            game.totalEggos += 1;
             
-            // Анимация
+            // Анимация клика
             const eggo = document.querySelector('.eggo');
-            eggo.style.transform = 'scale(0.95)';
-            setTimeout(() => eggo.style.transform = '', 100);
+            eggo.style.transform = 'scale(0.85)';
+            setTimeout(() => eggo.style.transform = 'scale(1)', 150);
             
-            // Партикл
-            createParticle('+1', '#ffd700');
+            // Создаем частицу
+            createParticle('+1', '#ffd700', 100);
+            
+            // Обновляем отображение
+            updateDisplay();
+            saveGame();
+            checkAchievements();
+            
+            // Вибрация (если поддерживается)
+            if (navigator.vibrate) navigator.vibrate(50);
+        }
+
+        function buyUpgrade(type) {
+            const upg = upgrades[type];
+            if (game.eggos >= upg.cost) {
+                game.eggos -= upg.cost;
+                upg.count += 1;
+                game.perSecond += upg.production;
+                upg.cost = Math.floor(upg.cost * 1.5);
+                
+                // Уведомление
+                showNotification(`Куплено улучшение: ${getUpgradeName(type)}!`, '#06d6a0');
+                
+                // Эффект
+                createParticle('Улучшено!', '#06d6a0', 50);
+                
+                updateDisplay();
+                saveGame();
+            } else {
+                showNotification('Недостаточно вафель!', '#ef476f');
+            }
+        }
+
+        function collectBonus(amount, emoji) {
+            game.eggos += amount;
+            game.totalEggos += amount;
+            
+            showNotification(`+${amount} вафель ${emoji}`, '#ffd700');
+            createParticle(`+${amount}`, '#ffd700', 30);
             
             updateDisplay();
             saveGame();
             checkAchievements();
         }
 
-        function buyUpgrade(type) {
-            const upg = upgrades[type];
-            if (eggos >= upg.cost) {
-                eggos -= upg.cost;
-                upg.count++;
-                perSecond += upg.prod;
-                upg.cost = Math.floor(upg.cost * 1.5);
-                
-                showNotification(`Куплен ${type === 'hopper' ? 'Хоппер' : type === 'dustin' ? 'Дастин' : 'Одиннадцать'}!`);
-                createParticle('Улучшение!', '#06d6a0');
-                
-                updateDisplay();
-                saveGame();
-            } else {
-                showNotification('Нужно больше вафель!', '#ef476f');
-            }
-        }
-
-        function collectBonus(amount) {
-            eggos += amount;
-            showNotification(`+${amount} вафель! 🎁`, '#ffd700');
-            createParticle(`+${amount}`, '#ffd700');
-            updateDisplay();
-            saveGame();
-        }
-
-        function createParticle(text, color) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.textContent = text;
-            particle.style.color = color;
-            particle.style.left = Math.random() * 80 + 10 + '%';
-            particle.style.top = Math.random() * 80 + 10 + '%';
-            
-            document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 1000);
-        }
-
-        function showNotification(message, color = '#8b0000') {
-            const notif = document.getElementById('notification');
-            notif.textContent = message;
-            notif.style.background = color;
-            notif.style.display = 'block';
-            
-            setTimeout(() => {
-                notif.style.display = 'none';
-            }, 2000);
-        }
-
+        // ========== СИСТЕМА ОТОБРАЖЕНИЯ ==========
         function updateDisplay() {
             // Основные значения
-            document.getElementById('clickerValue').textContent = formatNumber(eggos);
-            document.getElementById('perSecond').textContent = perSecond;
-            document.getElementById('totalClicks').textContent = totalClicks;
-            
-            // Рекорд
-            const record = localStorage.getItem('eggoRecord') || 0;
-            document.getElementById('record').textContent = formatNumber(record);
+            document.getElementById('eggosCount').textContent = formatNumber(game.eggos);
+            document.getElementById('perSecond').textContent = game.perSecond;
+            document.getElementById('totalEggos').textContent = formatNumber(game.totalEggos);
+            document.getElementById('totalClicks').textContent = game.totalClicks;
             
             // Время игры
-            const minutes = Math.floor((Date.now() - startTime) / 60000);
-            document.getElementById('timePlayed').textContent = minutes;
+            const minutes = Math.floor((Date.now() - game.startTime) / 60000);
+            game.playTime = minutes;
+            document.getElementById('playTime').textContent = minutes;
+            
+            // Рекорд
+            document.getElementById('recordEggos').textContent = formatNumber(game.record);
             
             // Улучшения
             for (const [key, upg] of Object.entries(upgrades)) {
                 document.getElementById(key + 'Cost').textContent = upg.cost;
                 document.getElementById(key + 'Count').textContent = upg.count;
+                
+                // Блокировка если недостаточно средств
+                const upgradeEl = document.getElementById('upgrade' + key.charAt(0).toUpperCase() + key.slice(1));
+                if (game.eggos < upg.cost) {
+                    upgradeEl.classList.add('upgrade-locked');
+                } else {
+                    upgradeEl.classList.remove('upgrade-locked');
+                }
             }
             
             // Достижения
@@ -537,84 +1032,221 @@
 
         function updateAchievements() {
             const achievements = [
-                { id: '100', goal: 100, element: 'progress100' },
-                { id: '1000', goal: 1000, element: 'progress1000' },
-                { id: '10000', goal: 10000, element: 'progress10000' }
+                { id: 100, progress: 'progress100', element: 'achieve100' },
+                { id: 500, progress: 'progress500', element: 'achieve500' },
+                { id: 1000, progress: 'progress1000', element: 'achieve1000' },
+                { id: 5000, progress: 'progress5000', element: 'achieve5000' },
+                { id: 10000, progress: 'progress10000', element: 'achieve10000' },
+                { id: 50000, progress: 'progress50000', element: 'achieve50000' }
             ];
             
             achievements.forEach(ach => {
-                const progress = Math.min(100, (eggos / ach.goal) * 100);
-                document.getElementById(ach.element).style.width = progress + '%';
+                const progress = Math.min(100, (game.eggos / ach.id) * 100);
+                const progressBar = document.getElementById(ach.progress);
+                if (progressBar) {
+                    progressBar.style.width = progress + '%';
+                }
                 
-                if (eggos >= ach.goal && !localStorage.getItem('achieve' + ach.id)) {
-                    localStorage.setItem('achieve' + ach.id, 'true');
-                    showNotification(`Достижение разблокировано: ${ach.goal} вафель! 🏆`, '#ffd700');
-                    
-                    // Разблокируем цвет
-                    const achieveDiv = document.getElementById('achieve' + ach.goal);
-                    if (achieveDiv) {
-                        achieveDiv.style.background = 'rgba(6, 214, 160, 0.1)';
-                        achieveDiv.style.border = '1px solid #06d6a0';
-                        achieveDiv.style.borderRadius = '10px';
-                        achieveDiv.style.padding = '10px';
+                // Разблокировка достижения
+                if (game.eggos >= ach.id && !localStorage.getItem('achievement_' + ach.id)) {
+                    localStorage.setItem('achievement_' + ach.id, 'true');
+                    const achieveEl = document.getElementById(ach.element);
+                    if (achieveEl) {
+                        achieveEl.classList.add('unlocked');
+                        showNotification(`Достижение разблокировано: ${formatNumber(ach.id)} вафель! 🏆`, '#ffd700');
+                        
+                        // Бонус за достижение
+                        game.eggos += ach.id / 10;
+                        game.totalEggos += ach.id / 10;
                     }
                 }
             });
         }
 
         function checkAchievements() {
-            // Проверяем и обновляем достижения
             updateAchievements();
+        }
+
+        // ========== АНИМАЦИИ И ЭФФЕКТЫ ==========
+        function createParticle(text, color, count = 1) {
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.textContent = text;
+                particle.style.color = color;
+                particle.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                particle.style.left = Math.random() * 80 + 10 + '%';
+                particle.style.top = Math.random() * 80 + 10 + '%';
+                particle.style.opacity = Math.random() * 0.5 + 0.5;
+                
+                // Анимация
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 100 + 50;
+                const targetX = Math.cos(angle) * distance;
+                const targetY = Math.sin(angle) * distance;
+                
+                particle.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${targetX}px, ${targetY}px) scale(0.1)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 1000 + 1000,
+                    easing: 'cubic-bezier(0.2, 0, 0.8, 1)'
+                });
+                
+                document.getElementById('particles').appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
+
+        function showNotification(message, color = '#8b0000') {
+            const notifications = document.getElementById('notifications');
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.background = color;
+            notification.innerHTML = `
+                <i class="fas fa-info-circle"></i> ${message}
+            `;
+            
+            notifications.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) reverse';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
         }
 
         // ========== СИСТЕМА СОХРАНЕНИЯ ==========
         function saveGame() {
-            const gameData = {
-                eggos: eggos,
-                perSecond: perSecond,
-                totalClicks: totalClicks,
+            const saveData = {
+                game: game,
                 upgrades: upgrades,
-                startTime: startTime
+                saveTime: Date.now()
             };
             
-            localStorage.setItem('hawkinsClicker', JSON.stringify(gameData));
+            localStorage.setItem('hawkinsClickerSave', JSON.stringify(saveData));
             
-            // Сохраняем рекорд
-            const record = parseInt(localStorage.getItem('eggoRecord')) || 0;
-            if (eggos > record) {
-                localStorage.setItem('eggoRecord', eggos);
+            // Обновляем рекорд
+            if (game.eggos > game.record) {
+                game.record = game.eggos;
+                localStorage.setItem('hawkinsClickerRecord', game.eggos);
             }
         }
 
         function loadGame() {
-            const saved = localStorage.getItem('hawkinsClicker');
+            const saved = localStorage.getItem('hawkinsClickerSave');
             if (saved) {
-                const data = JSON.parse(saved);
-                eggos = data.eggos || 0;
-                perSecond = data.perSecond || 0;
-                totalClicks = data.totalClicks || 0;
-                upgrades = data.upgrades || upgrades;
-                startTime = data.startTime || Date.now();
+                try {
+                    const data = JSON.parse(saved);
+                    game = data.game || game;
+                    upgrades = data.upgrades || upgrades;
+                    
+                    // Загружаем рекорд
+                    const record = localStorage.getItem('hawkinsClickerRecord');
+                    if (record) game.record = parseInt(record);
+                    
+                    // Убедимся, что начинаем с 0 вафель при первой игре
+                    if (game.eggos === undefined || game.eggos === null) {
+                        game.eggos = 0;
+                    }
+                } catch (e) {
+                    console.error('Ошибка загрузки сохранения:', e);
+                    // Начинаем с чистого листа
+                    resetGameData();
+                }
+            } else {
+                // Первый запуск - начинаем с 0
+                resetGameData();
             }
             
             updateDisplay();
             startAutoProduction();
         }
 
+        function resetGameData() {
+            game = {
+                eggos: 0,           // НАЧИНАЕМ С 0
+                perSecond: 0,
+                totalClicks: 0,
+                totalEggos: 0,
+                startTime: Date.now(),
+                playTime: 0,
+                record: 0
+            };
+            
+            upgrades = {
+                hopper: { cost: 50, count: 0, production: 1 },
+                dustin: { cost: 200, count: 0, production: 5 },
+                eleven: { cost: 1000, count: 0, production: 15 }
+            };
+        }
+
+        function resetGame() {
+            if (confirm('Вы уверены? Это сбросит весь прогресс!')) {
+                localStorage.removeItem('hawkinsClickerSave');
+                localStorage.removeItem('hawkinsClickerRecord');
+                
+                // Сбрасываем все достижения
+                for (let i = 100; i <= 50000; i *= (i < 1000 ? 5 : 2)) {
+                    localStorage.removeItem('achievement_' + i);
+                }
+                
+                resetGameData();
+                updateDisplay();
+                showNotification('Игра сброшена! Начинаем заново.', '#ef476f');
+            }
+        }
+
+        function exportSave() {
+            const saveData = {
+                game: game,
+                upgrades: upgrades,
+                exportTime: Date.now()
+            };
+            
+            const saveString = JSON.stringify(saveData, null, 2);
+            const blob = new Blob([saveString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'hawkins_clicker_save.json';
+            a.click();
+            
+            URL.revokeObjectURL(url);
+            showNotification('Сохранение экспортировано!', '#06d6a0');
+        }
+
         // ========== АВТОМАТИЧЕСКОЕ ПРОИЗВОДСТВО ==========
         function startAutoProduction() {
             setInterval(() => {
-                eggos += perSecond;
-                updateDisplay();
-                saveGame();
+                if (game.perSecond > 0) {
+                    game.eggos += game.perSecond;
+                    game.totalEggos += game.perSecond;
+                    updateDisplay();
+                    saveGame();
+                }
             }, 1000);
         }
 
         // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
         function formatNumber(num) {
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
             return num.toString();
+        }
+
+        function getUpgradeName(type) {
+            const names = {
+                hopper: 'Шериф Хоппер',
+                dustin: 'Дастин',
+                eleven: 'Одиннадцать'
+            };
+            return names[type] || type;
+        }
+
+        function toggleClicker() {
+            const panel = document.getElementById('clickerPanel');
+            panel.classList.toggle('collapsed');
         }
 
         function startGame() {
@@ -622,20 +1254,39 @@
             document.querySelector('.eggo').style.animation = 'pulse 1s infinite';
         }
 
+        function answerQuiz(answer) {
+            const correct = 'A';
+            if (answer === correct) {
+                showNotification('Правильно! +100 вафель! 🎉', '#06d6a0');
+                game.eggos += 100;
+                game.totalEggos += 100;
+                createParticle('+100', '#06d6a0', 10);
+                updateDisplay();
+                saveGame();
+            } else {
+                showNotification('Неправильно! Попробуйте еще раз.', '#ef476f');
+            }
+        }
+
         // ========== ИНИЦИАЛИЗАЦИЯ ==========
         document.addEventListener('DOMContentLoaded', function() {
             loadGame();
             
-            // Добавляем CSS для пульсации
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes pulse {
-                    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
-                    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
-                    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+            // Проверяем время игры каждую минуту
+            setInterval(() => {
+                game.playTime = Math.floor((Date.now() - game.startTime) / 60000);
+                document.getElementById('playTime').textContent = game.playTime;
+            }, 60000);
+            
+            // Автосохранение каждые 30 секунд
+            setInterval(saveGame, 30000);
+            
+            // Приветственное сообщение
+            setTimeout(() => {
+                if (game.totalClicks === 0) {
+                    showNotification('Кликайте по вафле чтобы собрать Eggo! 🧇', '#8b0000');
                 }
-            `;
-            document.head.appendChild(style);
+            }, 1000);
         });
     </script>
 </body>
