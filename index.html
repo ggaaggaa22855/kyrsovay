@@ -1,1295 +1,1258 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Очень странные дела | Eggo Clicker</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔦</text></svg>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Creepster&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Montserrat', sans-serif;
-            background: #0a0a0a; 
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(139, 0, 0, 0.2) 0%, transparent 25%),
-                radial-gradient(circle at 90% 80%, rgba(75, 0, 130, 0.2) 0%, transparent 25%),
-                repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px);
-        }
-        
-        /* КЛИКЕР */
-        .clicker-container {
-            position: fixed;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-            width: 350px;
-            background: linear-gradient(145deg, #1a0033, #2a0044);
-            border-radius: 20px 0 0 20px;
-            padding: 20px;
-            box-shadow: -5px 0 30px rgba(139, 0, 0, 0.4);
-            border: 3px solid #8b0000;
-            border-right: none;
-            z-index: 1000;
-            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-        
-        .clicker-container.collapsed {
-            transform: translateX(320px) translateY(-50%);
-        }
-        
-        .clicker-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid rgba(255,215,0,0.3);
-        }
-        
-        .clicker-title {
-            font-family: 'Creepster', cursive;
-            font-size: 1.8rem;
-            color: #ffd700;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(255,215,0,0.5);
-        }
-        
-        .clicker-toggle {
-            background: #8b0000;
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        
-        .clicker-toggle:hover {
-            background: #a30000;
-            transform: rotate(180deg);
-        }
-        
-        .clicker-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .stat-box {
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .stat-value {
-            display: block;
-            font-size: 2rem;
-            font-weight: 800;
-            color: #ffd700;
-            text-shadow: 0 0 15px rgba(255,215,0,0.5);
-        }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            color: #aaa;
-            margin-top: 5px;
-        }
-        
-        .clicker-main {
-            text-align: center;
-            margin: 25px 0;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .eggo-wrapper {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .eggo {
-            width: 130px;
-            height: 130px;
-            background: linear-gradient(135deg, #ffd700, #ffb347, #ff8c00);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            border: 4px solid #8b0000;
-            transition: all 0.15s;
-            box-shadow: 
-                0 0 20px rgba(255,215,0,0.3),
-                inset 0 0 20px rgba(255,255,255,0.2);
-            animation: pulse 2s infinite;
-        }
-        
-        .eggo:active {
-            transform: scale(0.85);
-            box-shadow: 
-                0 0 40px rgba(255,215,0,0.8),
-                inset 0 0 30px rgba(255,255,255,0.4);
-        }
-        
-        .eggo-glow {
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: glow 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        @keyframes glow {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-        
-        .click-instruction {
-            margin-top: 15px;
-            color: #ffd700;
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-        
-        .clicker-upgrades {
-            margin: 25px 0;
-        }
-        
-        .upgrades-title {
-            color: #fff;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .upgrade {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255,255,255,0.05);
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .upgrade:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: #8b0000;
-            transform: translateX(-10px);
-        }
-        
-        .upgrade-locked {
-            opacity: 0.6;
-            filter: grayscale(1);
-            cursor: not-allowed;
-        }
-        
-        .upgrade-locked:hover {
-            transform: none;
-            border-color: transparent;
-        }
-        
-        .upgrade-icon {
-            font-size: 2rem;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            background: rgba(0,0,0,0.3);
-        }
-        
-        .upgrade-info {
-            flex: 1;
-            margin: 0 15px;
-        }
-        
-        .upgrade-name {
-            font-weight: 700;
-            color: #fff;
-            font-size: 1.1rem;
-        }
-        
-        .upgrade-desc {
-            color: #06d6a0;
-            font-size: 0.85rem;
-            margin-top: 3px;
-        }
-        
-        .upgrade-cost {
-            color: #ffd700;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        
-        .upgrade-count {
-            background: #8b0000;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1.1rem;
-            margin-left: 10px;
-        }
-        
-        /* НОТИФИКАЦИИ */
-        .notification-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1001;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-width: 300px;
-        }
-        
-        .notification {
-            background: linear-gradient(135deg, #8b0000, #4b0082);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-            animation: slideIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            border-left: 5px solid #ffd700;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .notification::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #ffd700, #8b0000);
-            animation: progress 3s linear;
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        @keyframes progress {
-            from { width: 100%; }
-            to { width: 0%; }
-        }
-        
-        /* ПАРТИКЛЫ */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-        
-        .particle {
-            position: absolute;
-            font-weight: 800;
-            pointer-events: none;
-            z-index: 9999;
-            text-shadow: 0 0 10px currentColor;
-        }
-        
-        /* ОСНОВНОЙ КОНТЕНТ */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        .stranger-banner {
-            text-align: center;
-            padding: 80px 20px;
-            margin-bottom: 60px;
-            background: linear-gradient(135deg, rgba(26,0,51,0.8), rgba(0,0,0,0.9));
-            border-radius: 25px;
-            position: relative;
-            overflow: hidden;
-            border: 3px solid #8b0000;
-        }
-        
-        .stranger-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(255,0,0,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(0,255,255,0.1) 0%, transparent 50%);
-        }
-        
-        .stranger-title {
-            font-family: 'Creepster', cursive;
-            font-size: 5rem;
-            color: #ff0000;
-            text-shadow: 
-                0 0 20px #ff0000,
-                0 0 40px #ff0000,
-                0 0 60px #8b0000;
-            letter-spacing: 5px;
-            margin-bottom: 20px;
-            animation: titleGlow 3s infinite alternate;
-        }
-        
-        @keyframes titleGlow {
-            0% { text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000, 0 0 60px #8b0000; }
-            100% { text-shadow: 0 0 25px #ff0000, 0 0 50px #ff0000, 0 0 75px #8b0000; }
-        }
-        
-        .banner-subtitle {
-            font-size: 1.4rem;
-            color: #ccc;
-            max-width: 800px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
-        }
-        
-        .banner-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin: 30px 0;
-        }
-        
-        .banner-btn {
-            padding: 15px 35px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 200px;
-            justify-content: center;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #8b0000, #4b0082);
-            color: white;
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, #006400, #008b8b);
-            color: white;
-        }
-        
-        .btn-tertiary {
-            background: linear-gradient(135deg, #00008b, #8b008b);
-            color: white;
-        }
-        
-        .banner-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
-        
-        /* ДЕКОРАЦИИ */
-        .decorations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 25px;
-            margin: 50px 0;
-        }
-        
-        .decoration-item {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.4s;
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .decoration-item:hover {
-            transform: translateY(-10px) rotate(5deg);
-            border-color: #8b0000;
-            box-shadow: 0 10px 30px rgba(139,0,0,0.3);
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .decoration-icon {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-            display: block;
-            transition: all 0.3s;
-        }
-        
-        .decoration-item:hover .decoration-icon {
-            transform: scale(1.3);
-        }
-        
-        .decoration-name {
-            font-weight: 600;
-            color: #fff;
-            font-size: 1.1rem;
-        }
-        
-        .decoration-bonus {
-            color: #ffd700;
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
-        
-        /* СЕКЦИИ */
-        .section {
-            background: linear-gradient(135deg, rgba(26,0,51,0.7), rgba(0,0,0,0.9));
-            border-radius: 25px;
-            padding: 40px;
-            margin: 60px 0;
-            border: 2px solid rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #8b0000, #4b0082, #006400);
-        }
-        
-        .section-title {
-            font-family: 'Creepster', cursive;
-            font-size: 2.8rem;
-            color: #ffd700;
-            margin-bottom: 30px;
-            text-align: center;
-            letter-spacing: 3px;
-        }
-        
-        /* СТАТИСТИКА */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
-        }
-        
-        .stat-card {
-            background: rgba(0,0,0,0.3);
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            border: 1px solid rgba(255,215,0,0.2);
-            transition: all 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: #ffd700;
-            box-shadow: 0 10px 20px rgba(255,215,0,0.1);
-        }
-        
-        .stat-icon {
-            font-size: 3rem;
-            color: #ffd700;
-            margin-bottom: 20px;
-        }
-        
-        .stat-number {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: #fff;
-            margin: 10px 0;
-        }
-        
-        /* ДОСТИЖЕНИЯ */
-        .achievements-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
-        }
-        
-        .achievement {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 25px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .achievement.unlocked {
-            border-color: #ffd700;
-            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(139,0,0,0.1));
-        }
-        
-        .achievement-icon {
-            font-size: 2.5rem;
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 15px;
-            background: rgba(0,0,0,0.3);
-        }
-        
-        .achievement-info {
-            flex: 1;
-        }
-        
-        .achievement-name {
-            font-weight: 700;
-            color: #fff;
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-        
-        .achievement-desc {
-            color: #aaa;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-        
-        .achievement-progress {
-            height: 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #06d6a0, #04a777);
-            width: 0%;
-            transition: width 1s ease;
-        }
-        
-        /* ВИКТОРИНА */
-        .quiz-container {
-            background: rgba(0,0,0,0.4);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 40px 0;
-        }
-        
-        .quiz-question {
-            font-size: 1.4rem;
-            margin-bottom: 30px;
-            color: #fff;
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        .quiz-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        
-        .quiz-option {
-            background: rgba(255,255,255,0.05);
-            padding: 20px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        
-        .quiz-option:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: #8b0000;
-            transform: translateY(-3px);
-        }
-        
-        /* АДАПТИВНОСТЬ */
-        @media (max-width: 768px) {
-            .clicker-container {
-                position: relative;
-                top: 0;
-                transform: none;
-                width: 100%;
-                border-radius: 0 0 20px 20px;
-                border-right: 3px solid #8b0000;
-                margin-bottom: 40px;
-            }
-            
-            .clicker-container.collapsed {
-                transform: translateX(0) translateY(-80%);
-            }
-            
-            .container {
-                padding-top: 20px;
-            }
-            
-            .stranger-title {
-                font-size: 3rem;
-            }
-            
-            .banner-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .section {
-                padding: 25px;
-            }
-            
-            .section-title {
-                font-size: 2.2rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Уведомления -->
-    <div class="notification-container" id="notifications"></div>
-<a href="https://ggaaggaa22855.github.io/dfsdsfdsfs/">HTML квест</a>
-<a href="https://www.figma.com/design/Z2mRQ0XNutD6h68tSrOuBc/Untitledt=ALEpgL34jKduyR05-0">Ссылка на макет в Figma</a>
-<a href="https://ggaaggaa22855.github.io/Framen/">3D web графика</a>
-    <!-- Кликер -->
-    <div class="clicker-container" id="clickerPanel">
-        <div class="clicker-header">
-            <h2 class="clicker-title">EGGO КЛИКЕР</h2>
-            <button class="clicker-toggle" onclick="toggleClicker()">‹</button>
+<!-- Добавьте этот код перед закрывающим тегом </body> (перед </script>) -->
+
+<!-- Модальное окно для мини-игр -->
+<div class="minigame-modal" id="minigameModal">
+    <div class="minigame-content">
+        <div class="minigame-header">
+            <h2 class="minigame-title" id="minigameTitle">МИНИ-ИГРА</h2>
+            <button class="minigame-close" onclick="closeMinigame()">×</button>
         </div>
-        
-        <div class="clicker-stats">
-            <div class="stat-box">
-                <span class="stat-value" id="eggosCount">0</span>
-                <span class="stat-label">Вафли Eggo</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-value" id="perSecond">0</span>
-                <span class="stat-label">В секунду</span>
-            </div>
+        <div class="minigame-body" id="minigameBody">
+            <!-- Контент игры будет загружаться здесь -->
         </div>
-        
-        <div class="clicker-main" onclick="clickEggo()">
-            <div class="eggo-wrapper">
-                <div class="eggo-glow"></div>
-                <div class="eggo">🧇</div>
-            </div>
-            <div class="click-instruction">КЛИКАЙ ДЛЯ СБОРА ВАФЕЛЬ!</div>
-        </div>
-        
-        <div class="clicker-upgrades">
-            <div class="upgrades-title">
-                <i class="fas fa-arrow-up"></i> УЛУЧШЕНИЯ
-            </div>
-            
-            <div class="upgrade" onclick="buyUpgrade('hopper')" id="upgradeHopper">
-                <div class="upgrade-icon">🚨</div>
-                <div class="upgrade-info">
-                    <div class="upgrade-name">Шериф Хоппер</div>
-                    <div class="upgrade-desc">+1 вафля в секунду</div>
-                </div>
-                <div class="upgrade-cost" id="hopperCost">50</div>
-                <div class="upgrade-count" id="hopperCount">0</div>
-            </div>
-            
-            <div class="upgrade" onclick="buyUpgrade('dustin')" id="upgradeDustin">
-                <div class="upgrade-icon">👓</div>
-                <div class="upgrade-info">
-                    <div class="upgrade-name">Дастин</div>
-                    <div class="upgrade-desc">+5 вафель в секунду</div>
-                </div>
-                <div class="upgrade-cost" id="dustinCost">200</div>
-                <div class="upgrade-count" id="dustinCount">0</div>
-            </div>
-            
-            <div class="upgrade" onclick="buyUpgrade('eleven')" id="upgradeEleven">
-                <div class="upgrade-icon">🦸</div>
-                <div class="upgrade-info">
-                    <div class="upgrade-name">Одиннадцать</div>
-                    <div class="upgrade-desc">+15 вафель в секунду</div>
-                </div>
-                <div class="upgrade-cost" id="elevenCost">1000</div>
-                <div class="upgrade-count" id="elevenCount">0</div>
-            </div>
+        <div class="minigame-footer">
+            <button class="minigame-btn" onclick="collectMinigameReward()">Забрать награду</button>
         </div>
     </div>
+</div>
+
+<!-- Секция с мини-играми в основном контенте -->
+<div class="section" id="minigamesSection">
+    <h2 class="section-title"><i class="fas fa-gamepad"></i> МИНИ-ИГРЫ ХОУКИНСА</h2>
+    <p class="section-subtitle" style="text-align: center; margin-bottom: 30px; color: #aaa;">
+        Отвлекитесь от сбора вафель и сыграйте в мини-игры, чтобы заработать бонусы!
+    </p>
     
-    <!-- Частицы -->
-    <div class="particles" id="particles"></div>
-
-    <!-- Основной контент -->
-    <div class="container">
-        <!-- Баннер -->
-        <div class="stranger-banner">
-            <h1 class="stranger-title">ОЧЕНЬ СТРАННЫЕ ДЕЛА</h1>
-            <p class="banner-subtitle">Добро пожаловать в Хоукинс! Собирайте вафли Eggo, чтобы помочь героям бороться с угрозами из Верхопотного мира. Каждая вафля - это энергия для Одиннадцать!</p>
-            
-            <div class="banner-buttons">
-                <button class="banner-btn btn-primary" onclick="startGame()">
-                    <i class="fas fa-play"></i> НАЧАТЬ ИГРУ
-                </button>
-                <button class="banner-btn btn-secondary" onclick="resetGame()">
-                    <i class="fas fa-redo"></i> СБРОСИТЬ ИГРУ
-                </button>
-                <button class="banner-btn btn-tertiary" onclick="exportSave()">
-                    <i class="fas fa-save"></i> СОХРАНИТЬ
-                </button>
-            </div>
-            
-            <div class="decorations-grid">
-                <div class="decoration-item" onclick="collectBonus(5, '🌀')">
-                    <span class="decoration-icon">🌀</span>
-                    <div class="decoration-name">Портал</div>
-                    <div class="decoration-bonus">+5 вафель</div>
-                </div>
-                <div class="decoration-item" onclick="collectBonus(10, '🧪')">
-                    <span class="decoration-icon">🧪</span>
-                    <div class="decoration-name">Реактив</div>
-                    <div class="decoration-bonus">+10 вафель</div>
-                </div>
-                <div class="decoration-item" onclick="collectBonus(15, '🔦')">
-                    <span class="decoration-icon">🔦</span>
-                    <div class="decoration-name">Фонарик</div>
-                    <div class="decoration-bonus">+15 вафель</div>
-                </div>
-                <div class="decoration-item" onclick="collectBonus(25, '🎸')">
-                    <span class="decoration-icon">🎸</span>
-                    <div class="decoration-name">Гитара</div>
-                    <div class="decoration-bonus">+25 вафель</div>
-                </div>
-                <div class="decoration-item" onclick="collectBonus(50, '👹')">
-                    <span class="decoration-icon">👹</span>
-                    <div class="decoration-name">Демогоргон</div>
-                    <div class="decoration-bonus">+50 вафель</div>
-                </div>
-            </div>
+    <div class="minigames-grid">
+        <!-- Игра 1: Додж Демогоргона -->
+        <div class="minigame-card" onclick="startMinigame('dodge')">
+            <div class="minigame-card-icon">👹</div>
+            <h3 class="minigame-card-title">Додж Демогоргона</h3>
+            <p class="minigame-card-desc">Уворачивайтесь от Демогоргона как можно дольше</p>
+            <div class="minigame-card-reward">Награда: до 500 вафель</div>
+            <div class="minigame-card-cooldown" id="cooldownDodge"></div>
         </div>
-
-        <!-- Статистика -->
-        <div class="section">
-            <h2 class="section-title"><i class="fas fa-chart-bar"></i> СТАТИСТИКА ИГРЫ</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">🧇</div>
-                    <div class="stat-number" id="totalEggos">0</div>
-                    <div class="stat-label">Всего собрано вафель</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">👆</div>
-                    <div class="stat-number" id="totalClicks">0</div>
-                    <div class="stat-label">Всего кликов</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⏱️</div>
-                    <div class="stat-number" id="playTime">0</div>
-                    <div class="stat-label">Минут в игре</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🏆</div>
-                    <div class="stat-number" id="recordEggos">0</div>
-                    <div class="stat-label">Рекорд вафель</div>
-                </div>
-            </div>
+        
+        <!-- Игра 2: Пазл портала -->
+        <div class="minigame-card" onclick="startMinigame('puzzle')">
+            <div class="minigame-card-icon">🌀</div>
+            <h3 class="minigame-card-title">Пазл портала</h3>
+            <p class="minigame-card-desc">Соберите изображение портала в Изнанку</p>
+            <div class="minigame-card-reward">Награда: 250 вафель</div>
+            <div class="minigame-card-cooldown" id="cooldownPuzzle"></div>
         </div>
-
-        <!-- Достижения -->
-        <div class="section">
-            <h2 class="section-title"><i class="fas fa-trophy"></i> ДОСТИЖЕНИЯ ХОУКИНСА</h2>
-            <div class="achievements-grid">
-                <div class="achievement" id="achieve100">
-                    <div class="achievement-icon">🥉</div>
-                    <div class="achievement-info">
-                        <div class="achievement-name">Новичок Хоукинса</div>
-                        <div class="achievement-desc">Соберите 100 вафель Eggo</div>
-                        <div class="achievement-progress">
-                            <div class="progress-bar" id="progress100"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="achievement" id="achieve500">
-                    <div class="achievement-icon">🥈</div>
-                    <div class="achievement-info">
-                        <div class="achievement-name">Исследователь</div>
-                        <div class="achievement-desc">Соберите 500 вафель Eggo</div>
-                        <div class="achievement-progress">
-                            <div class="progress-bar" id="progress500"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="achievement" id="achieve1000">
-                    <div class="achievement-icon">🥇</div>
-                    <div class="achievement-info">
-                        <div class="achievement-name">Герой Хоукинса</div>
-                        <div class="achievement-desc">Соберите 1000 вафель Eggo</div>
-                        <div class="achievement-progress">
-                            <div class="progress-bar" id="progress1000"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="achievement" id="achieve5000">
-                    <div class="achievement-icon">👑</div>
-                    <div class="achievement-info">
-                        <div class="achievement-name">Легенда</div>
-                        <div class="achievement-desc">Соберите 5000 вафель Eggo</div>
-                        <div class="achievement-progress">
-                            <div class="progress-bar" id="progress5000"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="achievement" id="achieve10000">
-                    <div class="achievement-icon">🌟</div>
-                    <div class="achievement-info">
-                        <div class="achievement-name">Властелин Eggo</div>
-                        <div class="achievement-desc">Соберите 10000 вафель Eggo</div>
-                        <div class="achievement-progress">
-                            <div class="progress-bar" id="progress10000"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="achievement" id="achieve50000">
-                    <div class="achievement-icon">⚡</div>
-                    <div class="achievement-info">
-                        <div class="achievement-name">Сила Одиннадцать</div>
-                        <div class="achievement-desc">Соберите 50000 вафель Eggo</div>
-                        <div class="achievement-progress">
-                            <div class="progress-bar" id="progress50000"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        
+        <!-- Игра 3: Память Хоукинса -->
+        <div class="minigame-card" onclick="startMinigame('memory')">
+            <div class="minigame-card-icon">🧠</div>
+            <h3 class="minigame-card-title">Память Хоукинса</h3>
+            <p class="minigame-card-desc">Найдите все пары символов из сериала</p>
+            <div class="minigame-card-reward">Награда: до 300 вафель</div>
+            <div class="minigame-card-cooldown" id="cooldownMemory"></div>
         </div>
-
-        <!-- Викторина -->
-        <div class="section">
-            <h2 class="section-title"><i class="fas fa-question-circle"></i> ВИКТОРИНА ПО СЕРИАЛУ</h2>
-            <div class="quiz-container">
-                <div class="quiz-question" id="quizQuestion">
-                    Как зовут девочку со сверхспособностями, сбежавшую из лаборатории?
-                </div>
-                <div class="quiz-options">
-                    <div class="quiz-option" onclick="answerQuiz('A')">
-                        <strong>A)</strong> Одиннадцать (Эль)
-                    </div>
-                    <div class="quiz-option" onclick="answerQuiz('B')">
-                        <strong>B)</strong> Двенадцать
-                    </div>
-                    <div class="quiz-option" onclick="answerQuiz('C')">
-                        <strong>C)</strong> Восемь (Кали)
-                    </div>
-                    <div class="quiz-option" onclick="answerQuiz('D')">
-                        <strong>D)</strong> Джейн
-                    </div>
-                </div>
-            </div>
+        
+        <!-- Игра 4: Стрельба по шарам -->
+        <div class="minigame-card" onclick="startMinigame('shooter')">
+            <div class="minigame-card-icon">🎯</div>
+            <h3 class="minigame-card-title">Стрельба по шарам</h3>
+            <p class="minigame-card-desc">Лопайте шары с символами сериала</p>
+            <div class="minigame-card-reward">Награда: до 400 вафель</div>
+            <div class="minigame-card-cooldown" id="cooldownShooter"></div>
         </div>
     </div>
+</div>
 
-    <script>
-        // ========== ИГРОВЫЕ ПЕРЕМЕННЫЕ ==========
-        let game = {
-            eggos: 0,           // Текущее количество вафель
-            perSecond: 0,       // Автоматический доход в секунду
-            totalClicks: 0,     // Всего кликов
-            totalEggos: 0,      // Всего собрано за все время
-            startTime: Date.now(), // Время начала игры
-            playTime: 0,        // Время в игре (минуты)
-            record: 0           // Рекорд вафель
-        };
+<style>
+/* СТИЛИ ДЛЯ МИНИ-ИГР */
 
-        let upgrades = {
-            hopper: { cost: 50, count: 0, production: 1 },
-            dustin: { cost: 200, count: 0, production: 5 },
-            eleven: { cost: 1000, count: 0, production: 15 }
-        };
+/* Сетка мини-игр */
+.minigames-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin: 40px 0;
+}
 
-        // ========== ОСНОВНЫЕ ФУНКЦИИ КЛИКЕРА ==========
-        function clickEggo() {
-            game.eggos += 1;        // ТОЛЬКО +1 за клик
-            game.totalClicks += 1;
-            game.totalEggos += 1;
-            
-            // Анимация клика
-            const eggo = document.querySelector('.eggo');
-            eggo.style.transform = 'scale(0.85)';
-            setTimeout(() => eggo.style.transform = 'scale(1)', 150);
-            
-            // Создаем частицу
-            createParticle('+1', '#ffd700', 100);
-            
-            // Обновляем отображение
-            updateDisplay();
-            saveGame();
-            checkAchievements();
-            
-            // Вибрация (если поддерживается)
-            if (navigator.vibrate) navigator.vibrate(50);
+.minigame-card {
+    background: linear-gradient(135deg, rgba(139, 0, 0, 0.2), rgba(75, 0, 130, 0.2));
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s;
+    border: 2px solid rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.minigame-card:hover {
+    transform: translateY(-10px);
+    border-color: #ffd700;
+    box-shadow: 0 15px 30px rgba(255,215,0,0.2);
+    background: linear-gradient(135deg, rgba(139, 0, 0, 0.3), rgba(75, 0, 130, 0.3));
+}
+
+.minigame-card-icon {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.minigame-card-title {
+    font-family: 'Creepster', cursive;
+    font-size: 1.8rem;
+    color: #ffd700;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.minigame-card-desc {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    min-height: 40px;
+}
+
+.minigame-card-reward {
+    background: rgba(255,215,0,0.1);
+    color: #ffd700;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    margin: 15px 0;
+    border: 1px solid rgba(255,215,0,0.3);
+}
+
+.minigame-card-cooldown {
+    color: #ef476f;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    min-height: 20px;
+}
+
+/* Модальное окно */
+.minigame-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.minigame-content {
+    background: linear-gradient(135deg, #1a0033, #2a0044);
+    width: 100%;
+    max-width: 800px;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 3px solid #8b0000;
+    box-shadow: 0 0 50px rgba(139,0,0,0.5);
+    animation: modalAppear 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes modalAppear {
+    from { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+    to { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.minigame-header {
+    background: linear-gradient(90deg, #8b0000, #4b0082);
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ffd700;
+}
+
+.minigame-title {
+    font-family: 'Creepster', cursive;
+    font-size: 2.5rem;
+    color: #ffd700;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(255,215,0,0.5);
+}
+
+.minigame-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2.5rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.minigame-close:hover {
+    background: rgba(255,255,255,0.1);
+    transform: rotate(90deg);
+}
+
+.minigame-body {
+    padding: 30px;
+    min-height: 400px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.minigame-footer {
+    padding: 20px 30px;
+    background: rgba(0,0,0,0.3);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+}
+
+.minigame-btn {
+    background: linear-gradient(135deg, #06d6a0, #04a777);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 250px;
+}
+
+.minigame-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(6,214,160,0.3);
+}
+
+/* ИГРА 1: ДОДЖ ДЕМОГОРГОНА */
+.dodge-game-container {
+    text-align: center;
+}
+
+.dodge-game-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 15px;
+}
+
+.dodge-stat {
+    text-align: center;
+}
+
+.dodge-stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #ffd700;
+    display: block;
+}
+
+.dodge-stat-label {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.dodge-game-area {
+    width: 100%;
+    height: 300px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,0.1);
+    margin: 20px 0;
+}
+
+.dodge-player {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #06d6a0, #04a777);
+    border-radius: 50%;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    box-shadow: 0 0 15px rgba(6,214,160,0.5);
+}
+
+.dodge-enemy {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: -60px;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to { transform: translateY(350px); }
+}
+
+.dodge-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.dodge-control-btn {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid #8b0000;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+}
+
+.dodge-control-btn:hover {
+    background: #8b0000;
+    transform: translateY(-3px);
+}
+
+/* ИГРА 2: ПАЗЛ */
+.puzzle-game-container {
+    text-align: center;
+}
+
+.puzzle-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    margin: 30px auto;
+    max-width: 400px;
+}
+
+.puzzle-piece {
+    width: 100%;
+    aspect-ratio: 1;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.puzzle-piece:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+}
+
+.puzzle-piece.empty {
+    background: rgba(0,0,0,0.3);
+    border: 2px dashed rgba(255,255,255,0.1);
+    cursor: default;
+}
+
+.puzzle-moves {
+    font-size: 1.5rem;
+    color: #ffd700;
+    margin: 20px 0;
+    font-weight: 800;
+}
+
+/* ИГРА 3: ПАМЯТЬ */
+.memory-game-container {
+    text-align: center;
+}
+
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 30px auto;
+    max-width: 500px;
+}
+
+.memory-card {
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #8b0000, #4b0082);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: all 0.3s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.memory-card.flipped {
+    background: linear-gradient(135deg, #006400, #008b8b);
+    transform: rotateY(180deg);
+}
+
+.memory-card.matched {
+    background: linear-gradient(135deg, #06d6a0, #04a777);
+    cursor: default;
+}
+
+.memory-pairs {
+    font-size: 1.5rem;
+    color: #ffd700;
+    margin: 20px 0;
+    font-weight: 800;
+}
+
+/* ИГРА 4: СТРЕЛЯЛКА */
+.shooter-game-container {
+    text-align: center;
+}
+
+.shooter-game-area {
+    width: 100%;
+    height: 400px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,0.1);
+    margin: 20px 0;
+}
+
+.shooter-ball {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.1s;
+    animation: float 3s infinite alternate ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.shooter-score {
+    font-size: 2rem;
+    color: #ffd700;
+    margin: 20px 0;
+    font-weight: 800;
+}
+
+.shooter-timer {
+    font-size: 1.5rem;
+    color: #ef476f;
+    margin: 10px 0;
+    font-weight: 800;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .minigames-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .minigame-content {
+        margin: 10px;
+    }
+    
+    .minigame-title {
+        font-size: 1.8rem;
+    }
+    
+    .dodge-game-area {
+        height: 250px;
+    }
+    
+    .puzzle-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 300px;
+    }
+    
+    .memory-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 350px;
+    }
+    
+    .shooter-game-area {
+        height: 300px;
+    }
+}
+</style>
+
+<script>
+// ========== СИСТЕМА МИНИ-ИГР ==========
+
+let currentMinigame = null;
+let minigameReward = 0;
+let minigameCooldowns = {
+    dodge: 0,
+    puzzle: 0,
+    memory: 0,
+    shooter: 0
+};
+
+// Функции для работы с мини-играми
+function startMinigame(gameType) {
+    // Проверяем кулдаун
+    const now = Date.now();
+    if (minigameCooldowns[gameType] > now) {
+        const remaining = Math.ceil((minigameCooldowns[gameType] - now) / 1000 / 60);
+        showNotification(`Игра на перезарядке! Попробуйте через ${remaining} минут.`, '#ef476f');
+        return;
+    }
+    
+    currentMinigame = gameType;
+    
+    // Устанавливаем кулдаун 30 минут
+    minigameCooldowns[gameType] = now + 30 * 60 * 1000;
+    updateCooldownDisplays();
+    
+    // Показываем модальное окно
+    document.getElementById('minigameModal').style.display = 'flex';
+    
+    // Загружаем игру
+    switch(gameType) {
+        case 'dodge':
+            loadDodgeGame();
+            break;
+        case 'puzzle':
+            loadPuzzleGame();
+            break;
+        case 'memory':
+            loadMemoryGame();
+            break;
+        case 'shooter':
+            loadShooterGame();
+            break;
+    }
+}
+
+function closeMinigame() {
+    document.getElementById('minigameModal').style.display = 'none';
+    document.getElementById('minigameBody').innerHTML = '';
+    currentMinigame = null;
+    minigameReward = 0;
+}
+
+function collectMinigameReward() {
+    if (minigameReward > 0) {
+        game.eggos += minigameReward;
+        game.totalEggos += minigameReward;
+        
+        showNotification(`Получено ${minigameReward} вафель! 🎉`, '#06d6a0');
+        createParticle(`+${minigameReward}`, '#06d6a0', 10);
+        
+        updateDisplay();
+        saveGame();
+        closeMinigame();
+    } else {
+        showNotification('Сначала завершите игру!', '#ef476f');
+    }
+}
+
+function updateCooldownDisplays() {
+    const now = Date.now();
+    
+    for (const [gameType, cooldown] of Object.entries(minigameCooldowns)) {
+        const element = document.getElementById(`cooldown${gameType.charAt(0).toUpperCase() + gameType.slice(1)}`);
+        if (!element) continue;
+        
+        if (cooldown > now) {
+            const remaining = Math.ceil((cooldown - now) / 1000 / 60);
+            element.textContent = `Перезарядка: ${remaining} мин`;
+        } else {
+            element.textContent = 'Готово к игре!';
         }
+    }
+}
 
-        function buyUpgrade(type) {
-            const upg = upgrades[type];
-            if (game.eggos >= upg.cost) {
-                game.eggos -= upg.cost;
-                upg.count += 1;
-                game.perSecond += upg.production;
-                upg.cost = Math.floor(upg.cost * 1.5);
-                
-                // Уведомление
-                showNotification(`Куплено улучшение: ${getUpgradeName(type)}!`, '#06d6a0');
-                
-                // Эффект
-                createParticle('Улучшено!', '#06d6a0', 50);
-                
-                updateDisplay();
-                saveGame();
-            } else {
-                showNotification('Недостаточно вафель!', '#ef476f');
+// ========== ИГРА 1: ДОДЖ ДЕМОГОРГОНА ==========
+function loadDodgeGame() {
+    document.getElementById('minigameTitle').textContent = 'ДОДЖ ДЕМОГОРГОНА';
+    
+    const gameHTML = `
+        <div class="dodge-game-container">
+            <div class="dodge-game-stats">
+                <div class="dodge-stat">
+                    <span class="dodge-stat-value" id="dodgeScore">0</span>
+                    <span class="dodge-stat-label">Счёт</span>
+                </div>
+                <div class="dodge-stat">
+                    <span class="dodge-stat-value" id="dodgeTime">30</span>
+                    <span class="dodge-stat-label">Время</span>
+                </div>
+                <div class="dodge-stat">
+                    <span class="dodge-stat-value" id="dodgeLives">3</span>
+                    <span class="dodge-stat-label">Жизни</span>
+                </div>
+            </div>
+            
+            <div class="dodge-game-area" id="dodgeArea">
+                <div class="dodge-player" id="dodgePlayer"></div>
+            </div>
+            
+            <div class="dodge-controls">
+                <button class="dodge-control-btn" onclick="moveDodgePlayer('left')">← ВЛЕВО</button>
+                <button class="dodge-control-btn" onclick="startDodgeGame()">СТАРТ</button>
+                <button class="dodge-control-btn" onclick="moveDodgePlayer('right')">ВПРАВО →</button>
+            </div>
+            
+            <p style="margin-top: 20px; color: #aaa; font-size: 0.9rem;">
+                Уворачивайтесь от Демогоргона 30 секунд! Управление: клавиши A и D или кнопки
+            </p>
+        </div>
+    `;
+    
+    document.getElementById('minigameBody').innerHTML = gameHTML;
+    
+    // Добавляем управление клавиатурой
+    document.addEventListener('keydown', handleDodgeKeyPress);
+}
+
+let dodgeGameInterval;
+let dodgeEnemies = [];
+let dodgeScore = 0;
+let dodgeTime = 30;
+let dodgeLives = 3;
+let dodgeGameActive = false;
+
+function startDodgeGame() {
+    if (dodgeGameActive) return;
+    
+    dodgeGameActive = true;
+    dodgeScore = 0;
+    dodgeTime = 30;
+    dodgeLives = 3;
+    dodgeEnemies = [];
+    
+    updateDodgeDisplay();
+    
+    // Игровой цикл
+    dodgeGameInterval = setInterval(() => {
+        dodgeTime--;
+        updateDodgeDisplay();
+        
+        if (dodgeTime <= 0) {
+            endDodgeGame(true);
+        }
+        
+        // Создаем нового врага
+        if (Math.random() < 0.3) {
+            createDodgeEnemy();
+        }
+        
+        // Обновляем позиции врагов
+        updateDodgeEnemies();
+    }, 1000);
+    
+    // Создаем первых врагов
+    for (let i = 0; i < 3; i++) {
+        setTimeout(() => createDodgeEnemy(), i * 1000);
+    }
+}
+
+function createDodgeEnemy() {
+    if (!dodgeGameActive) return;
+    
+    const enemy = document.createElement('div');
+    enemy.className = 'dodge-enemy';
+    enemy.textContent = Math.random() < 0.5 ? '👹' : '🐙';
+    enemy.style.left = Math.random() * 80 + 10 + '%';
+    enemy.style.animationDuration = (Math.random() * 2 + 1) + 's';
+    
+    // Случайный цвет
+    const colors = ['#8b0000', '#4b0082', '#006400', '#00008b'];
+    enemy.style.color = colors[Math.floor(Math.random() * colors.length)];
+    enemy.style.textShadow = `0 0 10px ${enemy.style.color}`;
+    
+    document.getElementById('dodgeArea').appendChild(enemy);
+    dodgeEnemies.push(enemy);
+}
+
+function updateDodgeEnemies() {
+    const player = document.getElementById('dodgePlayer');
+    const playerRect = player.getBoundingClientRect();
+    const area = document.getElementById('dodgeArea');
+    
+    for (let i = dodgeEnemies.length - 1; i >= 0; i--) {
+        const enemy = dodgeEnemies[i];
+        const enemyRect = enemy.getBoundingClientRect();
+        
+        // Проверка столкновения
+        if (
+            playerRect.left < enemyRect.right &&
+            playerRect.right > enemyRect.left &&
+            playerRect.top < enemyRect.bottom &&
+            playerRect.bottom > enemyRect.top
+        ) {
+            // Столкновение
+            enemy.remove();
+            dodgeEnemies.splice(i, 1);
+            dodgeLives--;
+            
+            if (dodgeLives <= 0) {
+                endDodgeGame(false);
             }
+            
+            updateDodgeDisplay();
+            createParticle('-1 жизнь', '#ef476f', 5);
         }
-
-        function collectBonus(amount, emoji) {
-            game.eggos += amount;
-            game.totalEggos += amount;
-            
-            showNotification(`+${amount} вафель ${emoji}`, '#ffd700');
-            createParticle(`+${amount}`, '#ffd700', 30);
-            
-            updateDisplay();
-            saveGame();
-            checkAchievements();
+        
+        // Удаляем врагов, которые вышли за пределы
+        if (enemyRect.top > area.clientHeight) {
+            enemy.remove();
+            dodgeEnemies.splice(i, 1);
+            dodgeScore += 10;
+            updateDodgeDisplay();
         }
+    }
+}
 
-        // ========== СИСТЕМА ОТОБРАЖЕНИЯ ==========
-        function updateDisplay() {
-            // Основные значения
-            document.getElementById('eggosCount').textContent = formatNumber(game.eggos);
-            document.getElementById('perSecond').textContent = game.perSecond;
-            document.getElementById('totalEggos').textContent = formatNumber(game.totalEggos);
-            document.getElementById('totalClicks').textContent = game.totalClicks;
+function moveDodgePlayer(direction) {
+    if (!dodgeGameActive) return;
+    
+    const player = document.getElementById('dodgePlayer');
+    const area = document.getElementById('dodgeArea');
+    const areaRect = area.getBoundingClientRect();
+    const playerRect = player.getBoundingClientRect();
+    
+    const currentLeft = parseFloat(player.style.left || '50');
+    const playerWidth = (playerRect.width / areaRect.width) * 100;
+    
+    let newLeft = currentLeft;
+    
+    if (direction === 'left') {
+        newLeft = Math.max(0, currentLeft - 10);
+    } else if (direction === 'right') {
+        newLeft = Math.min(100 - playerWidth, currentLeft + 10);
+    }
+    
+    player.style.left = newLeft + '%';
+}
+
+function handleDodgeKeyPress(e) {
+    if (!dodgeGameActive) return;
+    
+    if (e.key === 'a' || e.key === 'A' || e.key === 'ArrowLeft') {
+        moveDodgePlayer('left');
+    } else if (e.key === 'd' || e.key === 'D' || e.key === 'ArrowRight') {
+        moveDodgePlayer('right');
+    }
+}
+
+function updateDodgeDisplay() {
+    document.getElementById('dodgeScore').textContent = dodgeScore;
+    document.getElementById('dodgeTime').textContent = dodgeTime;
+    document.getElementById('dodgeLives').textContent = dodgeLives;
+}
+
+function endDodgeGame(success) {
+    clearInterval(dodgeGameInterval);
+    dodgeGameActive = false;
+    
+    // Удаляем всех врагов
+    dodgeEnemies.forEach(enemy => enemy.remove());
+    dodgeEnemies = [];
+    
+    // Удаляем обработчик клавиатуры
+    document.removeEventListener('keydown', handleDodgeKeyPress);
+    
+    // Вычисляем награду
+    if (success) {
+        minigameReward = dodgeScore + (dodgeLives * 50) + 100;
+        document.getElementById('minigameBody').innerHTML += `
+            <div style="text-align: center; margin-top: 20px; padding: 20px; background: rgba(6,214,160,0.1); border-radius: 15px;">
+                <h3 style="color: #06d6a0;">ПОБЕДА! 🎉</h3>
+                <p>Вы продержались 30 секунд!</p>
+                <p style="font-size: 1.5rem; color: #ffd700;">Награда: ${minigameReward} вафель</p>
+            </div>
+        `;
+    } else {
+        minigameReward = dodgeScore;
+        document.getElementById('minigameBody').innerHTML += `
+            <div style="text-align: center; margin-top: 20px; padding: 20px; background: rgba(239,71,111,0.1); border-radius: 15px;">
+                <h3 style="color: #ef476f;">ИГРА ОКОНЧЕНА</h3>
+                <p>Вас поймал Демогоргон!</p>
+                <p style="font-size: 1.5rem; color: #ffd700;">Награда: ${minigameReward} вафель</p>
+            </div>
+        `;
+    }
+}
+
+// ========== ИГРА 2: ПАЗЛ ==========
+function loadPuzzleGame() {
+    document.getElementById('minigameTitle').textContent = 'ПАЗЛ ПОРТАЛА';
+    
+    const symbols = ['🌀', '⚡', '🔦', '🧪', '👹', '🦸', '👓', '🚨', '🎸'];
+    const shuffled = [...symbols, ' ', ...symbols].sort(() => Math.random() - 0.5);
+    
+    const gameHTML = `
+        <div class="puzzle-game-container">
+            <p>Соберите пазл, перемещая фишки на пустое место. Цель - восстановить последовательность.</p>
             
-            // Время игры
-            const minutes = Math.floor((Date.now() - game.startTime) / 60000);
-            game.playTime = minutes;
-            document.getElementById('playTime').textContent = minutes;
+            <div class="puzzle-grid" id="puzzleGrid"></div>
             
-            // Рекорд
-            document.getElementById('recordEggos').textContent = formatNumber(game.record);
+            <div class="puzzle-moves">
+                Ходы: <span id="puzzleMoves">0</span>
+            </div>
             
-            // Улучшения
-            for (const [key, upg] of Object.entries(upgrades)) {
-                document.getElementById(key + 'Cost').textContent = upg.cost;
-                document.getElementById(key + 'Count').textContent = upg.count;
+            <div class="dodge-controls">
+                <button class="dodge-control-btn" onclick="shufflePuzzle()">ПЕРЕМЕШАТЬ</button>
+                <button class="dodge-control-btn" onclick="checkPuzzleSolution()">ПРОВЕРИТЬ</button>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('minigameBody').innerHTML = gameHTML;
+    
+    // Инициализация пазла
+    window.puzzlePieces = shuffled;
+    window.puzzleMoves = 0;
+    window.emptyIndex = shuffled.indexOf(' ');
+    renderPuzzle();
+}
+
+function renderPuzzle() {
+    const grid = document.getElementById('puzzleGrid');
+    grid.innerHTML = '';
+    
+    window.puzzlePieces.forEach((symbol, index) => {
+        const piece = document.createElement('div');
+        piece.className = symbol === ' ' ? 'puzzle-piece empty' : 'puzzle-piece';
+        piece.textContent = symbol;
+        piece.onclick = () => movePuzzlePiece(index);
+        
+        if (symbol !== ' ') {
+            piece.style.background = `linear-gradient(135deg, 
+                hsl(${index * 40}, 70%, 40%), 
+                hsl(${index * 40 + 20}, 70%, 30%))`;
+        }
+        
+        grid.appendChild(piece);
+    });
+    
+    document.getElementById('puzzleMoves').textContent = window.puzzleMoves;
+}
+
+function movePuzzlePiece(index) {
+    // Проверяем соседство с пустой клеткой
+    const neighbors = [
+        index - 1,    // слева
+        index + 1,    // справа
+        index - 4,    // сверху
+        index + 4     // снизу
+    ];
+    
+    if (neighbors.includes(window.emptyIndex)) {
+        // Меняем местами
+        [window.puzzlePieces[index], window.puzzlePieces[window.emptyIndex]] = 
+        [window.puzzlePieces[window.emptyIndex], window.puzzlePieces[index]];
+        
+        window.emptyIndex = index;
+        window.puzzleMoves++;
+        
+        renderPuzzle();
+    }
+}
+
+function shufflePuzzle() {
+    // Простой алгоритм перемешивания
+    for (let i = 0; i < 100; i++) {
+        const neighbors = [];
+        const row = Math.floor(window.emptyIndex / 4);
+        const col = window.emptyIndex % 4;
+        
+        if (col > 0) neighbors.push(window.emptyIndex - 1);
+        if (col < 3) neighbors.push(window.emptyIndex + 1);
+        if (row > 0) neighbors.push(window.emptyIndex - 4);
+        if (row < 3) neighbors.push(window.emptyIndex + 4);
+        
+        const randomNeighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
+        movePuzzlePiece(randomNeighbor);
+    }
+    
+    window.puzzleMoves = 0;
+    renderPuzzle();
+}
+
+function checkPuzzleSolution() {
+    const correctOrder = ['🌀', '⚡', '🔦', '🧪', '👹', '🦸', '👓', '🚨', '🎸', ' ', '🌀', '⚡', '🔦', '🧪', '👹', '🦸'];
+    const isCorrect = window.puzzlePieces.every((symbol, index) => symbol === correctOrder[index]);
+    
+    if (isCorrect) {
+        minigameReward = 250 - window.puzzleMoves;
+        if (minigameReward < 50) minigameReward = 50;
+        
+        document.getElementById('minigameBody').innerHTML += `
+            <div style="text-align: center; margin-top: 20px; padding: 20px; background: rgba(6,214,160,0.1); border-radius: 15px;">
+                <h3 style="color: #06d6a0;">ПАЗЛ СОБРАН! 🎉</h3>
+                <p>Портал в Изнанку открыт!</p>
+                <p style="font-size: 1.5rem; color: #ffd700;">Награда: ${minigameReward} вафель</p>
+            </div>
+        `;
+    } else {
+        showNotification('Пазл не собран. Продолжайте!', '#ef476f');
+    }
+}
+
+// ========== ИГРА 3: ПАМЯТЬ ==========
+function loadMemoryGame() {
+    document.getElementById('minigameTitle').textContent = 'ПАМЯТЬ ХОУКИНСА';
+    
+    const symbols = ['🧇', '🌀', '⚡', '🔦', '🧪', '👹', '🦸', '👓'];
+    const cards = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
+    
+    const gameHTML = `
+        <div class="memory-game-container">
+            <p>Найдите все пары символов. Открывайте по две карточки за ход.</p>
+            
+            <div class="memory-grid" id="memoryGrid"></div>
+            
+            <div class="memory-pairs">
+                Найдено пар: <span id="memoryPairs">0</span> / 8
+            </div>
+            
+            <div class="dodge-controls">
+                <button class="dodge-control-btn" onclick="resetMemoryGame()">НОВАЯ ИГРА</button>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('minigameBody').innerHTML = gameHTML;
+    
+    // Инициализация игры в память
+    window.memoryCards = cards;
+    window.memoryFlipped = [];
+    window.memoryMatched = [];
+    window.memoryPairs = 0;
+    renderMemoryGame();
+}
+
+function renderMemoryGame() {
+    const grid = document.getElementById('memoryGrid');
+    grid.innerHTML = '';
+    
+    window.memoryCards.forEach((symbol, index) => {
+        const card = document.createElement('div');
+        card.className = 'memory-card';
+        
+        if (window.memoryFlipped.includes(index) || window.memoryMatched.includes(symbol)) {
+            card.classList.add('flipped');
+            card.textContent = symbol;
+        } else {
+            card.textContent = '?';
+        }
+        
+        if (window.memoryMatched.includes(symbol)) {
+            card.classList.add('matched');
+        }
+        
+        card.onclick = () => flipMemoryCard(index, symbol);
+        
+        // Разные цвета для карточек
+        const colors = [
+            'linear-gradient(135deg, #8b0000, #4b0082)',
+            'linear-gradient(135deg, #006400, #008b8b)',
+            'linear-gradient(135deg, #00008b, #8b008b)',
+            'linear-gradient(135deg, #8b0000, #006400)'
+        ];
+        card.style.background = colors[index % colors.length];
+        
+        grid.appendChild(card);
+    });
+    
+    document.getElementById('memoryPairs').textContent = window.memoryPairs;
+}
+
+function flipMemoryCard(index, symbol) {
+    // Если уже открыто 2 карточки или эта уже открыта/совпала
+    if (window.memoryFlipped.length >= 2 || 
+        window.memoryFlipped.includes(index) || 
+        window.memoryMatched.includes(symbol)) {
+        return;
+    }
+    
+    window.memoryFlipped.push(index);
+    renderMemoryGame();
+    
+    // Если открыто 2 карточки
+    if (window.memoryFlipped.length === 2) {
+        const [index1, index2] = window.memoryFlipped;
+        const symbol1 = window.memoryCards[index1];
+        const symbol2 = window.memoryCards[index2];
+        
+        if (symbol1 === symbol2) {
+            // Нашли пару
+            window.memoryMatched.push(symbol1);
+            window.memoryPairs++;
+            window.memoryFlipped = [];
+            
+            renderMemoryGame();
+            
+            // Проверяем, закончилась ли игра
+            if (window.memoryPairs === 8) {
+                endMemoryGame();
+            }
+        } else {
+            // Не совпали, переворачиваем обратно через секунду
+            setTimeout(() => {
+                window.memoryFlipped = [];
+                renderMemoryGame();
+            }, 1000);
+        }
+    }
+}
+
+function resetMemoryGame() {
+    const symbols = ['🧇', '🌀', '⚡', '🔦', '🧪', '👹', '🦸', '👓'];
+    window.memoryCards = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
+    window.memoryFlipped = [];
+    window.memoryMatched = [];
+    window.memoryPairs = 0;
+    renderMemoryGame();
+}
+
+function endMemoryGame() {
+    minigameReward = 300 - (window.memoryFlipped.length * 10);
+    
+    document.getElementById('minigameBody').innerHTML += `
+        <div style="text-align: center; margin-top: 20px; padding: 20px; background: rgba(6,214,160,0.1); border-radius: 15px;">
+            <h3 style="color: #06d6a0;">ВЫ НАШЛИ ВСЕ ПАРЫ! 🎉</h3>
+            <p>Отличная память!</p>
+            <p style="font-size: 1.5rem; color: #ffd700;">Награда: ${minigameReward} вафель</p>
+        </div>
+    `;
+}
+
+// ========== ИГРА 4: СТРЕЛЯЛКА ==========
+function loadShooterGame() {
+    document.getElementById('minigameTitle').textContent = 'СТРЕЛЬБА ПО ШАРАМ';
+    
+    const gameHTML = `
+        <div class="shooter-game-container">
+            <p>Лопайте шары с символами сериала! Избегайте Демогоргонов (👹).</p>
+            
+            <div class="shooter-game-area" id="shooterArea"></div>
+            
+            <div class="shooter-score">
+                Счёт: <span id="shooterScore">0</span>
+            </div>
+            
+            <div class="shooter-timer">
+                Время: <span id="shooterTime">60</span> сек
+            </div>
+            
+            <div class="dodge-controls">
+                <button class="dodge-control-btn" onclick="startShooterGame()">СТАРТ</button>
+                <button class="dodge-control-btn" onclick="resetShooterGame()">СБРОС</button>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('minigameBody').innerHTML = gameHTML;
+}
+
+let shooterGameInterval;
+let shooterBalls = [];
+let shooterScore = 0;
+let shooterTime = 60;
+let shooterGameActive = false;
+let shooterClickHandler = null;
+
+function startShooterGame() {
+    if (shooterGameActive) return;
+    
+    shooterGameActive = true;
+    shooterScore = 0;
+    shooterTime = 60;
+    shooterBalls = [];
+    
+    updateShooterDisplay();
+    
+    // Игровой цикл
+    shooterGameInterval = setInterval(() => {
+        shooterTime--;
+        updateShooterDisplay();
+        
+        if (shooterTime <= 0) {
+            endShooterGame();
+        }
+        
+        // Создаем новые шары
+        if (Math.random() < 0.4) {
+            createShooterBall();
+        }
+    }, 1000);
+    
+    // Обработчик кликов
+    shooterClickHandler = (e) => {
+        if (!shooterGameActive) return;
+        
+        const area = document.getElementById('shooterArea');
+        const rect = area.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Проверяем, попали ли в шар
+        for (let i = shooterBalls.length - 1; i >= 0; i--) {
+            const ball = shooterBalls[i];
+            const ballRect = ball.getBoundingClientRect();
+            const ballX = ballRect.left - rect.left + ballRect.width / 2;
+            const ballY = ballRect.top - rect.top + ballRect.height / 2;
+            
+            const distance = Math.sqrt((x - ballX) ** 2 + (y - ballY) ** 2);
+            
+            if (distance < 30) { // Попадание
+                const symbol = ball.textContent;
                 
-                // Блокировка если недостаточно средств
-                const upgradeEl = document.getElementById('upgrade' + key.charAt(0).toUpperCase() + key.slice(1));
-                if (game.eggos < upg.cost) {
-                    upgradeEl.classList.add('upgrade-locked');
+                if (symbol === '👹') {
+                    // Попали в Демогоргона - штраф
+                    shooterScore = Math.max(0, shooterScore - 50);
+                    createParticle('-50', '#ef476f', 3);
                 } else {
-                    upgradeEl.classList.remove('upgrade-locked');
-                }
-            }
-            
-            // Достижения
-            updateAchievements();
-        }
-
-        function updateAchievements() {
-            const achievements = [
-                { id: 100, progress: 'progress100', element: 'achieve100' },
-                { id: 500, progress: 'progress500', element: 'achieve500' },
-                { id: 1000, progress: 'progress1000', element: 'achieve1000' },
-                { id: 5000, progress: 'progress5000', element: 'achieve5000' },
-                { id: 10000, progress: 'progress10000', element: 'achieve10000' },
-                { id: 50000, progress: 'progress50000', element: 'achieve50000' }
-            ];
-            
-            achievements.forEach(ach => {
-                const progress = Math.min(100, (game.eggos / ach.id) * 100);
-                const progressBar = document.getElementById(ach.progress);
-                if (progressBar) {
-                    progressBar.style.width = progress + '%';
+                    // Попали в обычный шар
+                    shooterScore += 10;
+                    createParticle('+10', '#06d6a0', 2);
                 }
                 
-                // Разблокировка достижения
-                if (game.eggos >= ach.id && !localStorage.getItem('achievement_' + ach.id)) {
-                    localStorage.setItem('achievement_' + ach.id, 'true');
-                    const achieveEl = document.getElementById(ach.element);
-                    if (achieveEl) {
-                        achieveEl.classList.add('unlocked');
-                        showNotification(`Достижение разблокировано: ${formatNumber(ach.id)} вафель! 🏆`, '#ffd700');
-                        
-                        // Бонус за достижение
-                        game.eggos += ach.id / 10;
-                        game.totalEggos += ach.id / 10;
-                    }
-                }
-            });
-        }
-
-        function checkAchievements() {
-            updateAchievements();
-        }
-
-        // ========== АНИМАЦИИ И ЭФФЕКТЫ ==========
-        function createParticle(text, color, count = 1) {
-            for (let i = 0; i < count; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.textContent = text;
-                particle.style.color = color;
-                particle.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                particle.style.left = Math.random() * 80 + 10 + '%';
-                particle.style.top = Math.random() * 80 + 10 + '%';
-                particle.style.opacity = Math.random() * 0.5 + 0.5;
-                
-                // Анимация
-                const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 100 + 50;
-                const targetX = Math.cos(angle) * distance;
-                const targetY = Math.sin(angle) * distance;
-                
-                particle.animate([
-                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-                    { transform: `translate(${targetX}px, ${targetY}px) scale(0.1)`, opacity: 0 }
-                ], {
-                    duration: Math.random() * 1000 + 1000,
-                    easing: 'cubic-bezier(0.2, 0, 0.8, 1)'
-                });
-                
-                document.getElementById('particles').appendChild(particle);
-                setTimeout(() => particle.remove(), 2000);
+                ball.remove();
+                shooterBalls.splice(i, 1);
+                updateShooterDisplay();
+                break;
             }
         }
+    };
+    
+    document.getElementById('shooterArea').addEventListener('click', shooterClickHandler);
+    
+    // Создаем первые шары
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => createShooterBall(), i * 500);
+    }
+}
 
-        function showNotification(message, color = '#8b0000') {
-            const notifications = document.getElementById('notifications');
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.style.background = color;
-            notification.innerHTML = `
-                <i class="fas fa-info-circle"></i> ${message}
-            `;
-            
-            notifications.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) reverse';
-                setTimeout(() => notification.remove(), 500);
-            }, 3000);
+function createShooterBall() {
+    if (!shooterGameActive) return;
+    
+    const symbols = ['🧇', '🌀', '⚡', '🔦', '🧪', '🎸', '👓', '🦸', '👹'];
+    const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+    
+    const ball = document.createElement('div');
+    ball.className = 'shooter-ball';
+    ball.textContent = symbol;
+    
+    // Позиция
+    const size = Math.random() * 20 + 40;
+    ball.style.width = size + 'px';
+    ball.style.height = size + 'px';
+    ball.style.left = Math.random() * 85 + 5 + '%';
+    ball.style.top = Math.random() * 70 + 15 + '%';
+    
+    // Стиль в зависимости от символа
+    if (symbol === '👹') {
+        ball.style.background = 'linear-gradient(135deg, #8b0000, #4b0000)';
+        ball.style.animationDuration = '1.5s';
+    } else {
+        const colors = ['#06d6a0', '#118ab2', '#ffd166', '#ef476f', '#9d4edd'];
+        ball.style.background = `linear-gradient(135deg, ${colors[Math.floor(Math.random() * colors.length)]}, #000)`;
+        ball.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    }
+    
+    ball.style.fontSize = (size * 0.5) + 'px';
+    ball.style.cursor = 'crosshair';
+    
+    document.getElementById('shooterArea').appendChild(ball);
+    shooterBalls.push(ball);
+    
+    // Удаляем шар через 10 секунд
+    setTimeout(() => {
+        if (ball.parentNode && !ball.textContent.includes('👹')) {
+            ball.remove();
+            const index = shooterBalls.indexOf(ball);
+            if (index > -1) shooterBalls.splice(index, 1);
         }
+    }, 10000);
+}
 
-        // ========== СИСТЕМА СОХРАНЕНИЯ ==========
-        function saveGame() {
-            const saveData = {
-                game: game,
-                upgrades: upgrades,
-                saveTime: Date.now()
-            };
-            
-            localStorage.setItem('hawkinsClickerSave', JSON.stringify(saveData));
-            
-            // Обновляем рекорд
-            if (game.eggos > game.record) {
-                game.record = game.eggos;
-                localStorage.setItem('hawkinsClickerRecord', game.eggos);
-            }
-        }
+function updateShooterDisplay() {
+    const scoreElement = document.getElementById('shooterScore');
+    const timeElement = document.getElementById('shooterTime');
+    
+    if (scoreElement) scoreElement.textContent = shooterScore;
+    if (timeElement) timeElement.textContent = shooterTime;
+}
 
-        function loadGame() {
-            const saved = localStorage.getItem('hawkinsClickerSave');
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    game = data.game || game;
-                    upgrades = data.upgrades || upgrades;
-                    
-                    // Загружаем рекорд
-                    const record = localStorage.getItem('hawkinsClickerRecord');
-                    if (record) game.record = parseInt(record);
-                    
-                    // Убедимся, что начинаем с 0 вафель при первой игре
-                    if (game.eggos === undefined || game.eggos === null) {
-                        game.eggos = 0;
-                    }
-                } catch (e) {
-                    console.error('Ошибка загрузки сохранения:', e);
-                    // Начинаем с чистого листа
-                    resetGameData();
-                }
-            } else {
-                // Первый запуск - начинаем с 0
-                resetGameData();
-            }
-            
-            updateDisplay();
-            startAutoProduction();
-        }
+function resetShooterGame() {
+    endShooterGame();
+    shooterScore = 0;
+    shooterTime = 60;
+    updateShooterDisplay();
+    
+    // Очищаем поле
+    const area = document.getElementById('shooterArea');
+    while (area.firstChild) {
+        area.removeChild(area.firstChild);
+    }
+    shooterBalls = [];
+}
 
-        function resetGameData() {
-            game = {
-                eggos: 0,           // НАЧИНАЕМ С 0
-                perSecond: 0,
-                totalClicks: 0,
-                totalEggos: 0,
-                startTime: Date.now(),
-                playTime: 0,
-                record: 0
-            };
-            
-            upgrades = {
-                hopper: { cost: 50, count: 0, production: 1 },
-                dustin: { cost: 200, count: 0, production: 5 },
-                eleven: { cost: 1000, count: 0, production: 15 }
-            };
-        }
+function endShooterGame() {
+    clearInterval(shooterGameInterval);
+    shooterGameActive = false;
+    
+    // Удаляем обработчик
+    if (shooterClickHandler) {
+        document.getElementById('shooterArea').removeEventListener('click', shooterClickHandler);
+    }
+    
+    // Удаляем все шары
+    shooterBalls.forEach(ball => ball.remove());
+    shooterBalls = [];
+    
+    // Вычисляем награду
+    minigameReward = Math.floor(shooterScore * 0.8);
+    if (minigameReward > 400) minigameReward = 400;
+    
+    document.getElementById('minigameBody').innerHTML += `
+        <div style="text-align: center; margin-top: 20px; padding: 20px; background: rgba(6,214,160,0.1); border-radius: 15px;">
+            <h3 style="color: #06d6a0;">ИГРА ЗАКОНЧЕНА! 🎯</h3>
+            <p>Ваш счёт: ${shooterScore}</p>
+            <p style="font-size: 1.5rem; color: #ffd700;">Награда: ${minigameReward} вафель</p>
+        </div>
+    `;
+}
 
-        function resetGame() {
-            if (confirm('Вы уверены? Это сбросит весь прогресс!')) {
-                localStorage.removeItem('hawkinsClickerSave');
-                localStorage.removeItem('hawkinsClickerRecord');
-                
-                // Сбрасываем все достижения
-                for (let i = 100; i <= 50000; i *= (i < 1000 ? 5 : 2)) {
-                    localStorage.removeItem('achievement_' + i);
-                }
-                
-                resetGameData();
-                updateDisplay();
-                showNotification('Игра сброшена! Начинаем заново.', '#ef476f');
-            }
-        }
-
-        function exportSave() {
-            const saveData = {
-                game: game,
-                upgrades: upgrades,
-                exportTime: Date.now()
-            };
-            
-            const saveString = JSON.stringify(saveData, null, 2);
-            const blob = new Blob([saveString], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'hawkins_clicker_save.json';
-            a.click();
-            
-            URL.revokeObjectURL(url);
-            showNotification('Сохранение экспортировано!', '#06d6a0');
-        }
-
-        // ========== АВТОМАТИЧЕСКОЕ ПРОИЗВОДСТВО ==========
-        function startAutoProduction() {
-            setInterval(() => {
-                if (game.perSecond > 0) {
-                    game.eggos += game.perSecond;
-                    game.totalEggos += game.perSecond;
-                    updateDisplay();
-                    saveGame();
-                }
-            }, 1000);
-        }
-
-        // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
-        function formatNumber(num) {
-            if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
-            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-            return num.toString();
-        }
-
-        function getUpgradeName(type) {
-            const names = {
-                hopper: 'Шериф Хоппер',
-                dustin: 'Дастин',
-                eleven: 'Одиннадцать'
-            };
-            return names[type] || type;
-        }
-
-        function toggleClicker() {
-            const panel = document.getElementById('clickerPanel');
-            panel.classList.toggle('collapsed');
-        }
-
-        function startGame() {
-            showNotification('Игра началась! Собирайте вафли Eggo! 🧇', '#8b0000');
-            document.querySelector('.eggo').style.animation = 'pulse 1s infinite';
-        }
-
-        function answerQuiz(answer) {
-            const correct = 'A';
-            if (answer === correct) {
-                showNotification('Правильно! +100 вафель! 🎉', '#06d6a0');
-                game.eggos += 100;
-                game.totalEggos += 100;
-                createParticle('+100', '#06d6a0', 10);
-                updateDisplay();
-                saveGame();
-            } else {
-                showNotification('Неправильно! Попробуйте еще раз.', '#ef476f');
-            }
-        }
-
-        // ========== ИНИЦИАЛИЗАЦИЯ ==========
-        document.addEventListener('DOMContentLoaded', function() {
-            loadGame();
-            
-            // Проверяем время игры каждую минуту
-            setInterval(() => {
-                game.playTime = Math.floor((Date.now() - game.startTime) / 60000);
-                document.getElementById('playTime').textContent = game.playTime;
-            }, 60000);
-            
-            // Автосохранение каждые 30 секунд
-            setInterval(saveGame, 30000);
-            
-            // Приветственное сообщение
-            setTimeout(() => {
-                if (game.totalClicks === 0) {
-                    showNotification('Кликайте по вафле чтобы собрать Eggo! 🧇', '#8b0000');
-                }
-            }, 1000);
-        });
-    </script>
-</body>
-</html>
-
+// ========== ИНИЦИАЛИЗАЦИЯ ==========
+document.addEventListener('DOMContentLoaded', function() {
+    // Загружаем кулдауны из localStorage
+    const savedCooldowns = localStorage.getItem('minigameCooldowns');
+    if (savedCooldowns) {
+        minigameCooldowns = JSON.parse(savedCooldowns);
+    }
+    
+    // Обновляем отображение кулдаунов
+    updateCooldownDisplays();
+    
+    // Сохраняем кулдауны каждые 5 минут
+    setInterval(() => {
+        localStorage.setItem('minigameCooldowns', JSON.stringify(minigameCooldowns));
+    }, 5 * 60 * 1000);
+});
+</script>
