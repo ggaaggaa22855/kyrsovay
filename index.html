@@ -45,6 +45,59 @@
                 repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px);
         }
         
+        /* МУЗЫКАЛЬНЫЙ ПЛЕЙЕР */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: linear-gradient(135deg, #330066, #660099);
+            border-radius: 15px;
+            padding: 15px;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            border: 2px solid #ffd700;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .music-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .music-title {
+            font-family: 'Creepster', cursive;
+            font-size: 1.2rem;
+            color: #ffd700;
+        }
+        
+        .music-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .music-btn {
+            background: #8b0000;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .song-info {
+            font-size: 0.9rem;
+            color: #ccc;
+            text-align: center;
+        }
+        
         /* КЛИКЕР */
         .clicker-container {
             position: fixed;
@@ -58,7 +111,7 @@
             box-shadow: -5px 0 30px rgba(139, 0, 0, 0.4);
             border: 3px solid #8b0000;
             border-right: none;
-            z-index: 1000;
+            z-index: 999;
             transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
         
@@ -290,14 +343,14 @@
         /* ИГРА С ДЕМОГОРГОНОМ */
         .demogorgon-game {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px;
             left: 20px;
             width: 300px;
             background: linear-gradient(135deg, #330000, #660000);
             border-radius: 15px;
             padding: 20px;
             border: 3px solid #ff0000;
-            z-index: 999;
+            z-index: 998;
             box-shadow: 0 0 30px rgba(255,0,0,0.5);
             display: none;
         }
@@ -371,28 +424,25 @@
             transition: width 0.3s;
         }
         
-        .demogorgon-damage {
-            display: none;
-            position: absolute;
-            color: #ff0000;
-            font-weight: bold;
-            font-size: 1.2rem;
-            pointer-events: none;
-        }
-        
         .game-rewards {
             margin-top: 15px;
             padding-top: 15px;
             border-top: 1px solid rgba(255,0,0,0.3);
         }
         
-        /* БИТВА ГЕРОЕВ */
+        /* БИТВА ГЕРОЕВ - ИСПРАВЛЕННАЯ */
         .hero-fight-game {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
             background: linear-gradient(135deg, #003366, #006699);
             border-radius: 20px;
             padding: 25px;
-            margin: 30px 0;
             border: 3px solid #00aaff;
+            z-index: 1001;
+            box-shadow: 0 0 40px rgba(0,170,255,0.5);
             display: none;
         }
         
@@ -402,8 +452,8 @@
         }
         
         @keyframes fightSpawn {
-            0% { transform: translateY(-50px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
         
         .fight-header {
@@ -434,6 +484,7 @@
             background: rgba(0,0,0,0.3);
             border: 2px solid;
             transition: all 0.3s;
+            min-width: 180px;
         }
         
         .fighter-player {
@@ -445,8 +496,20 @@
         }
         
         .fighter-icon {
-            font-size: 4rem;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
             margin-bottom: 15px;
+            object-fit: cover;
+            border: 3px solid;
+        }
+        
+        .player-icon {
+            border-color: #00ff00;
+        }
+        
+        .enemy-icon {
+            border-color: #ff0000;
         }
         
         .fighter-health {
@@ -484,6 +547,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.9rem;
         }
         
         .attack-btn {
@@ -491,7 +555,7 @@
             color: white;
         }
         
-        .attack-btn:hover {
+        .attack-btn:hover:not(:disabled) {
             transform: scale(1.1);
             box-shadow: 0 0 15px rgba(255,0,0,0.5);
         }
@@ -501,9 +565,60 @@
             color: white;
         }
         
-        .special-btn:hover {
+        .special-btn:hover:not(:disabled) {
             transform: scale(1.1);
             box-shadow: 0 0 15px rgba(0,0,255,0.5);
+        }
+        
+        .fight-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* ФОТОГРАФИИ ПЕРСОНАЖЕЙ */
+        .characters-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .character-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-10px);
+            border-color: #8b0000;
+            box-shadow: 0 10px 20px rgba(139,0,0,0.3);
+        }
+        
+        .character-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        .character-info {
+            padding: 15px;
+        }
+        
+        .character-name {
+            font-weight: 700;
+            color: #ffd700;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .character-desc {
+            color: #aaa;
+            font-size: 0.8rem;
         }
         
         /* НОТИФИКАЦИИ */
@@ -551,7 +666,7 @@
             to { width: 0%; }
         }
         
-        /* ПАРТИКЛЫ (УМЕНЬШЕННОЕ КОЛИЧЕСТВО) */
+        /* ПАРТИКЛЫ */
         .particles {
             position: fixed;
             top: 0;
@@ -674,56 +789,6 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         
-        /* ДЕКОРАЦИИ */
-        .decorations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
-        }
-        
-        .decoration-item {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.4s;
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .decoration-item:hover {
-            transform: translateY(-5px) rotate(3deg);
-            border-color: #8b0000;
-            box-shadow: 0 8px 20px rgba(139,0,0,0.3);
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .decoration-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: block;
-            transition: all 0.3s;
-        }
-        
-        .decoration-item:hover .decoration-icon {
-            transform: scale(1.2);
-        }
-        
-        .decoration-name {
-            font-weight: 600;
-            color: #fff;
-            font-size: 0.9rem;
-        }
-        
-        .decoration-bonus {
-            color: #ffd700;
-            font-size: 0.8rem;
-            margin-top: 5px;
-        }
-        
         /* СЕКЦИИ */
         .section {
             background: linear-gradient(135deg, rgba(26,0,51,0.7), rgba(0,0,0,0.9));
@@ -752,152 +817,6 @@
             margin-bottom: 25px;
             text-align: center;
             letter-spacing: 2px;
-        }
-        
-        /* НУМЕРОВАННЫЙ СПИСОК */
-        .numbered-list {
-            margin: 25px 0;
-            padding-left: 40px;
-        }
-        
-        .numbered-list li {
-            margin: 15px 0;
-            line-height: 1.6;
-            position: relative;
-            padding-left: 15px;
-        }
-        
-        .numbered-list li::before {
-            content: counter(item) ".";
-            counter-increment: item;
-            position: absolute;
-            left: -35px;
-            color: #ffd700;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        /* ТАБЛИЦА */
-        .monsters-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 30px 0;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .monsters-table th {
-            background: linear-gradient(135deg, #8b0000, #4b0082);
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: 700;
-            border-right: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .monsters-table th:last-child {
-            border-right: none;
-        }
-        
-        .monsters-table td {
-            padding: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            border-right: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        .monsters-table td:last-child {
-            border-right: none;
-        }
-        
-        .monsters-table tr {
-            background: rgba(255,255,255,0.05);
-            transition: all 0.3s;
-        }
-        
-        .monsters-table tr:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateX(5px);
-        }
-        
-        .monsters-table tr:nth-child(even) {
-            background: rgba(255,255,255,0.02);
-        }
-        
-        /* ВИКТОРИНА */
-        .quiz-container {
-            background: rgba(0,0,0,0.4);
-            border-radius: 20px;
-            padding: 25px;
-            margin: 30px 0;
-        }
-        
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .quiz-progress {
-            font-size: 0.9rem;
-            color: #aaa;
-        }
-        
-        .quiz-question {
-            font-size: 1.3rem;
-            margin-bottom: 25px;
-            color: #fff;
-            text-align: center;
-            font-weight: 600;
-            min-height: 60px;
-        }
-        
-        .quiz-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 12px;
-        }
-        
-        .quiz-option {
-            background: rgba(255,255,255,0.05);
-            padding: 18px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        
-        .quiz-option:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: #8b0000;
-            transform: translateY(-2px);
-        }
-        
-        .quiz-option.correct {
-            background: rgba(6, 214, 160, 0.2);
-            border-color: #06d6a0;
-        }
-        
-        .quiz-option.incorrect {
-            background: rgba(239, 71, 111, 0.2);
-            border-color: #ef476f;
-        }
-        
-        .quiz-controls {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .quiz-score {
-            font-size: 1.1rem;
-            color: #ffd700;
-            font-weight: bold;
         }
         
         /* АДАПТИВНОСТЬ */
@@ -929,6 +848,24 @@
                 margin: 20px 0;
             }
             
+            .hero-fight-game {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 90%;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+            
+            .music-player {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                width: 100%;
+                margin: 20px 0;
+            }
+            
             .container {
                 padding-top: 20px;
             }
@@ -954,6 +891,10 @@
                 flex-direction: column;
                 gap: 20px;
             }
+            
+            .fight-controls {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -966,6 +907,19 @@
     
     <!-- Уведомления -->
     <div class="notification-container" id="notifications"></div>
+    
+    <!-- Музыкальный плеер -->
+    <div class="music-player">
+        <div class="music-header">
+            <h3 class="music-title">🎵 Саундтрек</h3>
+            <div class="music-controls">
+                <button class="music-btn" onclick="playPrevSong()"><i class="fas fa-step-backward"></i></button>
+                <button class="music-btn" onclick="togglePlay()"><i class="fas fa-play" id="playIcon"></i></button>
+                <button class="music-btn" onclick="playNextSong()"><i class="fas fa-step-forward"></i></button>
+            </div>
+        </div>
+        <div class="song-info" id="songInfo">Should I Stay or Should I Go - The Clash</div>
+    </div>
     
     <!-- Кликер -->
     <div class="clicker-container" id="clickerPanel">
@@ -1057,6 +1011,54 @@
         </div>
     </div>
     
+    <!-- Битва героев - ИСПРАВЛЕННАЯ -->
+    <div class="hero-fight-game" id="heroFightGame">
+        <div class="fight-header">
+            <h3 class="fight-title">⚔️ БИТВА ГЕРОЕВ ХОУКИНСА</h3>
+            <button class="demogorgon-close" onclick="closeHeroFight()">×</button>
+        </div>
+        
+        <div class="fighters-container">
+            <div class="fighter fighter-player">
+                <img src="https://i.pinimg.com/564x/3d/5a/4d/3d5a4d7b5f6c7e8d9f0a1b2c3d4e5f6a.jpg" class="fighter-icon player-icon" alt="Одиннадцать" id="playerImage">
+                <div style="font-weight: bold; font-size: 1.2rem; color: #00ff00;">Одиннадцать</div>
+                <div style="color: #aaa; font-size: 0.9rem; margin: 5px 0;">Игрок</div>
+                <div class="fighter-health">
+                    <div class="health-fill player-health" id="playerHealthBar" style="width: 100%;"></div>
+                </div>
+                <div style="color: #00ff00;">HP: <span id="playerHealth">100</span>/100</div>
+            </div>
+            
+            <div style="font-size: 2rem; color: #ffd700;">VS</div>
+            
+            <div class="fighter fighter-enemy">
+                <img src="https://i.pinimg.com/564x/4e/5f/6a/4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b.jpg" class="fighter-icon enemy-icon" alt="Векенда" id="enemyImage">
+                <div style="font-weight: bold; font-size: 1.2rem; color: #ff0000;">Векенда</div>
+                <div style="color: #aaa; font-size: 0.9rem; margin: 5px 0;">Босс</div>
+                <div class="fighter-health">
+                    <div class="health-fill enemy-health" id="enemyHealthBar" style="width: 100%;"></div>
+                </div>
+                <div style="color: #ff0000;">HP: <span id="enemyHealth">150</span>/150</div>
+            </div>
+        </div>
+        
+        <div class="fight-controls">
+            <button class="fight-btn attack-btn" onclick="heroAttack()" id="attackBtn">
+                <i class="fas fa-bolt"></i> Атака (10-20 урона)
+            </button>
+            <button class="fight-btn special-btn" onclick="heroSpecial()" id="specialBtn">
+                <i class="fas fa-star"></i> Супер-удар (30 урона)
+            </button>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: center; color: #ffd700;">
+            <div>Награда за победу: <strong>1000 вафель</strong></div>
+            <div style="font-size: 0.9rem; color: #aaa; margin-top: 5px;">
+                Супер-удар перезаряжается каждые 10 секунд
+            </div>
+        </div>
+    </div>
+    
     <!-- Частицы -->
     <div class="particles" id="particles"></div>
 
@@ -1078,230 +1080,63 @@
                     <i class="fas fa-fist-raised"></i> БИТВА ГЕРОЕВ
                 </button>
             </div>
-            
-            <div class="decorations-grid">
-                <div class="decoration-item" onclick="collectBonus(5, '🌀')">
-                    <span class="decoration-icon">🌀</span>
-                    <div class="decoration-name">Портал</div>
-                    <div class="decoration-bonus">+5 вафель</div>
-                </div>
-                <div class="decoration-item" onclick="collectBonus(10, '🧪')">
-                    <span class="decoration-icon">🧪</span>
-                    <div class="decoration-name">Реактив</div>
-                    <div class="decoration-bonus">+10 вафель</div>
-                </div>
-                <div class="decoration-item" onclick="collectBonus(15, '🔦')">
-                    <span class="decoration-icon">🔦</span>
-                    <div class="decoration-name">Фонарик</div>
-                    <div class="decoration-bonus">+15 вафель</div>
-                </div>
-                <div class="decoration-item" onclick="collectBonus(25, '🎸')">
-                    <span class="decoration-icon">🎸</span>
-                    <div class="decoration-name">Гитара</div>
-                    <div class="decoration-bonus">+25 вафель</div>
-                </div>
-                <div class="decoration-item" onclick="collectBonus(50, '👹')">
-                    <span class="decoration-icon">👹</span>
-                    <div class="decoration-name">Демогоргон</div>
-                    <div class="decoration-bonus">+50 вафель</div>
-                </div>
-                <div class="decoration-item" onclick="collectBonus(100, '🦸')">
-                    <span class="decoration-icon">🦸</span>
-                    <div class="decoration-name">Одиннадцать</div>
-                    <div class="decoration-bonus">+100 вафель</div>
-                </div>
-            </div>
         </div>
 
-        <!-- НОВЫЙ РАЗДЕЛ: БИТВА ГЕРОЕВ -->
-        <div class="section hero-fight-game" id="heroFightGame">
-            <div class="fight-header">
-                <h3 class="fight-title">⚔️ БИТВА ГЕРОЕВ ХОУКИНСА</h3>
-                <button class="demogorgon-close" onclick="closeHeroFight()">×</button>
-            </div>
-            
-            <div class="fighters-container">
-                <div class="fighter fighter-player">
-                    <div class="fighter-icon">🦸</div>
-                    <div style="font-weight: bold; font-size: 1.2rem; color: #00ff00;">Одиннадцать</div>
-                    <div style="color: #aaa; font-size: 0.9rem; margin: 5px 0;">Игрок</div>
-                    <div class="fighter-health">
-                        <div class="health-fill player-health" id="playerHealthBar" style="width: 100%;"></div>
+        <!-- Галерея персонажей -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-users"></i> ГЕРОИ ХОУКИНСА</h2>
+            <div class="characters-gallery">
+                <div class="character-card">
+                    <img src="https://i.pinimg.com/564x/1a/2b/3c/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d.jpg" class="character-img" alt="Одиннадцать и Майк">
+                    <div class="character-info">
+                        <div class="character-name">Одиннадцать и Майк</div>
+                        <div class="character-desc">Самые крепкие отношения в Хоукинсе</div>
                     </div>
-                    <div style="color: #00ff00;">HP: <span id="playerHealth">100</span>/100</div>
                 </div>
                 
-                <div style="font-size: 2rem; color: #ffd700;">VS</div>
-                
-                <div class="fighter fighter-enemy">
-                    <div class="fighter-icon">👹</div>
-                    <div style="font-weight: bold; font-size: 1.2rem; color: #ff0000;">Векенда</div>
-                    <div style="color: #aaa; font-size: 0.9rem; margin: 5px 0;">Босс</div>
-                    <div class="fighter-health">
-                        <div class="health-fill enemy-health" id="enemyHealthBar" style="width: 100%;"></div>
+                <div class="character-card">
+                    <img src="https://i.pinimg.com/564x/2b/3c/4d/2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e.jpg" class="character-img" alt="Генри Крил/Векенда">
+                    <div class="character-info">
+                        <div class="character-name">Генри Крил/Векенда</div>
+                        <div class="character-desc">Главный антагонист сериала</div>
                     </div>
-                    <div style="color: #ff0000;">HP: <span id="enemyHealth">150</span>/150</div>
-                </div>
-            </div>
-            
-            <div class="fight-controls">
-                <button class="fight-btn attack-btn" onclick="heroAttack()">
-                    <i class="fas fa-bolt"></i> Атака (10-20 урона)
-                </button>
-                <button class="fight-btn special-btn" onclick="heroSpecial()" id="specialBtn">
-                    <i class="fas fa-star"></i> Супер-удар (30 урона)
-                </button>
-            </div>
-            
-            <div style="margin-top: 20px; text-align: center; color: #ffd700;">
-                <div>Награда за победу: <strong>1000 вафель</strong></div>
-                <div style="font-size: 0.9rem; color: #aaa; margin-top: 5px;">
-                    Супер-удар перезаряжается каждые 10 секунд
-                </div>
-            </div>
-        </div>
-
-        <!-- НОВЫЙ РАЗДЕЛ: НУМЕРОВАННЫЙ СПИСОК -->
-        <div class="section">
-            <h2 class="section-title"><i class="fas fa-list-ol"></i> ТОП-10 ЭПИЗОДОВ СЕРИАЛА</h2>
-            <ol class="numbered-list" style="counter-reset: item;">
-                <li>«Глава первая: Исчезновение Уилла Байерса» (Сезон 1)</li>
-                <li>«Глава восьмая: Верхопотный мир» (Сезон 1)</li>
-                <li>«Глава девятая: Врата» (Сезон 2)</li>
-                <li>«Глава три: Дурная кровь» (Сезон 3)</li>
-                <li>«Глава семь: Укус» (Сезон 4)</li>
-                <li>«Глава восемь: Папа» (Сезон 4)</li>
-                <li>«Глава шесть: Шпион» (Сезон 3)</li>
-                <li>«Глава два: Жучок в подвале» (Сезон 2)</li>
-                <li>«Глава четыре: Дорогой Билли» (Сезон 4)</li>
-                <li>«Глава пять: Флюд» (Сезон 3)</li>
-            </ol>
-        </div>
-
-        <!-- НОВЫЙ РАЗДЕЛ: ТАБЛИЦА МОНСТРОВ -->
-        <div class="section">
-            <h2 class="section-title"><i class="fas fa-table"></i> МОНСТРЫ ВЕРХОПОТНОГО МИРА</h2>
-            <table class="monsters-table">
-                <thead>
-                    <tr>
-                        <th>Монстр</th>
-                        <th>Сезон</th>
-                        <th>Особенности</th>
-                        <th>Слабость</th>
-                        <th>Опасность</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Демогоргон</strong></td>
-                        <td>1</td>
-                        <td>Цветочная голова, ловкость, сила</td>
-                        <td>Огонь, телекинез</td>
-                        <td>⭐⭐⭐⭐☆</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Умный мозг</strong></td>
-                        <td>2</td>
-                        <td>Контроль над другими, интеллект</td>
-                        <td>Огонь, закрытие врат</td>
-                        <td>⭐⭐⭐⭐⭐</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Флюд</strong></td>
-                        <td>3</td>
-                        <td>Растворение тел, создание копий</td>
-                        <td>Экстремальный холод</td>
-                        <td>⭐⭐⭐⭐☆</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Векенда</strong></td>
-                        <td>4</td>
-                        <td>Телепатия, контроль разума, сила</td>
-                        <td>Музыка, положительные воспоминания</td>
-                        <td>⭐⭐⭐⭐⭐</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ищейка</strong></td>
-                        <td>2</td>
-                        <td>Обоняние, скорость, преследование</td>
-                        <td>Закрытые пространства</td>
-                        <td>⭐⭐⭐☆☆</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- ВИКТОРИНА -->
-        <div class="section">
-            <h2 class="section-title"><i class="fas fa-question-circle"></i> ВИКТОРИНА ПО СЕРИАЛУ</h2>
-            <div class="quiz-container">
-                <div class="quiz-header">
-                    <div class="quiz-progress">Вопрос <span id="currentQuestion">1</span>/<span id="totalQuestions">10</span></div>
-                    <div class="quiz-score">Счет: <span id="quizScore">0</span></div>
                 </div>
                 
-                <div class="quiz-question" id="quizQuestionText">
-                    Загрузка вопроса...
+                <div class="character-card">
+                    <img src="https://i.pinimg.com/564x/3c/4d/5e/3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f.jpg" class="character-img" alt="Лукас и Макс">
+                    <div class="character-info">
+                        <div class="character-name">Лукас и Макс</div>
+                        <div class="character-desc">Самые крутые геймеры Хоукинса</div>
+                    </div>
                 </div>
                 
-                <div class="quiz-options" id="quizOptions">
-                    <!-- Опции загружаются через JS -->
+                <div class="character-card">
+                    <img src="https://i.pinimg.com/564x/4d/5e/6f/4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a.jpg" class="character-img" alt="Уилл Байерс">
+                    <div class="character-info">
+                        <div class="character-name">Уилл Байерс</div>
+                        <div class="character-desc">Первый пропавший в Верхопотном мире</div>
+                    </div>
                 </div>
                 
-                <div class="quiz-controls">
-                    <button class="banner-btn btn-secondary" onclick="prevQuestion()" id="prevBtn" disabled>
-                        <i class="fas fa-arrow-left"></i> Назад
-                    </button>
-                    <button class="banner-btn btn-primary" onclick="nextQuestion()" id="nextBtn">
-                        Следующий <i class="fas fa-arrow-right"></i>
-                    </button>
+                <div class="character-card">
+                    <img src="https://i.pinimg.com/564x/5e/6f/7a/5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b.jpg" class="character-img" alt="Джим Хоппер">
+                    <div class="character-info">
+                        <div class="character-name">Джим Хоппер</div>
+                        <div class="character-desc">Шериф и приемный отец Одиннадцать</div>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <img src="https://i.pinimg.com/564x/6f/7a/8b/6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c.jpg" class="character-img" alt="Дастин Хендерсон">
+                    <div class="character-info">
+                        <div class="character-name">Дастин Хендерсон</div>
+                        <div class="character-desc">Самый умный в команде</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- НОВЫЙ РАЗДЕЛ: ДРУГИЕ ПРОЕКТЫ -->
-        <div class="section">
-            <h2 class="section-title"><i class="fas fa-folder-open"></i> ДРУГИЕ ПРОЕКТЫ АВТОРА</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0;">
-                <div class="decoration-item" onclick="window.open('https://ggaaggaa22855.github.io/HTMLcurs/', '_blank')">
-                    <span class="decoration-icon">📚</span>
-                    <div class="decoration-name">HTML курс</div>
-                    <div class="decoration-bonus">Обучение HTML с нуля</div>
-                </div>
-                
-                <div class="decoration-item" onclick="window.open('https://ggaaggaa22855.github.io/Framen/', '_blank')">
-                    <span class="decoration-icon">🎲</span>
-                    <div class="decoration-name">Красивые кубики</div>
-                    <div class="decoration-bonus">3D графика и анимация</div>
-                </div>
-                
-                <div class="decoration-item" onclick="window.open('https://ggaaggaa22855.github.io/shrifts/', '_blank')">
-                    <span class="decoration-icon">🔤</span>
-                    <div class="decoration-name">Основные шрифты</div>
-                    <div class="decoration-bonus">Коллекция шрифтов</div>
-                </div>
-                
-                <div class="decoration-item" onclick="window.open('https://ggaaggaa22855.github.io/kursovaya/', '_blank')">
-                    <span class="decoration-icon">🦭</span>
-                    <div class="decoration-name">Сайт про тюленей</div>
-                    <div class="decoration-bonus">Информация о тюленях</div>
-                </div>
-                
-                <div class="decoration-item" onclick="window.open('https://ggaaggaa22855.github.io/dfsdsfdsfs/', '_blank')">
-                    <span class="decoration-icon">🎮</span>
-                    <div class="decoration-name">HTML квест</div>
-                    <div class="decoration-bonus">Интерактивная игра</div>
-                </div>
-                
-                <div class="decoration-item" onclick="openFigma()">
-                    <span class="decoration-icon">🎨</span>
-                    <div class="decoration-name">Макет в Figma</div>
-                    <div class="decoration-bonus">Дизайн проекта</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- СТАТИСТИКА -->
+        <!-- Статистика -->
         <div class="section">
             <h2 class="section-title"><i class="fas fa-chart-bar"></i> СТАТИСТИКА ИГРЫ</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0;">
@@ -1318,14 +1153,117 @@
                     <span class="stat-label">Минут игры</span>
                 </div>
                 <div class="stat-box">
-                    <span class="stat-value" id="quizCorrect">0</span>
-                    <span class="stat-label">Правильных ответов</span>
+                    <span class="stat-value" id="recordEggos">0</span>
+                    <span class="stat-label">Рекорд вафель</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Другие проекты -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-folder-open"></i> ДРУГИЕ ПРОЕКТЫ АВТОРА</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0;">
+                <div class="character-card" onclick="window.open('https://ggaaggaa22855.github.io/HTMLcurs/', '_blank')">
+                    <div style="background: linear-gradient(135deg, #ff6b6b, #ee5a24); height: 150px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">📚</div>
+                    <div class="character-info">
+                        <div class="character-name">HTML курс</div>
+                        <div class="character-desc">Обучение HTML с нуля</div>
+                    </div>
+                </div>
+                
+                <div class="character-card" onclick="window.open('https://ggaaggaa22855.github.io/Framen/', '_blank')">
+                    <div style="background: linear-gradient(135deg, #4ecdc4, #44a08d); height: 150px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">🎲</div>
+                    <div class="character-info">
+                        <div class="character-name">Красивые кубики</div>
+                        <div class="character-desc">3D графика и анимация</div>
+                    </div>
+                </div>
+                
+                <div class="character-card" onclick="window.open('https://ggaaggaa22855.github.io/shrifts/', '_blank')">
+                    <div style="background: linear-gradient(135deg, #ffd166, #ffb347); height: 150px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">🔤</div>
+                    <div class="character-info">
+                        <div class="character-name">Основные шрифты</div>
+                        <div class="character-desc">Коллекция шрифтов</div>
+                    </div>
+                </div>
+                
+                <div class="character-card" onclick="window.open('https://ggaaggaa22855.github.io/kursovaya/', '_blank')">
+                    <div style="background: linear-gradient(135deg, #a8e6cf, #7bc5ae); height: 150px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">🦭</div>
+                    <div class="character-info">
+                        <div class="character-name">Сайт про тюленей</div>
+                        <div class="character-desc">Информация о тюленях</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // ========== МУЗЫКАЛЬНЫЙ ПЛЕЙЕР ==========
+        const songs = [
+            {
+                title: "Should I Stay or Should I Go",
+                artist: "The Clash",
+                description: "Любимая песня Уилла Байерса"
+            },
+            {
+                title: "Running Up That Hill",
+                artist: "Kate Bush",
+                description: "Песня, спасшая Макс"
+            },
+            {
+                title: "Every Breath You Take",
+                artist: "The Police",
+                description: "Саундтрек 3 сезона"
+            },
+            {
+                title: "Material Girl",
+                artist: "Madonna",
+                description: "Песня эпохи 80-х"
+            },
+            {
+                title: "Master of Puppets",
+                artist: "Metallica",
+                description: "Гитара Эдди"
+            }
+        ];
+        
+        let currentSongIndex = 0;
+        let isPlaying = false;
+        
+        function updateSongInfo() {
+            const song = songs[currentSongIndex];
+            document.getElementById('songInfo').textContent = `${song.title} - ${song.artist}`;
+        }
+        
+        function playNextSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            updateSongInfo();
+            if (isPlaying) {
+                showNotification(`Сейчас играет: ${songs[currentSongIndex].title} 🎵`, '#4b0082');
+            }
+        }
+        
+        function playPrevSong() {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            updateSongInfo();
+            if (isPlaying) {
+                showNotification(`Сейчас играет: ${songs[currentSongIndex].title} 🎵`, '#4b0082');
+            }
+        }
+        
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const icon = document.getElementById('playIcon');
+            if (isPlaying) {
+                icon.className = 'fas fa-pause';
+                showNotification(`Включена музыка: ${songs[currentSongIndex].title} 🎵`, '#4b0082');
+            } else {
+                icon.className = 'fas fa-play';
+                showNotification('Музыка остановлена', '#8b0000');
+            }
+        }
+        
         // ========== ИГРОВЫЕ ПЕРЕМЕННЫЕ ==========
         let game = {
             eggos: 0,
@@ -1334,17 +1272,15 @@
             totalEggos: 0,
             startTime: Date.now(),
             playTime: 0,
-            record: 0,
-            quizScore: 0,
-            quizCorrect: 0
+            record: 0
         };
-
+        
         let upgrades = {
             hopper: { cost: 50, count: 0, production: 1 },
             dustin: { cost: 200, count: 0, production: 5 },
             eleven: { cost: 1000, count: 0, production: 15 }
         };
-
+        
         // ========== ДЕМОГОРГОН ИГРА ==========
         let demogorgon = {
             health: 100,
@@ -1352,8 +1288,8 @@
             reward: 500,
             isActive: false
         };
-
-        // ========== БИТВА ГЕРОЕВ ==========
+        
+        // ========== БИТВА ГЕРОЕВ - ИСПРАВЛЕННАЯ ==========
         let heroFight = {
             playerHealth: 100,
             playerMaxHealth: 100,
@@ -1363,20 +1299,17 @@
             specialAvailable: true,
             reward: 1000
         };
-
+        
         // ========== ФУНКЦИЯ СБРОСА ИГРЫ ==========
         function resetGame() {
-            if (confirm('Вы уверены? Это сбросит весь прогресс игры, включая вафли, улучшения и результаты викторины!')) {
-                // Удаляем все сохранения
+            if (confirm('Вы уверены? Это сбросит весь прогресс игры, включая вафли и улучшения!')) {
                 localStorage.removeItem('hawkinsClickerSave');
                 localStorage.removeItem('hawkinsClickerRecord');
                 
-                // Сбрасываем достижения
                 for (let i = 100; i <= 50000; i *= (i < 1000 ? 5 : 2)) {
                     localStorage.removeItem('achievement_' + i);
                 }
                 
-                // Сбрасываем переменные
                 game = {
                     eggos: 0,
                     perSecond: 0,
@@ -1384,9 +1317,7 @@
                     totalEggos: 0,
                     startTime: Date.now(),
                     playTime: 0,
-                    record: 0,
-                    quizScore: 0,
-                    quizCorrect: 0
+                    record: 0
                 };
                 
                 upgrades = {
@@ -1395,24 +1326,16 @@
                     eleven: { cost: 1000, count: 0, production: 15 }
                 };
                 
-                // Сбрасываем викторину
-                currentQuizIndex = 0;
-                quizAnswers = [];
-                
-                // Сбрасываем игры
                 demogorgon.isActive = false;
                 heroFight.isActive = false;
                 document.getElementById('demogorgonGame').classList.remove('active');
                 document.getElementById('heroFightGame').classList.remove('active');
                 
-                // Обновляем отображение
                 updateDisplay();
-                updateQuizDisplay();
-                
                 showNotification('Игра сброшена! Начинаем заново! 🔄', '#ff0000');
             }
         }
-
+        
         function startDemogorgonGame() {
             demogorgon.isActive = true;
             demogorgon.health = 100;
@@ -1420,12 +1343,12 @@
             updateDemogorgonDisplay();
             showNotification('Демогоргон появился! Атакуйте его! 👹', '#ff0000');
         }
-
+        
         function closeDemoGame() {
             document.getElementById('demogorgonGame').classList.remove('active');
             demogorgon.isActive = false;
         }
-
+        
         function attackDemogorgon() {
             if (!demogorgon.isActive) return;
             
@@ -1449,15 +1372,15 @@
                 saveGame();
             }
         }
-
+        
         function updateDemogorgonDisplay() {
             const healthPercent = (demogorgon.health / demogorgon.maxHealth) * 100;
             document.getElementById('demoHealthBar').style.width = healthPercent + '%';
             document.getElementById('demoHealth').textContent = demogorgon.health;
             document.getElementById('demoReward').textContent = demogorgon.reward;
         }
-
-        // ========== БИТВА ГЕРОЕВ ФУНКЦИИ ==========
+        
+        // ========== БИТВА ГЕРОЕВ - ИСПРАВЛЕННЫЕ ФУНКЦИИ ==========
         function startHeroFight() {
             heroFight.isActive = true;
             heroFight.playerHealth = 100;
@@ -1465,15 +1388,19 @@
             heroFight.specialAvailable = true;
             
             document.getElementById('heroFightGame').classList.add('active');
+            document.getElementById('attackBtn').disabled = false;
+            document.getElementById('specialBtn').disabled = false;
+            document.getElementById('specialBtn').innerHTML = '<i class="fas fa-star"></i> Супер-удар (30 урона)';
+            
             updateHeroFightDisplay();
             showNotification('Битва началась! Одиннадцать против Векенды! ⚔️', '#00aaff');
         }
-
+        
         function closeHeroFight() {
             document.getElementById('heroFightGame').classList.remove('active');
             heroFight.isActive = false;
         }
-
+        
         function heroAttack() {
             if (!heroFight.isActive) return;
             
@@ -1496,7 +1423,7 @@
             updateHeroFightDisplay();
             checkHeroFightResult();
         }
-
+        
         function heroSpecial() {
             if (!heroFight.isActive || !heroFight.specialAvailable) return;
             
@@ -1505,16 +1432,19 @@
             heroFight.enemyHealth -= specialDamage;
             if (heroFight.enemyHealth < 0) heroFight.enemyHealth = 0;
             
-            // Блокируем специальную атаку на 10 секунд
+            // Блокируем специальную атаку
             heroFight.specialAvailable = false;
             document.getElementById('specialBtn').disabled = true;
             document.getElementById('specialBtn').innerHTML = '<i class="fas fa-clock"></i> Перезарядка...';
             
+            // Таймер перезарядки
             setTimeout(() => {
-                heroFight.specialAvailable = true;
-                document.getElementById('specialBtn').disabled = false;
-                document.getElementById('specialBtn').innerHTML = '<i class="fas fa-star"></i> Супер-удар (30 урона)';
-                showNotification('Супер-удар перезаряжен! ⚡', '#00aaff');
+                if (heroFight.isActive) {
+                    heroFight.specialAvailable = true;
+                    document.getElementById('specialBtn').disabled = false;
+                    document.getElementById('specialBtn').innerHTML = '<i class="fas fa-star"></i> Супер-удар (30 урона)';
+                    showNotification('Супер-удар перезаряжен! ⚡', '#00aaff');
+                }
             }, 10000);
             
             // Эффекты
@@ -1525,7 +1455,7 @@
             updateHeroFightDisplay();
             checkHeroFightResult();
         }
-
+        
         function updateHeroFightDisplay() {
             const playerPercent = (heroFight.playerHealth / heroFight.playerMaxHealth) * 100;
             const enemyPercent = (heroFight.enemyHealth / heroFight.enemyMaxHealth) * 100;
@@ -1535,7 +1465,7 @@
             document.getElementById('playerHealth').textContent = heroFight.playerHealth;
             document.getElementById('enemyHealth').textContent = heroFight.enemyHealth;
         }
-
+        
         function checkHeroFightResult() {
             if (heroFight.enemyHealth <= 0) {
                 // Победа
@@ -1554,143 +1484,7 @@
                 setTimeout(closeHeroFight, 2000);
             }
         }
-
-        // ========== ВИКТОРИНА ==========
-        const quizQuestions = [
-            {
-                question: "Как зовут девочку со сверхспособностями, сбежавшую из лаборатории?",
-                options: ["Одиннадцать (Эль)", "Двенадцать", "Восемь (Кали)", "Джейн"],
-                correct: 0,
-                points: 100
-            },
-            {
-                question: "Как называется параллельный мир в сериале?",
-                options: ["Верхопотный мир", "Зазеркалье", "Изнанка", "Теневой мир"],
-                correct: 0,
-                points: 100
-            },
-            {
-                question: "Кто является шефом полиции Хоукинса?",
-                options: ["Джим Хоппер", "Стив Харрингтон", "Боб Ньюби", "Сэм Оуэнс"],
-                correct: 0,
-                points: 100
-            },
-            {
-                question: "Какой музыкальный инструмент играет важную роль в 4 сезоне?",
-                options: ["Гитара", "Пианино", "Синтезатор", "Саксофон"],
-                correct: 0,
-                points: 100
-            },
-            {
-                question: "Как зовут монстра из первого сезона?",
-                options: ["Демогоргон", "Векенда", "Умный мозг", "Флюд"],
-                correct: 0,
-                points: 100
-            },
-            {
-                question: "Какая песня спасла Макс в 4 сезоне?",
-                options: ["Running Up That Hill", "Should I Stay or Should I Go", "Every Breath You Take", "Material Girl"],
-                correct: 0,
-                points: 100
-            },
-            {
-                question: "Как зовут подругу Одиннадцать, которая появилась в 3 сезоне?",
-                options: ["Макс", "Кали", "Джейн", "Сьюзи"],
-                correct: 0,
-                points: 100
-            },
-            {
-                question: "Что любит есть Одиннадцать?",
-                options: ["Вафли Eggo", "Пиццу", "Мороженое", "Бургеры"],
-                correct: 0,
-                points: 100
-            },
-            {
-                question: "Какой номер был у Одиннадцать в лаборатории?",
-                options: ["011", "001", "008", "012"],
-                correct: 0,
-                points: 100
-            },
-            {
-                question: "Кто создал Верхопотный мир согласно сюжету?",
-                options: ["Генри Крил/Векенда", "Доктор Бреннер", "Русские ученые", "Одиннадцать"],
-                correct: 0,
-                points: 100
-            }
-        ];
-
-        let currentQuizIndex = 0;
-        let selectedAnswer = null;
-        let quizAnswers = [];
-
-        function initQuiz() {
-            updateQuizDisplay();
-        }
-
-        function updateQuizDisplay() {
-            const question = quizQuestions[currentQuizIndex];
-            document.getElementById('quizQuestionText').textContent = question.question;
-            document.getElementById('currentQuestion').textContent = currentQuizIndex + 1;
-            document.getElementById('totalQuestions').textContent = quizQuestions.length;
-            document.getElementById('quizScore').textContent = game.quizScore;
-            
-            const optionsContainer = document.getElementById('quizOptions');
-            optionsContainer.innerHTML = '';
-            
-            question.options.forEach((option, index) => {
-                const optionDiv = document.createElement('div');
-                optionDiv.className = 'quiz-option';
-                if (quizAnswers[currentQuizIndex] === index) {
-                    optionDiv.classList.add(quizAnswers[currentQuizIndex] === question.correct ? 'correct' : 'incorrect');
-                }
-                optionDiv.innerHTML = `<strong>${String.fromCharCode(65 + index)})</strong> ${option}`;
-                optionDiv.onclick = () => selectAnswer(index);
-                optionsContainer.appendChild(optionDiv);
-            });
-            
-            document.getElementById('prevBtn').disabled = currentQuizIndex === 0;
-            document.getElementById('nextBtn').disabled = quizAnswers[currentQuizIndex] === undefined;
-        }
-
-        function selectAnswer(index) {
-            if (quizAnswers[currentQuizIndex] !== undefined) return;
-            
-            selectedAnswer = index;
-            quizAnswers[currentQuizIndex] = index;
-            
-            const question = quizQuestions[currentQuizIndex];
-            if (index === question.correct) {
-                game.quizScore += question.points;
-                game.quizCorrect++;
-                game.eggos += question.points;
-                game.totalEggos += question.points;
-                showNotification(`Правильно! +${question.points} очков и вафель!`, '#06d6a0');
-                createParticle(`+${question.points}`, '#06d6a0', 1);
-            } else {
-                showNotification('Неправильно! Попробуйте следующий вопрос.', '#ef476f');
-            }
-            
-            updateDisplay();
-            updateQuizDisplay();
-            saveGame();
-        }
-
-        function nextQuestion() {
-            if (currentQuizIndex < quizQuestions.length - 1) {
-                currentQuizIndex++;
-                selectedAnswer = null;
-                updateQuizDisplay();
-            }
-        }
-
-        function prevQuestion() {
-            if (currentQuizIndex > 0) {
-                currentQuizIndex--;
-                selectedAnswer = null;
-                updateQuizDisplay();
-            }
-        }
-
+        
         // ========== ОСНОВНЫЕ ФУНКЦИИ КЛИКЕРА ==========
         function clickEggo() {
             game.eggos += 1;
@@ -1709,7 +1503,7 @@
             
             if (navigator.vibrate) navigator.vibrate(30);
         }
-
+        
         function buyUpgrade(type) {
             const upg = upgrades[type];
             if (game.eggos >= upg.cost) {
@@ -1727,25 +1521,14 @@
                 showNotification('Недостаточно вафель!', '#ef476f');
             }
         }
-
-        function collectBonus(amount, emoji) {
-            game.eggos += amount;
-            game.totalEggos += amount;
-            
-            showNotification(`+${amount} вафель ${emoji}`, '#ffd700');
-            createParticle(`+${amount}`, '#ffd700', 1);
-            
-            updateDisplay();
-            saveGame();
-        }
-
+        
         // ========== СИСТЕМА ОТОБРАЖЕНИЯ ==========
         function updateDisplay() {
             document.getElementById('eggosCount').textContent = formatNumber(game.eggos);
             document.getElementById('perSecond').textContent = game.perSecond;
             document.getElementById('totalEggos').textContent = formatNumber(game.totalEggos);
             document.getElementById('totalClicks').textContent = game.totalClicks;
-            document.getElementById('quizCorrect').textContent = game.quizCorrect;
+            document.getElementById('recordEggos').textContent = formatNumber(game.record);
             
             const minutes = Math.floor((Date.now() - game.startTime) / 60000);
             game.playTime = minutes;
@@ -1763,7 +1546,7 @@
                 }
             }
         }
-
+        
         function createParticle(text, color, count = 1) {
             for (let i = 0; i < count; i++) {
                 const particle = document.createElement('div');
@@ -1792,7 +1575,7 @@
                 setTimeout(() => particle.remove(), 2000);
             }
         }
-
+        
         function showNotification(message, color = '#8b0000') {
             const notifications = document.getElementById('notifications');
             const notification = document.createElement('div');
@@ -1807,14 +1590,12 @@
                 setTimeout(() => notification.remove(), 500);
             }, 3000);
         }
-
+        
         // ========== СИСТЕМА СОХРАНЕНИЯ ==========
         function saveGame() {
             const saveData = {
                 game: game,
                 upgrades: upgrades,
-                quizAnswers: quizAnswers,
-                currentQuizIndex: currentQuizIndex,
                 saveTime: Date.now()
             };
             
@@ -1825,7 +1606,7 @@
                 localStorage.setItem('hawkinsClickerRecord', game.eggos);
             }
         }
-
+        
         function loadGame() {
             const saved = localStorage.getItem('hawkinsClickerSave');
             if (saved) {
@@ -1833,8 +1614,6 @@
                     const data = JSON.parse(saved);
                     game = data.game || game;
                     upgrades = data.upgrades || upgrades;
-                    quizAnswers = data.quizAnswers || [];
-                    currentQuizIndex = data.currentQuizIndex || 0;
                     
                     const record = localStorage.getItem('hawkinsClickerRecord');
                     if (record) game.record = parseInt(record);
@@ -1851,10 +1630,9 @@
             }
             
             updateDisplay();
-            initQuiz();
             startAutoProduction();
         }
-
+        
         function resetGameData() {
             game = {
                 eggos: 0,
@@ -1863,9 +1641,7 @@
                 totalEggos: 0,
                 startTime: Date.now(),
                 playTime: 0,
-                record: 0,
-                quizScore: 0,
-                quizCorrect: 0
+                record: 0
             };
             
             upgrades = {
@@ -1873,18 +1649,15 @@
                 dustin: { cost: 200, count: 0, production: 5 },
                 eleven: { cost: 1000, count: 0, production: 15 }
             };
-            
-            quizAnswers = [];
-            currentQuizIndex = 0;
         }
-
+        
         // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
         function formatNumber(num) {
             if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
             return num.toString();
         }
-
+        
         function getUpgradeName(type) {
             const names = {
                 hopper: 'Шериф Хоппер',
@@ -1893,21 +1666,16 @@
             };
             return names[type] || type;
         }
-
+        
         function toggleClicker() {
             const panel = document.getElementById('clickerPanel');
             panel.classList.toggle('collapsed');
         }
-
+        
         function startGame() {
             showNotification('Игра началась! Собирайте вафли Eggo! 🧇', '#8b0000');
         }
-
-        function openFigma() {
-            window.open('https://www.figma.com/design/Z2mRQ0XNutD6h68tSrOuBc/Untitled?t=ALEpgL34jKduyR05-0', '_blank');
-            showNotification('Открыт макет Figma! 🎨', '#4b0082');
-        }
-
+        
         function checkAchievements() {
             if (game.totalEggos >= 100 && !localStorage.getItem('achieve_100')) {
                 localStorage.setItem('achieve_100', 'true');
@@ -1925,7 +1693,7 @@
                 game.eggos += 1000;
             }
         }
-
+        
         // ========== АВТОМАТИЧЕСКОЕ ПРОИЗВОДСТВО ==========
         function startAutoProduction() {
             setInterval(() => {
@@ -1937,10 +1705,11 @@
                 }
             }, 1000);
         }
-
+        
         // ========== ИНИЦИАЛИЗАЦИЯ ==========
         document.addEventListener('DOMContentLoaded', function() {
             loadGame();
+            updateSongInfo();
             
             setInterval(() => {
                 game.playTime = Math.floor((Date.now() - game.startTime) / 60000);
@@ -1968,6 +1737,18 @@
                     startHeroFight();
                 }
             }, 420000);
+            
+            // Резервные изображения на случай если основные не загрузятся
+            const playerImg = document.getElementById('playerImage');
+            const enemyImg = document.getElementById('enemyImage');
+            
+            playerImg.onerror = function() {
+                this.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%2300ff00"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="24" fill="white">🦸</text></svg>';
+            };
+            
+            enemyImg.onerror = function() {
+                this.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23ff0000"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="24" fill="white">👹</text></svg>';
+            };
         });
     </script>
 </body>
