@@ -45,7 +45,7 @@
                 repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px);
         }
         
-        /* МУЗЫКАЛЬНЫЙ ПЛЕЙЕР */
+        /* МУЗЫКАЛЬНЫЙ ПЛЕЙЕР С АУДИО */
         .music-player {
             position: fixed;
             bottom: 20px;
@@ -77,6 +77,7 @@
         .music-controls {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
         
         .music-btn {
@@ -90,12 +91,80 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .music-btn:hover {
+            background: #a30000;
+            transform: scale(1.1);
+        }
+        
+        .volume-slider {
+            width: 80px;
+            -webkit-appearance: none;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ffd700;
+            cursor: pointer;
         }
         
         .song-info {
             font-size: 0.9rem;
             color: #ccc;
             text-align: center;
+            min-height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .song-description {
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-top: 3px;
+        }
+        
+        /* СЕРДЕЧКИ И ЭФФЕКТЫ */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0;
+            animation: floatHeart linear forwards;
+        }
+        
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg) scale(1);
+                opacity: 0;
+            }
         }
         
         /* КЛИКЕР */
@@ -430,13 +499,13 @@
             border-top: 1px solid rgba(255,0,0,0.3);
         }
         
-        /* БИТВА ГЕРОЕВ - ИСПРАВЛЕННАЯ */
+        /* БИТВА ГЕРОЕВ - ИСПРАВЛЕННАЯ И ДОРАБОТАННАЯ */
         .hero-fight-game {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 600px;
+            width: 700px;
             background: linear-gradient(135deg, #003366, #006699);
             border-radius: 20px;
             padding: 25px;
@@ -470,29 +539,54 @@
             text-shadow: 0 0 10px #00aaff;
         }
         
+        .fight-arena {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+        
+        .fight-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.pinimg.com/564x/12/34/56/1234567890abcdef1234567890abcdef.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+        }
+        
         .fighters-container {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin: 30px 0;
+            height: 100%;
+            position: relative;
+            z-index: 2;
         }
         
         .fighter {
             text-align: center;
             padding: 20px;
             border-radius: 15px;
-            background: rgba(0,0,0,0.3);
-            border: 2px solid;
+            background: rgba(0,0,0,0.7);
+            border: 3px solid;
             transition: all 0.3s;
-            min-width: 180px;
+            min-width: 200px;
+            position: relative;
         }
         
         .fighter-player {
             border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0,255,0,0.5);
         }
         
         .fighter-enemy {
             border-color: #ff0000;
+            box-shadow: 0 0 20px rgba(255,0,0,0.5);
         }
         
         .fighter-icon {
@@ -536,7 +630,7 @@
         .fight-controls {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             margin-top: 20px;
         }
         
@@ -547,7 +641,10 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .attack-btn {
@@ -573,6 +670,44 @@
         .fight-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+        
+        .fight-log {
+            margin-top: 20px;
+            height: 80px;
+            overflow-y: auto;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 5px;
+            animation: fadeIn 0.3s;
+        }
+        
+        .log-player {
+            background: rgba(0,255,0,0.1);
+            border-left: 3px solid #00ff00;
+        }
+        
+        .log-enemy {
+            background: rgba(255,0,0,0.1);
+            border-left: 3px solid #ff0000;
+        }
+        
+        .log-special {
+            background: rgba(255,215,0,0.1);
+            border-left: 3px solid #ffd700;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         /* ФОТОГРАФИИ ПЕРСОНАЖЕЙ */
@@ -853,9 +988,23 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                width: 90%;
+                width: 95%;
                 max-height: 90vh;
                 overflow-y: auto;
+            }
+            
+            .fight-arena {
+                height: 200px;
+            }
+            
+            .fighter {
+                min-width: 140px;
+                padding: 10px;
+            }
+            
+            .fighter-icon {
+                width: 70px;
+                height: 70px;
             }
             
             .music-player {
@@ -908,17 +1057,28 @@
     <!-- Уведомления -->
     <div class="notification-container" id="notifications"></div>
     
+    <!-- Сердечки -->
+    <div class="hearts-container" id="heartsContainer"></div>
+    
     <!-- Музыкальный плеер -->
     <div class="music-player">
         <div class="music-header">
-            <h3 class="music-title">🎵 Саундтрек</h3>
+            <h3 class="music-title">🎵 Саундтрек Хоукинса</h3>
             <div class="music-controls">
                 <button class="music-btn" onclick="playPrevSong()"><i class="fas fa-step-backward"></i></button>
                 <button class="music-btn" onclick="togglePlay()"><i class="fas fa-play" id="playIcon"></i></button>
                 <button class="music-btn" onclick="playNextSong()"><i class="fas fa-step-forward"></i></button>
+                <input type="range" min="0" max="1" step="0.1" value="0.5" class="volume-slider" id="volumeSlider" onchange="changeVolume(this.value)">
             </div>
         </div>
-        <div class="song-info" id="songInfo">Should I Stay or Should I Go - The Clash</div>
+        <div class="song-info">
+            <div id="songTitle">Should I Stay or Should I Go</div>
+            <div id="songArtist" class="song-description">The Clash • Любимая песня Уилла</div>
+            <div id="songDesc" class="song-description">🎧 Включите звук для полного погружения!</div>
+        </div>
+        <audio id="backgroundMusic" loop>
+            <!-- Аудио файлы будут управляться через JavaScript -->
+        </audio>
     </div>
     
     <!-- Кликер -->
@@ -1011,50 +1171,57 @@
         </div>
     </div>
     
-    <!-- Битва героев - ИСПРАВЛЕННАЯ -->
+    <!-- Битва героев - ИСПРАВЛЕННАЯ И УЛУЧШЕННАЯ -->
     <div class="hero-fight-game" id="heroFightGame">
         <div class="fight-header">
             <h3 class="fight-title">⚔️ БИТВА ГЕРОЕВ ХОУКИНСА</h3>
             <button class="demogorgon-close" onclick="closeHeroFight()">×</button>
         </div>
         
-        <div class="fighters-container">
-            <div class="fighter fighter-player">
-                <img src="https://i.pinimg.com/564x/3d/5a/4d/3d5a4d7b5f6c7e8d9f0a1b2c3d4e5f6a.jpg" class="fighter-icon player-icon" alt="Одиннадцать" id="playerImage">
-                <div style="font-weight: bold; font-size: 1.2rem; color: #00ff00;">Одиннадцать</div>
-                <div style="color: #aaa; font-size: 0.9rem; margin: 5px 0;">Игрок</div>
-                <div class="fighter-health">
-                    <div class="health-fill player-health" id="playerHealthBar" style="width: 100%;"></div>
+        <div class="fight-arena">
+            <div class="fight-bg"></div>
+            <div class="fighters-container">
+                <div class="fighter fighter-player" id="playerFighter">
+                    <img src="https://i.pinimg.com/564x/3d/5a/4d/3d5a4d7b5f6c7e8d9f0a1b2c3d4e5f6a.jpg" class="fighter-icon player-icon" alt="Одиннадцать">
+                    <div style="font-weight: bold; font-size: 1.2rem; color: #00ff00;">Одиннадцать</div>
+                    <div style="color: #aaa; font-size: 0.9rem; margin: 5px 0;">Псионик • Игрок</div>
+                    <div class="fighter-health">
+                        <div class="health-fill player-health" id="playerHealthBar" style="width: 100%;"></div>
+                    </div>
+                    <div style="color: #00ff00;">HP: <span id="playerHealth">100</span>/100</div>
                 </div>
-                <div style="color: #00ff00;">HP: <span id="playerHealth">100</span>/100</div>
-            </div>
-            
-            <div style="font-size: 2rem; color: #ffd700;">VS</div>
-            
-            <div class="fighter fighter-enemy">
-                <img src="https://i.pinimg.com/564x/4e/5f/6a/4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b.jpg" class="fighter-icon enemy-icon" alt="Векенда" id="enemyImage">
-                <div style="font-weight: bold; font-size: 1.2rem; color: #ff0000;">Векенда</div>
-                <div style="color: #aaa; font-size: 0.9rem; margin: 5px 0;">Босс</div>
-                <div class="fighter-health">
-                    <div class="health-fill enemy-health" id="enemyHealthBar" style="width: 100%;"></div>
+                
+                <div style="font-size: 2.5rem; color: #ffd700; text-shadow: 0 0 10px #ff0000;">⚡</div>
+                
+                <div class="fighter fighter-enemy" id="enemyFighter">
+                    <img src="https://i.pinimg.com/564x/4e/5f/6a/4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b.jpg" class="fighter-icon enemy-icon" alt="Векенда">
+                    <div style="font-weight: bold; font-size: 1.2rem; color: #ff0000;">Векенда</div>
+                    <div style="color: #aaa; font-size: 0.9rem; margin: 5px 0;">Псионик • Босс</div>
+                    <div class="fighter-health">
+                        <div class="health-fill enemy-health" id="enemyHealthBar" style="width: 100%;"></div>
+                    </div>
+                    <div style="color: #ff0000;">HP: <span id="enemyHealth">150</span>/150</div>
                 </div>
-                <div style="color: #ff0000;">HP: <span id="enemyHealth">150</span>/150</div>
             </div>
+        </div>
+        
+        <div class="fight-log" id="fightLog">
+            <div class="log-entry log-special">⚔️ Битва началась! Одиннадцать против Векенды!</div>
         </div>
         
         <div class="fight-controls">
             <button class="fight-btn attack-btn" onclick="heroAttack()" id="attackBtn">
-                <i class="fas fa-bolt"></i> Атака (10-20 урона)
+                <i class="fas fa-bolt"></i> Телекинез (10-25 урона)
             </button>
             <button class="fight-btn special-btn" onclick="heroSpecial()" id="specialBtn">
-                <i class="fas fa-star"></i> Супер-удар (30 урона)
+                <i class="fas fa-star"></i> Супер-удар (40 урона)
             </button>
         </div>
         
         <div style="margin-top: 20px; text-align: center; color: #ffd700;">
             <div>Награда за победу: <strong>1000 вафель</strong></div>
             <div style="font-size: 0.9rem; color: #aaa; margin-top: 5px;">
-                Супер-удар перезаряжается каждые 10 секунд
+                Супер-удар перезаряжается каждые 15 секунд
             </div>
         </div>
     </div>
@@ -1078,6 +1245,9 @@
                 </button>
                 <button class="banner-btn btn-tertiary" onclick="startHeroFight()">
                     <i class="fas fa-fist-raised"></i> БИТВА ГЕРОЕВ
+                </button>
+                <button class="banner-btn btn-danger" onclick="spawnHearts()">
+                    <i class="fas fa-heart"></i> СЕРДЕЧКИ!
                 </button>
             </div>
         </div>
@@ -1199,47 +1369,63 @@
     </div>
 
     <script>
-        // ========== МУЗЫКАЛЬНЫЙ ПЛЕЙЕР ==========
+        // ========== МУЗЫКАЛЬНЫЙ ПЛЕЙЕР С АУДИО ==========
         const songs = [
             {
                 title: "Should I Stay or Should I Go",
                 artist: "The Clash",
-                description: "Любимая песня Уилла Байерса"
+                description: "Любимая песня Уилла Байерса",
+                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // Замените на реальную ссылку
             },
             {
                 title: "Running Up That Hill",
                 artist: "Kate Bush",
-                description: "Песня, спасшая Макс"
+                description: "Песня, спасшая Макс",
+                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" // Замените на реальную ссылку
             },
             {
                 title: "Every Breath You Take",
                 artist: "The Police",
-                description: "Саундтрек 3 сезона"
+                description: "Саундтрек 3 сезона",
+                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" // Замените на реальную ссылку
             },
             {
                 title: "Material Girl",
                 artist: "Madonna",
-                description: "Песня эпохи 80-х"
+                description: "Песня эпохи 80-х",
+                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" // Замените на реальную ссылку
             },
             {
                 title: "Master of Puppets",
                 artist: "Metallica",
-                description: "Гитара Эдди"
+                description: "Гитара Эдди",
+                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" // Замените на реальную ссылку
             }
         ];
         
         let currentSongIndex = 0;
         let isPlaying = false;
+        const audio = document.getElementById('backgroundMusic');
         
         function updateSongInfo() {
             const song = songs[currentSongIndex];
-            document.getElementById('songInfo').textContent = `${song.title} - ${song.artist}`;
+            document.getElementById('songTitle').textContent = song.title;
+            document.getElementById('songArtist').textContent = `${song.artist} • ${song.description}`;
+            
+            if (audio.src !== song.audio) {
+                audio.src = song.audio;
+                audio.load();
+                if (isPlaying) {
+                    audio.play();
+                }
+            }
         }
         
         function playNextSong() {
             currentSongIndex = (currentSongIndex + 1) % songs.length;
             updateSongInfo();
             if (isPlaying) {
+                audio.play();
                 showNotification(`Сейчас играет: ${songs[currentSongIndex].title} 🎵`, '#4b0082');
             }
         }
@@ -1248,6 +1434,7 @@
             currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
             updateSongInfo();
             if (isPlaying) {
+                audio.play();
                 showNotification(`Сейчас играет: ${songs[currentSongIndex].title} 🎵`, '#4b0082');
             }
         }
@@ -1257,10 +1444,51 @@
             const icon = document.getElementById('playIcon');
             if (isPlaying) {
                 icon.className = 'fas fa-pause';
+                audio.play();
                 showNotification(`Включена музыка: ${songs[currentSongIndex].title} 🎵`, '#4b0082');
+                createParticle('🎵 Музыка!', '#4b0082', 3);
             } else {
                 icon.className = 'fas fa-play';
+                audio.pause();
                 showNotification('Музыка остановлена', '#8b0000');
+            }
+        }
+        
+        function changeVolume(value) {
+            audio.volume = value;
+            localStorage.setItem('hawkinsVolume', value);
+        }
+        
+        // ========== СЕРДЕЧКИ И ЭФФЕКТЫ ==========
+        function spawnHearts(count = 20) {
+            const hearts = ['❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '🤍', '💕', '💞', '💓', '💗', '💖', '💘', '💝'];
+            const colors = ['#ff0000', '#ff6b6b', '#ff8e8e', '#ffaaaa', '#ff6bcb', '#ff8ef2'];
+            const container = document.getElementById('heartsContainer');
+            
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 2000);
+            }
+            
+            showNotification('Сердечки! 💕', '#ff6b6b');
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        }
+        
+        function spawnRandomHearts() {
+            if (Math.random() < 0.02) {
+                spawnHearts(5);
             }
         }
         
@@ -1297,7 +1525,9 @@
             enemyMaxHealth: 150,
             isActive: false,
             specialAvailable: true,
-            reward: 1000
+            specialCooldown: false,
+            reward: 1000,
+            fightLog: []
         };
         
         // ========== ФУНКЦИЯ СБРОСА ИГРЫ ==========
@@ -1333,6 +1563,7 @@
                 
                 updateDisplay();
                 showNotification('Игра сброшена! Начинаем заново! 🔄', '#ff0000');
+                spawnHearts(10);
             }
         }
         
@@ -1342,6 +1573,7 @@
             document.getElementById('demogorgonGame').classList.add('active');
             updateDemogorgonDisplay();
             showNotification('Демогоргон появился! Атакуйте его! 👹', '#ff0000');
+            createParticle('👹 Демогоргон!', '#ff0000', 5);
         }
         
         function closeDemoGame() {
@@ -1358,7 +1590,13 @@
             if (demogorgon.health < 0) demogorgon.health = 0;
             
             createParticle(`-${damage}`, '#ff0000', 1);
+            spawnHearts(1);
             showNotification(`Вы нанесли ${damage} урона демогоргону!`, '#ff0000');
+            
+            // Анимация удара
+            const demoEl = document.querySelector('.demogorgon');
+            demoEl.style.transform = 'scale(0.8)';
+            setTimeout(() => demoEl.style.transform = 'scale(1)', 200);
             
             updateDemogorgonDisplay();
             
@@ -1366,7 +1604,8 @@
                 game.eggos += demogorgon.reward;
                 game.totalEggos += demogorgon.reward;
                 showNotification(`Победа! Вы получили ${demogorgon.reward} вафель! 🎉`, '#06d6a0');
-                createParticle(`+${demogorgon.reward}`, '#ffd700', 2);
+                createParticle(`+${demogorgon.reward}`, '#ffd700', 3);
+                spawnHearts(15);
                 setTimeout(closeDemoGame, 2000);
                 updateDisplay();
                 saveGame();
@@ -1386,14 +1625,19 @@
             heroFight.playerHealth = 100;
             heroFight.enemyHealth = 150;
             heroFight.specialAvailable = true;
+            heroFight.specialCooldown = false;
+            heroFight.fightLog = [];
             
             document.getElementById('heroFightGame').classList.add('active');
             document.getElementById('attackBtn').disabled = false;
             document.getElementById('specialBtn').disabled = false;
-            document.getElementById('specialBtn').innerHTML = '<i class="fas fa-star"></i> Супер-удар (30 урона)';
+            document.getElementById('specialBtn').innerHTML = '<i class="fas fa-star"></i> Супер-удар (40 урона)';
             
             updateHeroFightDisplay();
+            updateFightLog('⚔️ Битва началась! Одиннадцать против Векенды!', 'special');
             showNotification('Битва началась! Одиннадцать против Векенды! ⚔️', '#00aaff');
+            createParticle('⚔️ Битва!', '#00aaff', 5);
+            spawnHearts(5);
         }
         
         function closeHeroFight() {
@@ -1405,55 +1649,137 @@
             if (!heroFight.isActive) return;
             
             // Урон игрока
-            const playerDamage = Math.floor(Math.random() * 11) + 10;
+            const playerDamage = Math.floor(Math.random() * 16) + 10;
             heroFight.enemyHealth -= playerDamage;
             if (heroFight.enemyHealth < 0) heroFight.enemyHealth = 0;
             
+            // Анимация удара игрока
+            const enemyFighter = document.getElementById('enemyFighter');
+            enemyFighter.style.transform = 'translateX(10px)';
+            setTimeout(() => enemyFighter.style.transform = 'translateX(0)', 200);
+            
+            updateFightLog(`Одиннадцать использует телекинез! Нанесено ${playerDamage} урона!`, 'player');
+            
             // Урон врага (ответный удар)
-            const enemyDamage = Math.floor(Math.random() * 8) + 5;
-            heroFight.playerHealth -= enemyDamage;
-            if (heroFight.playerHealth < 0) heroFight.playerHealth = 0;
+            setTimeout(() => {
+                if (heroFight.enemyHealth > 0) {
+                    const enemyDamage = Math.floor(Math.random() * 11) + 5;
+                    heroFight.playerHealth -= enemyDamage;
+                    if (heroFight.playerHealth < 0) heroFight.playerHealth = 0;
+                    
+                    // Анимация удара врага
+                    const playerFighter = document.getElementById('playerFighter');
+                    playerFighter.style.transform = 'translateX(-10px)';
+                    setTimeout(() => playerFighter.style.transform = 'translateX(0)', 200);
+                    
+                    updateFightLog(`Векенда атакует! Нанесено ${enemyDamage} урона!`, 'enemy');
+                    
+                    // Эффекты
+                    createParticle(`-${enemyDamage}`, '#00ff00', 1);
+                }
+            }, 300);
             
             // Эффекты
             createParticle(`-${playerDamage}`, '#ff0000', 1);
-            createParticle(`-${enemyDamage}`, '#00ff00', 1);
-            
-            showNotification(`Вы нанесли ${playerDamage} урона! Враг нанес ${enemyDamage} урона!`, '#ff8800');
+            spawnHearts(1);
             
             updateHeroFightDisplay();
             checkHeroFightResult();
         }
         
         function heroSpecial() {
-            if (!heroFight.isActive || !heroFight.specialAvailable) return;
+            if (!heroFight.isActive || !heroFight.specialAvailable || heroFight.specialCooldown) return;
             
             // Супер-удар
-            const specialDamage = 30;
+            const specialDamage = 40;
             heroFight.enemyHealth -= specialDamage;
             if (heroFight.enemyHealth < 0) heroFight.enemyHealth = 0;
             
             // Блокируем специальную атаку
             heroFight.specialAvailable = false;
+            heroFight.specialCooldown = true;
             document.getElementById('specialBtn').disabled = true;
             document.getElementById('specialBtn').innerHTML = '<i class="fas fa-clock"></i> Перезарядка...';
             
-            // Таймер перезарядки
+            // Анимация супер-удара
+            const enemyFighter = document.getElementById('enemyFighter');
+            enemyFighter.style.transform = 'scale(1.2)';
+            enemyFighter.style.boxShadow = '0 0 30px #ff00ff';
             setTimeout(() => {
-                if (heroFight.isActive) {
-                    heroFight.specialAvailable = true;
-                    document.getElementById('specialBtn').disabled = false;
-                    document.getElementById('specialBtn').innerHTML = '<i class="fas fa-star"></i> Супер-удар (30 урона)';
-                    showNotification('Супер-удар перезаряжен! ⚡', '#00aaff');
+                enemyFighter.style.transform = 'scale(1)';
+                enemyFighter.style.boxShadow = '';
+            }, 500);
+            
+            updateFightLog(`СУПЕР-УДАР! Одиннадцать использует всю силу! Нанесено ${specialDamage} урона!`, 'special');
+            
+            // Таймер перезарядки
+            let cooldown = 15;
+            const cooldownInterval = setInterval(() => {
+                if (!heroFight.isActive) {
+                    clearInterval(cooldownInterval);
+                    return;
                 }
-            }, 10000);
+                
+                document.getElementById('specialBtn').innerHTML = `<i class="fas fa-clock"></i> ${cooldown} сек...`;
+                cooldown--;
+                
+                if (cooldown < 0) {
+                    clearInterval(cooldownInterval);
+                    if (heroFight.isActive) {
+                        heroFight.specialAvailable = true;
+                        heroFight.specialCooldown = false;
+                        document.getElementById('specialBtn').disabled = false;
+                        document.getElementById('specialBtn').innerHTML = '<i class="fas fa-star"></i> Супер-удар (40 урона)';
+                        updateFightLog('Супер-удар перезаряжен! ⚡', 'special');
+                    }
+                }
+            }, 1000);
             
             // Эффекты
-            createParticle(`СУПЕР-${specialDamage}!`, '#ff00ff', 3);
+            createParticle(`СУПЕР-${specialDamage}!`, '#ff00ff', 5);
+            spawnHearts(3);
             
             showNotification(`Супер-удар! ${specialDamage} урона! ⚡`, '#ff00ff');
             
             updateHeroFightDisplay();
+            
+            // Ответный удар врага
+            setTimeout(() => {
+                if (heroFight.enemyHealth > 0) {
+                    const enemyDamage = Math.floor(Math.random() * 16) + 10;
+                    heroFight.playerHealth -= enemyDamage;
+                    if (heroFight.playerHealth < 0) heroFight.playerHealth = 0;
+                    
+                    updateFightLog(`Векенда контратакует! Нанесено ${enemyDamage} урона!`, 'enemy');
+                    createParticle(`-${enemyDamage}`, '#00ff00', 1);
+                    
+                    updateHeroFightDisplay();
+                    checkHeroFightResult();
+                }
+            }, 1000);
+            
+            updateHeroFightDisplay();
             checkHeroFightResult();
+        }
+        
+        function updateFightLog(message, type = 'player') {
+            heroFight.fightLog.push({ message, type, time: Date.now() });
+            
+            const logContainer = document.getElementById('fightLog');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.textContent = message;
+            
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            
+            // Ограничиваем лог 10 сообщениями
+            if (heroFight.fightLog.length > 10) {
+                heroFight.fightLog.shift();
+                if (logContainer.firstChild) {
+                    logContainer.removeChild(logContainer.firstChild);
+                }
+            }
         }
         
         function updateHeroFightDisplay() {
@@ -1464,6 +1790,22 @@
             document.getElementById('enemyHealthBar').style.width = enemyPercent + '%';
             document.getElementById('playerHealth').textContent = heroFight.playerHealth;
             document.getElementById('enemyHealth').textContent = heroFight.enemyHealth;
+            
+            // Эффект при низком здоровье
+            const playerFighter = document.getElementById('playerFighter');
+            const enemyFighter = document.getElementById('enemyFighter');
+            
+            if (playerPercent < 30) {
+                playerFighter.style.animation = 'pulse 0.5s infinite alternate';
+            } else {
+                playerFighter.style.animation = '';
+            }
+            
+            if (enemyPercent < 30) {
+                enemyFighter.style.animation = 'pulse 0.5s infinite alternate';
+            } else {
+                enemyFighter.style.animation = '';
+            }
         }
         
         function checkHeroFightResult() {
@@ -1471,17 +1813,21 @@
                 // Победа
                 game.eggos += heroFight.reward;
                 game.totalEggos += heroFight.reward;
+                updateFightLog(`🎉 ПОБЕДА! Вы получили ${heroFight.reward} вафель!`, 'special');
                 showNotification(`Победа! Вы получили ${heroFight.reward} вафель! 🏆`, '#06d6a0');
-                createParticle(`+${heroFight.reward}`, '#ffd700', 3);
+                createParticle(`+${heroFight.reward}`, '#ffd700', 5);
+                spawnHearts(20);
+                
                 setTimeout(() => {
                     closeHeroFight();
                     updateDisplay();
                     saveGame();
-                }, 2000);
+                }, 3000);
             } else if (heroFight.playerHealth <= 0) {
                 // Поражение
+                updateFightLog('💀 Поражение! Векенда победил!', 'enemy');
                 showNotification('Вы проиграли битву! Попробуйте еще раз! 😢', '#ff0000');
-                setTimeout(closeHeroFight, 2000);
+                setTimeout(closeHeroFight, 3000);
             }
         }
         
@@ -1496,6 +1842,11 @@
             setTimeout(() => eggo.style.transform = 'scale(1)', 150);
             
             createParticle('+1', '#ffd700', 1);
+            
+            // Случайные сердечки
+            if (Math.random() < 0.1) {
+                spawnHearts(1);
+            }
             
             updateDisplay();
             saveGame();
@@ -1513,12 +1864,14 @@
                 upg.cost = Math.floor(upg.cost * 1.5);
                 
                 showNotification(`Куплено улучшение: ${getUpgradeName(type)}!`, '#06d6a0');
-                createParticle('Улучшено!', '#06d6a0', 1);
+                createParticle('Улучшено!', '#06d6a0', 3);
+                spawnHearts(5);
                 
                 updateDisplay();
                 saveGame();
             } else {
                 showNotification('Недостаточно вафель!', '#ef476f');
+                createParticle('Нет вафель!', '#ef476f', 1);
             }
         }
         
@@ -1629,6 +1982,13 @@
                 resetGameData();
             }
             
+            // Загрузка громкости
+            const savedVolume = localStorage.getItem('hawkinsVolume');
+            if (savedVolume) {
+                audio.volume = savedVolume;
+                document.getElementById('volumeSlider').value = savedVolume;
+            }
+            
             updateDisplay();
             startAutoProduction();
         }
@@ -1674,6 +2034,7 @@
         
         function startGame() {
             showNotification('Игра началась! Собирайте вафли Eggo! 🧇', '#8b0000');
+            spawnHearts(10);
         }
         
         function checkAchievements() {
@@ -1681,16 +2042,19 @@
                 localStorage.setItem('achieve_100', 'true');
                 showNotification('Достижение: 100 вафель собрано! 🥉', '#ffd700');
                 game.eggos += 50;
+                spawnHearts(10);
             }
             if (game.totalEggos >= 1000 && !localStorage.getItem('achieve_1000')) {
                 localStorage.setItem('achieve_1000', 'true');
                 showNotification('Достижение: 1000 вафель собрано! 🥈', '#ffd700');
                 game.eggos += 200;
+                spawnHearts(15);
             }
             if (game.totalEggos >= 10000 && !localStorage.getItem('achieve_10000')) {
                 localStorage.setItem('achieve_10000', 'true');
                 showNotification('Достижение: 10000 вафель собрано! 🥇', '#ffd700');
                 game.eggos += 1000;
+                spawnHearts(20);
             }
         }
         
@@ -1702,6 +2066,14 @@
                     game.totalEggos += game.perSecond;
                     updateDisplay();
                     saveGame();
+                    
+                    // Случайные эффекты
+                    if (Math.random() < 0.1) {
+                        createParticle(`+${game.perSecond}`, '#ffd700', 1);
+                    }
+                    if (Math.random() < 0.05) {
+                        spawnRandomHearts();
+                    }
                 }
             }, 1000);
         }
@@ -1710,6 +2082,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadGame();
             updateSongInfo();
+            
+            // Автовоспроизведение музыки (с разрешения пользователя)
+            setTimeout(() => {
+                if (!isPlaying && game.totalClicks === 0) {
+                    const playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => {
+                            // Автовоспроизведение заблокировано, ждем действия пользователя
+                            showNotification('Нажмите кнопку Play для включения музыки 🎵', '#4b0082');
+                        });
+                    }
+                }
+            }, 1000);
             
             setInterval(() => {
                 game.playTime = Math.floor((Date.now() - game.startTime) / 60000);
@@ -1721,6 +2106,7 @@
             setTimeout(() => {
                 if (game.totalClicks === 0) {
                     showNotification('Кликайте по вафле чтобы собрать Eggo! 🧇', '#8b0000');
+                    spawnHearts(5);
                 }
             }, 1000);
             
@@ -1738,9 +2124,12 @@
                 }
             }, 420000);
             
+            // Случайные сердечки
+            setInterval(spawnRandomHearts, 10000);
+            
             // Резервные изображения на случай если основные не загрузятся
-            const playerImg = document.getElementById('playerImage');
-            const enemyImg = document.getElementById('enemyImage');
+            const playerImg = document.querySelector('.player-icon');
+            const enemyImg = document.querySelector('.enemy-icon');
             
             playerImg.onerror = function() {
                 this.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%2300ff00"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="24" fill="white">🦸</text></svg>';
@@ -1749,8 +2138,16 @@
             enemyImg.onerror = function() {
                 this.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23ff0000"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="24" fill="white">👹</text></svg>';
             };
+            
+            // Добавляем обработчики для кнопок в битве
+            document.getElementById('attackBtn').addEventListener('click', function() {
+                createParticle('⚡ Атака!', '#ff0000', 2);
+            });
+            
+            document.getElementById('specialBtn').addEventListener('click', function() {
+                createParticle('🌟 СУПЕР!', '#ff00ff', 5);
+            });
         });
     </script>
 </body>
 </html>
-
