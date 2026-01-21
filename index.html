@@ -105,6 +105,320 @@
             font-size: 1.5rem;
         }
         
+        /* ИГРА ПУТЕШЕСТВИЯ С ПЕРСОНАЖЕМ */
+        .travel-game {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 900px;
+            height: 600px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            border: 3px solid #0f3460;
+            z-index: 1001;
+            box-shadow: 0 0 40px rgba(15, 52, 96, 0.5);
+            display: none;
+            overflow: hidden;
+        }
+        
+        .travel-game.active {
+            display: flex;
+            flex-direction: column;
+            animation: travelSpawn 0.5s;
+        }
+        
+        @keyframes travelSpawn {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        
+        .travel-header {
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #00ffcc;
+        }
+        
+        .travel-title {
+            font-family: 'Creepster', cursive;
+            font-size: 1.8rem;
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+        
+        .travel-close {
+            background: #ff0000;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .travel-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .travel-game-world {
+            flex: 3;
+            background: linear-gradient(135deg, #0d1b2a, #1b263b);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .world-map {
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(27, 38, 59, 0.9), rgba(13, 27, 42, 0.9)),
+                url('https://i.pinimg.com/564x/45/32/8d/45328d8f9a6b7c8d9e0f1a2b3c4d5e6f.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            border-right: 2px solid #0f3460;
+        }
+        
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(15, 52, 96, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 52, 96, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .player-character {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00ffcc, #00a8cc);
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            z-index: 10;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .other-player {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 5;
+            animation: pulse 2s infinite;
+        }
+        
+        .player-name {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            border: 1px solid #00ffcc;
+        }
+        
+        .travel-point {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            transition: all 0.3s;
+        }
+        
+        .travel-point:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+        }
+        
+        .travel-point-1 { top: 20%; left: 20%; }
+        .travel-point-2 { top: 60%; left: 40%; }
+        .travel-point-3 { top: 30%; left: 70%; }
+        .travel-point-4 { top: 70%; left: 80%; }
+        .travel-point-5 { top: 40%; left: 10%; }
+        
+        .travel-controls {
+            flex: 1;
+            background: linear-gradient(135deg, #1b263b, #0d1b2a);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+        }
+        
+        .controls-title {
+            color: #00ffcc;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .movement-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .move-btn {
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            color: white;
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .move-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #00ffcc, #0f3460);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+        }
+        
+        .move-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .center-btn {
+            grid-column: 2;
+            grid-row: 2;
+        }
+        
+        .player-stats {
+            background: rgba(15, 52, 96, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #00ffcc;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            color: #ffffff;
+        }
+        
+        .stat-value {
+            color: #00ffcc;
+            font-weight: bold;
+        }
+        
+        .online-players {
+            background: rgba(15, 52, 96, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #ff6b6b;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .player-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .online-player {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #ff6b6b;
+        }
+        
+        .player-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        .player-info {
+            flex: 1;
+        }
+        
+        .player-nickname {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        
+        .player-location {
+            font-size: 0.7rem;
+            color: #cccccc;
+        }
+        
+        .travel-messages {
+            background: rgba(15, 52, 96, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #ffd700;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .message {
+            margin: 5px 0;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            font-size: 0.8rem;
+            border-left: 3px solid #ffd700;
+        }
+        
+        .message-player {
+            color: #00ffcc;
+            font-weight: bold;
+        }
+        
         /* СЕРДЕЧКИ И ЭФФЕКТЫ */
         .hearts-container {
             position: fixed;
@@ -381,545 +695,6 @@
             margin-left: 10px;
         }
         
-        /* ИГРА С ДЕМОГОРГОНОМ */
-        .demogorgon-game {
-            position: fixed;
-            bottom: 80px;
-            left: 20px;
-            width: 300px;
-            background: linear-gradient(135deg, #330000, #660000);
-            border-radius: 15px;
-            padding: 20px;
-            border: 3px solid #ff0000;
-            z-index: 998;
-            box-shadow: 0 0 30px rgba(255,0,0,0.5);
-            display: none;
-        }
-        
-        .demogorgon-game.active {
-            display: block;
-            animation: demoSpawn 0.5s;
-        }
-        
-        @keyframes demoSpawn {
-            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-            100% { transform: scale(1) rotate(0); opacity: 1; }
-        }
-        
-        .demogorgon-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .demogorgon-title {
-            font-family: 'Creepster', cursive;
-            font-size: 1.5rem;
-            color: #ff0000;
-            text-shadow: 0 0 10px #ff0000;
-        }
-        
-        .demogorgon-close {
-            background: #ff0000;
-            color: white;
-            border: none;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        
-        .demogorgon-container {
-            text-align: center;
-        }
-        
-        .demogorgon {
-            font-size: 4rem;
-            margin: 15px 0;
-            cursor: pointer;
-            animation: demoFloat 3s ease-in-out infinite;
-            display: inline-block;
-        }
-        
-        @keyframes demoFloat {
-            0%, 100% { transform: translateY(0) rotate(0); }
-            25% { transform: translateY(-10px) rotate(10deg); }
-            50% { transform: translateY(0) rotate(0); }
-            75% { transform: translateY(10px) rotate(-10deg); }
-        }
-        
-        .demogorgon-health {
-            height: 20px;
-            background: #330000;
-            border-radius: 10px;
-            margin: 15px 0;
-            overflow: hidden;
-            border: 2px solid #ff0000;
-        }
-        
-        .health-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #ff0000, #ff6666);
-            width: 100%;
-            transition: width 0.3s;
-        }
-        
-        .game-rewards {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255,0,0,0.3);
-        }
-        
-        /* БИТВА ГЕРОЕВ */
-        .hero-fight-game {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 700px;
-            background: linear-gradient(135deg, #003366, #006699);
-            border-radius: 20px;
-            padding: 25px;
-            border: 3px solid #00aaff;
-            z-index: 1001;
-            box-shadow: 0 0 40px rgba(0,170,255,0.5);
-            display: none;
-        }
-        
-        .hero-fight-game.active {
-            display: block;
-            animation: fightSpawn 0.5s;
-        }
-        
-        @keyframes fightSpawn {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-        
-        .fight-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .fight-title {
-            font-family: 'Creepster', cursive;
-            font-size: 1.8rem;
-            color: #00aaff;
-            text-shadow: 0 0 10px #00aaff;
-        }
-        
-        .fight-arena {
-            position: relative;
-            height: 300px;
-            margin: 20px 0;
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 2px solid rgba(255,215,0,0.3);
-        }
-        
-        .fight-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://i.pinimg.com/564x/12/34/56/1234567890abcdef1234567890abcdef.jpg');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.3;
-        }
-        
-        .fighters-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            height: 100%;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .fighter {
-            text-align: center;
-            padding: 20px;
-            border-radius: 15px;
-            background: rgba(0,0,0,0.7);
-            border: 3px solid;
-            transition: all 0.3s;
-            min-width: 200px;
-            position: relative;
-        }
-        
-        .fighter-player {
-            border-color: #00ff00;
-            box-shadow: 0 0 20px rgba(0,255,0,0.5);
-        }
-        
-        .fighter-enemy {
-            border-color: #ff0000;
-            box-shadow: 0 0 20px rgba(255,0,0,0.5);
-        }
-        
-        .fighter-icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-            object-fit: cover;
-            border: 3px solid;
-        }
-        
-        .player-icon {
-            border-color: #00ff00;
-        }
-        
-        .enemy-icon {
-            border-color: #ff0000;
-        }
-        
-        .fighter-health {
-            height: 15px;
-            background: #333;
-            border-radius: 8px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-        
-        .health-fill {
-            height: 100%;
-            transition: width 0.3s;
-        }
-        
-        .player-health {
-            background: linear-gradient(90deg, #00ff00, #00cc00);
-        }
-        
-        .enemy-health {
-            background: linear-gradient(90deg, #ff0000, #cc0000);
-        }
-        
-        .fight-controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .fight-btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .attack-btn {
-            background: linear-gradient(135deg, #ff0000, #cc0000);
-            color: white;
-        }
-        
-        .attack-btn:hover:not(:disabled) {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(255,0,0,0.5);
-        }
-        
-        .special-btn {
-            background: linear-gradient(135deg, #0000ff, #6600cc);
-            color: white;
-        }
-        
-        .special-btn:hover:not(:disabled) {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(0,0,255,0.5);
-        }
-        
-        .fight-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .fight-log {
-            margin-top: 20px;
-            height: 80px;
-            overflow-y: auto;
-            background: rgba(0,0,0,0.5);
-            border-radius: 10px;
-            padding: 10px;
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-        
-        .log-entry {
-            margin: 5px 0;
-            padding: 5px;
-            border-radius: 5px;
-            animation: fadeIn 0.3s;
-        }
-        
-        .log-player {
-            background: rgba(0,255,0,0.1);
-            border-left: 3px solid #00ff00;
-        }
-        
-        .log-enemy {
-            background: rgba(255,0,0,0.1);
-            border-left: 3px solid #ff0000;
-        }
-        
-        .log-special {
-            background: rgba(255,215,0,0.1);
-            border-left: 3px solid #ffd700;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* НОВЫЕ ИГРЫ */
-        
-        /* ИГРА В КОСТИ */
-        .dice-game {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            background: linear-gradient(135deg, #663300, #996633);
-            border-radius: 20px;
-            padding: 25px;
-            border: 3px solid #ff9900;
-            z-index: 1001;
-            box-shadow: 0 0 40px rgba(255,153,0,0.5);
-            display: none;
-        }
-        
-        .dice-game.active {
-            display: block;
-            animation: diceSpawn 0.5s;
-        }
-        
-        @keyframes diceSpawn {
-            0% { transform: translate(-50%, -50%) rotate(-180deg) scale(0); opacity: 0; }
-            100% { transform: translate(-50%, -50%) rotate(0) scale(1); opacity: 1; }
-        }
-        
-        .dice-title {
-            font-family: 'Creepster', cursive;
-            font-size: 1.8rem;
-            color: #ff9900;
-            text-shadow: 0 0 10px #ff9900;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .dice-container {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 30px 0;
-        }
-        
-        .dice {
-            width: 100px;
-            height: 100px;
-            background: white;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            font-weight: bold;
-            color: #333;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            border: 3px solid #ff9900;
-        }
-        
-        .dice.rolling {
-            animation: rollDice 0.5s infinite;
-        }
-        
-        @keyframes rollDice {
-            0%, 100% { transform: rotate(0); }
-            25% { transform: rotate(90deg); }
-            50% { transform: rotate(180deg); }
-            75% { transform: rotate(270deg); }
-        }
-        
-        .dice-result {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #ffd700;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-        
-        .dice-bet {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .bet-amount {
-            font-size: 1.2rem;
-            color: white;
-        }
-        
-        .bet-btn {
-            background: linear-gradient(135deg, #00aa00, #00cc00);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        
-        .bet-btn:hover:not(:disabled) {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0,255,0,0.5);
-        }
-        
-        /* ИГРА В УГАДЫВАНИЕ ЧИСЕЛ */
-        .guess-game {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            background: linear-gradient(135deg, #330066, #6600cc);
-            border-radius: 20px;
-            padding: 25px;
-            border: 3px solid #9933ff;
-            z-index: 1001;
-            box-shadow: 0 0 40px rgba(153,51,255,0.5);
-            display: none;
-        }
-        
-        .guess-game.active {
-            display: block;
-            animation: guessSpawn 0.5s;
-        }
-        
-        @keyframes guessSpawn {
-            0% { transform: translate(-50%, -50%) scale(0) rotate(180deg); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(1) rotate(0); opacity: 1; }
-        }
-        
-        .guess-title {
-            font-family: 'Creepster', cursive;
-            font-size: 1.8rem;
-            color: #9933ff;
-            text-shadow: 0 0 10px #9933ff;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .guess-input-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 30px 0;
-        }
-        
-        .guess-input {
-            width: 100px;
-            height: 60px;
-            font-size: 2rem;
-            text-align: center;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid #9933ff;
-            border-radius: 10px;
-            color: white;
-        }
-        
-        .guess-btn {
-            background: linear-gradient(135deg, #9933ff, #6600cc);
-            color: white;
-            border: none;
-            padding: 10px 30px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.2rem;
-            transition: all 0.3s;
-        }
-        
-        .guess-btn:hover:not(:disabled) {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(153,51,255,0.5);
-        }
-        
-        .guess-feedback {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #ffd700;
-            margin: 20px 0;
-            min-height: 30px;
-        }
-        
-        .guess-hint {
-            text-align: center;
-            font-size: 1rem;
-            color: #aaa;
-            margin: 10px 0;
-        }
-        
-        /* ФОТОГРАФИИ ПЕРСОНАЖЕЙ */
-        .characters-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
-        }
-        
-        .character-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-            text-align: center;
-        }
-        
-        .character-card:hover {
-            transform: translateY(-10px);
-            border-color: #8b0000;
-            box-shadow: 0 10px 20px rgba(139,0,0,0.3);
-        }
-        
-        .character-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-        }
-        
-        .character-info {
-            padding: 15px;
-        }
-        
-        .character-name {
-            font-weight: 700;
-            color: #ffd700;
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-        
-        .character-desc {
-            color: #aaa;
-            font-size: 0.8rem;
-        }
-        
         /* НОТИФИКАЦИИ */
         .notification-container {
             position: fixed;
@@ -1083,39 +858,14 @@
             color: white;
         }
         
+        .btn-travel {
+            background: linear-gradient(135deg, #00cccc, #008080);
+            color: white;
+        }
+        
         .banner-btn:hover {
             transform: translateY(-3px) scale(1.03);
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-        
-        /* СЕКЦИИ */
-        .section {
-            background: linear-gradient(135deg, rgba(26,0,51,0.7), rgba(0,0,0,0.9));
-            border-radius: 20px;
-            padding: 30px;
-            margin: 40px 0;
-            border: 2px solid rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #8b0000, #4b0082, #006400);
-        }
-        
-        .section-title {
-            font-family: 'Creepster', cursive;
-            font-size: 2.2rem;
-            color: #ffd700;
-            margin-bottom: 25px;
-            text-align: center;
-            letter-spacing: 2px;
         }
         
         /* АДАПТИВНОСТЬ */
@@ -1147,36 +897,33 @@
                 transform: translateX(0) translateY(-80%);
             }
             
-            .demogorgon-game {
-                position: relative;
-                bottom: auto;
-                left: auto;
-                width: 100%;
-                margin: 20px 0;
+            .travel-game {
+                width: 95%;
+                height: 80vh;
+                flex-direction: column;
             }
             
-            .hero-fight-game, .dice-game, .guess-game {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 95%;
-                max-height: 90vh;
+            .travel-container {
+                flex-direction: column;
+            }
+            
+            .travel-game-world {
+                height: 60%;
+            }
+            
+            .travel-controls {
+                height: 40%;
                 overflow-y: auto;
             }
             
-            .fight-arena {
-                height: 200px;
+            .movement-controls {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5px;
             }
             
-            .fighter {
-                min-width: 140px;
+            .move-btn {
                 padding: 10px;
-            }
-            
-            .fighter-icon {
-                width: 70px;
-                height: 70px;
+                font-size: 1.2rem;
             }
             
             .container {
@@ -1190,29 +937,6 @@
             .banner-buttons {
                 flex-direction: column;
                 align-items: center;
-            }
-            
-            .section {
-                padding: 20px;
-            }
-            
-            .section-title {
-                font-size: 1.8rem;
-            }
-            
-            .fighters-container {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .fight-controls {
-                flex-direction: column;
-            }
-            
-            .dice-container {
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
             }
         }
     </style>
@@ -1233,9 +957,9 @@
             <h3 class="games-title">🎮 ИГРЫ ХОУКИНСА</h3>
         </div>
         <div class="games-grid">
-            <button class="game-btn" onclick="startDemogorgonGame()">
-                <div class="game-icon">👹</div>
-                <div>Демогоргон</div>
+            <button class="game-btn" onclick="startTravelGame()">
+                <div class="game-icon">🗺️</div>
+                <div>Путешествие</div>
             </button>
             <button class="game-btn" onclick="startHeroFight()">
                 <div class="game-icon">⚔️</div>
@@ -1253,10 +977,121 @@
                 <div class="game-icon">❤️</div>
                 <div>Сердечки!</div>
             </button>
-            <button class="game-btn" onclick="startMemoryGame()">
-                <div class="game-icon">🧠</div>
-                <div>Память</div>
+            <button class="game-btn" onclick="startDemogorgonGame()">
+                <div class="game-icon">👹</div>
+                <div>Демогоргон</div>
             </button>
+        </div>
+    </div>
+    
+    <!-- Игра Путешествие -->
+    <div class="travel-game" id="travelGame">
+        <div class="travel-header">
+            <h3 class="travel-title">🗺️ ПУТЕШЕСТВИЕ ПО ХОУКИНСУ</h3>
+            <button class="travel-close" onclick="closeTravelGame()">×</button>
+        </div>
+        
+        <div class="travel-container">
+            <div class="travel-game-world">
+                <div class="world-map">
+                    <div class="grid-overlay"></div>
+                    
+                    <!-- Игровые точки интереса -->
+                    <div class="travel-point travel-point-1" onclick="visitLocation('Лаборатория Хоукинса', 50)">
+                        <div class="player-name">Лаборатория</div>
+                        🏢
+                    </div>
+                    
+                    <div class="travel-point travel-point-2" onclick="visitLocation('Дом Байерсов', 30)">
+                        <div class="player-name">Дом Байерсов</div>
+                        🏠
+                    </div>
+                    
+                    <div class="travel-point travel-point-3" onclick="visitLocation('Школа Хоукинса', 40)">
+                        <div class="player-name">Школа</div>
+                        🏫
+                    </div>
+                    
+                    <div class="travel-point travel-point-4" onclick="visitLocation('Маллард Гейт', 60)">
+                        <div class="player-name">Маллард Гейт</div>
+                        🎮
+                    </div>
+                    
+                    <div class="travel-point travel-point-5" onclick="visitLocation('Лес Хоукинса', 70)">
+                        <div class="player-name">Лес</div>
+                        🌲
+                    </div>
+                    
+                    <!-- Игрок -->
+                    <div class="player-character" id="playerCharacter" style="top: 50%; left: 50%;">
+                        <div class="player-name" id="playerName">Вы</div>
+                        🦸
+                    </div>
+                    
+                    <!-- Другие игроки (будут добавляться динамически) -->
+                    <div id="otherPlayersContainer"></div>
+                </div>
+            </div>
+            
+            <div class="travel-controls">
+                <div class="controls-title">🎮 УПРАВЛЕНИЕ</div>
+                
+                <div class="movement-controls">
+                    <button class="move-btn" onclick="movePlayer('up')" id="moveUp">↑</button>
+                    <button class="move-btn" onclick="movePlayer('left')" id="moveLeft">←</button>
+                    <button class="move-btn center-btn" onclick="collectReward()" id="collectBtn">
+                        <i class="fas fa-gift"></i>
+                    </button>
+                    <button class="move-btn" onclick="movePlayer('right')" id="moveRight">→</button>
+                    <button class="move-btn" onclick="movePlayer('down')" id="moveDown">↓</button>
+                </div>
+                
+                <div class="player-stats">
+                    <div class="stat-item">
+                        <span>Игрок:</span>
+                        <span class="stat-value" id="travelPlayerName">Гость</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Очков пути:</span>
+                        <span class="stat-value" id="travelScore">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Позиция:</span>
+                        <span class="stat-value" id="playerPosition">50%, 50%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Вафли:</span>
+                        <span class="stat-value" id="travelEggos">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Онлайн:</span>
+                        <span class="stat-value" id="onlineCount">1</span>
+                    </div>
+                </div>
+                
+                <div class="online-players">
+                    <div class="controls-title">👥 ИГРОКИ ОНЛАЙН</div>
+                    <div class="player-list" id="onlinePlayersList">
+                        <!-- Игроки будут добавляться динамически -->
+                        <div class="online-player">
+                            <div class="player-avatar">🦸</div>
+                            <div class="player-info">
+                                <div class="player-nickname">Вы</div>
+                                <div class="player-location">Центр карты</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="travel-messages">
+                    <div class="controls-title">💬 СООБЩЕНИЯ</div>
+                    <div id="travelMessages">
+                        <div class="message">
+                            <span class="message-player">Система:</span> Добро пожаловать в Хоукинс!
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -1332,150 +1167,6 @@
         </div>
     </div>
     
-    <!-- Игра с демогоргоном -->
-    <div class="demogorgon-game" id="demogorgonGame">
-        <div class="demogorgon-header">
-            <h3 class="demogorgon-title">АТАКА ДЕМОГОРГОНА!</h3>
-            <button class="demogorgon-close" onclick="closeDemoGame()">×</button>
-        </div>
-        <div class="demogorgon-container">
-            <div class="demogorgon" onclick="attackDemogorgon()">👹</div>
-            <div class="demogorgon-health">
-                <div class="health-bar" id="demoHealthBar"></div>
-            </div>
-            <div style="color: #aaa; font-size: 0.9rem; margin-bottom: 10px;">
-                Здоровье: <span id="demoHealth">100</span>/100
-            </div>
-            <div class="game-rewards">
-                <div style="color: #ffd700;">Награда за победу: <span id="demoReward">500</span> вафель</div>
-                <div style="font-size: 0.8rem; color: #aaa; margin-top: 5px;">Атакуйте демогоргона!</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Битва героев -->
-    <div class="hero-fight-game" id="heroFightGame">
-        <div class="fight-header">
-            <h3 class="fight-title">⚔️ БИТВА ГЕРОЕВ ХОУКИНСА</h3>
-            <button class="demogorgon-close" onclick="closeHeroFight()">×</button>
-        </div>
-        
-        <div class="fight-arena">
-            <div class="fight-bg"></div>
-            <div class="fighters-container">
-                <div class="fighter fighter-player" id="playerFighter">
-                    <img src="https://i.pinimg.com/564x/3d/5a/4d/3d5a4d7b5f6c7e8d9f0a1b2c3d4e5f6a.jpg" class="fighter-icon player-icon" alt="Одиннадцать">
-                    <div style="font-weight: bold; font-size: 1.2rem; color: #00ff00;">Одиннадцать</div>
-                    <div style="color: #aaa; font-size: 0.9rem; margin: 5px 0;">Псионик • Игрок</div>
-                    <div class="fighter-health">
-                        <div class="health-fill player-health" id="playerHealthBar" style="width: 100%;"></div>
-                    </div>
-                    <div style="color: #00ff00;">HP: <span id="playerHealth">100</span>/100</div>
-                </div>
-                
-                <div style="font-size: 2.5rem; color: #ffd700; text-shadow: 0 0 10px #ff0000;">⚡</div>
-                
-                <div class="fighter fighter-enemy" id="enemyFighter">
-                    <img src="https://i.pinimg.com/564x/4e/5f/6a/4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b.jpg" class="fighter-icon enemy-icon" alt="Векенда">
-                    <div style="font-weight: bold; font-size: 1.2rem; color: #ff0000;">Векенда</div>
-                    <div style="color: #aaa; font-size: 0.9rem; margin: 5px 0;">Псионик • Босс</div>
-                    <div class="fighter-health">
-                        <div class="health-fill enemy-health" id="enemyHealthBar" style="width: 100%;"></div>
-                    </div>
-                    <div style="color: #ff0000;">HP: <span id="enemyHealth">150</span>/150</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="fight-log" id="fightLog">
-            <div class="log-entry log-special">⚔️ Битва началась! Одиннадцать против Векенды!</div>
-        </div>
-        
-        <div class="fight-controls">
-            <button class="fight-btn attack-btn" onclick="heroAttack()" id="attackBtn">
-                <i class="fas fa-bolt"></i> Телекинез (10-25 урона)
-            </button>
-            <button class="fight-btn special-btn" onclick="heroSpecial()" id="specialBtn">
-                <i class="fas fa-star"></i> Супер-удар (40 урона)
-            </button>
-        </div>
-        
-        <div style="margin-top: 20px; text-align: center; color: #ffd700;">
-            <div>Награда за победу: <strong>1000 вафель</strong></div>
-            <div style="font-size: 0.9rem; color: #aaa; margin-top: 5px;">
-                Супер-удар перезаряжается каждые 15 секунд
-            </div>
-        </div>
-    </div>
-    
-    <!-- Игра в кости -->
-    <div class="dice-game" id="diceGame">
-        <div class="fight-header">
-            <h3 class="fight-title">🎲 ИГРА В КОСТИ</h3>
-            <button class="demogorgon-close" onclick="closeDiceGame()">×</button>
-        </div>
-        
-        <div class="dice-container">
-            <div class="dice" id="dice1">?</div>
-            <div class="dice" id="dice2">?</div>
-        </div>
-        
-        <div class="dice-result" id="diceResult">
-            Сделайте ставку и бросьте кости!
-        </div>
-        
-        <div class="dice-bet">
-            <div class="bet-amount">Ставка: <span id="betAmount">10</span> вафель</div>
-            <button class="bet-btn" onclick="increaseBet()">+10</button>
-            <button class="bet-btn" onclick="decreaseBet()">-10</button>
-        </div>
-        
-        <div style="text-align: center; margin: 20px 0;">
-            <button class="banner-btn btn-primary" onclick="rollDice()" id="rollBtn" style="width: 200px;">
-                <i class="fas fa-dice"></i> БРОСИТЬ КОСТИ
-            </button>
-        </div>
-        
-        <div style="margin-top: 20px; text-align: center; color: #aaa; font-size: 0.9rem;">
-            <div>Правила: 7 или 11 = выигрыш ×2, 2 или 12 = проигрыш, иначе = возврат ставки</div>
-            <div style="color: #ffd700; margin-top: 5px;">Ваш баланс: <span id="diceBalance">0</span> вафель</div>
-        </div>
-    </div>
-    
-    <!-- Игра в угадывание чисел -->
-    <div class="guess-game" id="guessGame">
-        <div class="fight-header">
-            <h3 class="fight-title">🔢 УГАДАЙ ЧИСЛО</h3>
-            <button class="demogorgon-close" onclick="closeGuessGame()">×</button>
-        </div>
-        
-        <div style="text-align: center; margin: 20px 0;">
-            <div style="font-size: 1.2rem; color: #ffd700;">Угадайте число от 1 до 100!</div>
-            <div class="guess-hint" id="guessHint">У вас 10 попыток</div>
-        </div>
-        
-        <div class="guess-input-container">
-            <input type="number" min="1" max="100" class="guess-input" id="guessInput" placeholder="?">
-            <button class="guess-btn" onclick="makeGuess()" id="guessBtn">УГАДАТЬ</button>
-        </div>
-        
-        <div class="guess-feedback" id="guessFeedback">
-            Введите число и нажмите "Угадать"
-        </div>
-        
-        <div style="margin-top: 20px; text-align: center;">
-            <div style="color: #aaa; font-size: 0.9rem; margin-bottom: 10px;">
-                Попыток осталось: <span id="attemptsLeft">10</span>
-            </div>
-            <div style="color: #ffd700;">
-                Награда за победу: <strong>200 вафель</strong>
-            </div>
-            <button class="banner-btn btn-secondary" onclick="restartGuessGame()" style="width: 200px; margin-top: 20px;">
-                <i class="fas fa-redo"></i> НОВАЯ ИГРА
-            </button>
-        </div>
-    </div>
-    
     <!-- Частицы -->
     <div class="particles" id="particles"></div>
 
@@ -1484,110 +1175,33 @@
         <!-- Баннер -->
         <div class="stranger-banner">
             <h1 class="stranger-title">ОЧЕНЬ СТРАННЫЕ ДЕЛА</h1>
-            <p class="banner-subtitle">Добро пожаловать в Хоукинс! Собирайте вафли Eggo, чтобы помочь героям бороться с угрозами из Верхопотного мира. Каждая вафля - это энергия для Одиннадцать!</p>
+            <p class="banner-subtitle">Добро пожаловать в Хоукинс! Исследуйте город, собирайте вафли Eggo и встречайтесь с другими игроками в онлайн-режиме!</p>
             
             <div class="banner-buttons">
-                <button class="banner-btn btn-primary" onclick="startGame()">
-                    <i class="fas fa-play"></i> НАЧАТЬ ИГРУ
+                <button class="banner-btn btn-travel" onclick="startTravelGame()">
+                    <i class="fas fa-map-marked-alt"></i> ПУТЕШЕСТВИЕ
                 </button>
-                <button class="banner-btn btn-secondary" onclick="startDemogorgonGame()">
-                    <i class="fas fa-skull"></i> СРАЗИТЬ ДЕМОГОРГОНА
+                <button class="banner-btn btn-primary" onclick="startGame()">
+                    <i class="fas fa-play"></i> КЛИКЕР
                 </button>
                 <button class="banner-btn btn-tertiary" onclick="startHeroFight()">
                     <i class="fas fa-fist-raised"></i> БИТВА ГЕРОЕВ
                 </button>
-                <button class="banner-btn btn-danger" onclick="startDiceGame()">
-                    <i class="fas fa-dice"></i> ИГРА В КОСТИ
+                <button class="banner-btn btn-danger" onclick="spawnHearts()">
+                    <i class="fas fa-heart"></i> СЕРДЕЧКИ
                 </button>
-            </div>
-        </div>
-
-        <!-- Галерея персонажей -->
-        <div class="section">
-            <h2 class="section-title"><i class="fas fa-users"></i> ГЕРОИ ХОУКИНСА</h2>
-            <div class="characters-gallery">
-                <div class="character-card">
-                    <img src="Miceodi.jpg" class="character-img" alt="Одиннадцать и Майк">
-                    <div class="character-info">
-                        <div class="character-name">Одиннадцать и Майк</div>
-                        <div class="character-desc">Самые крепкие отношения в Хоукинсе</div>
-                    </div>
-                </div>
-                
-                <div class="character-card">
-                    <img src="Genri.jpg" class="character-img" alt="Генри Крил/Векенда">
-                    <div class="character-info">
-                        <div class="character-name">Генри Крил/Векенда</div>
-                        <div class="character-desc">Главный антагонист сериала</div>
-                    </div>
-                </div>
-                
-                <div class="character-card">
-                    <img src="Lukasmaks.jpg" class="character-img" alt="Лукас и Макс">
-                    <div class="character-info">
-                        <div class="character-name">Лукас и Макс</div>
-                        <div class="character-desc">Самые крутые геймеры Хоукинса</div>
-                    </div>
-                </div>
-                
-                <div class="character-card">
-                    <img src="Will.jpg" class="character-img" alt="Уилл Байерс">
-                    <div class="character-info">
-                        <div class="character-name">Уилл Байерс</div>
-                        <div class="character-desc">Первый пропавший в Верхопотном мире</div>
-                    </div>
-                </div>
-                
-                <div class="character-card">
-                    <img src="Hopper.jpg" class="character-img" alt="Джим Хоппер">
-                    <div class="character-info">
-                        <div class="character-name">Джим Хоппер</div>
-                        <div class="character-desc">Шериф и приемный отец Одиннадцать</div>
-                    </div>
-                </div>
-                
-                <div class="character-card">
-                    <img src="Dastin.jpg" class="character-img" alt="Дастин Хендерсон">
-                    <div class="character-info">
-                        <div class="character-name">Дастин Хендерсон</div>
-                        <div class="character-desc">Самый умный в команде</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Статистика -->
-        <div class="section">
-            <h2 class="section-title"><i class="fas fa-chart-bar"></i> СТАТИСТИКА ИГРЫ</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0;">
-                <div class="stat-box">
-                    <span class="stat-value" id="totalEggos">0</span>
-                    <span class="stat-label">Всего вафель</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-value" id="totalClicks">0</span>
-                    <span class="stat-label">Всего кликов</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-value" id="playTime">0</span>
-                    <span class="stat-label">Минут игры</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-value" id="recordEggos">0</span>
-                    <span class="stat-label">Рекорд вафель</span>
-                </div>
             </div>
         </div>
 
         <!-- Игровые мини-игры -->
         <div class="section">
-            <h2 class="section-title"><i class="fas fa-gamepad"></i> МИНИ-ИГРЫ</h2>
+            <h2 class="section-title"><i class="fas fa-gamepad"></i> ИГРЫ ХОУКИНСА</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0;">
-                <div class="character-card" onclick="startDemogorgonGame()">
-                    <div style="background: linear-gradient(135deg, #ff0000, #cc0000); height: 150px; display: flex; align-items: center; justify-content: center; font-size: 4rem;">👹</div>
+                <div class="character-card" onclick="startTravelGame()">
+                    <div style="background: linear-gradient(135deg, #00cccc, #008080); height: 150px; display: flex; align-items: center; justify-content: center; font-size: 4rem;">🗺️</div>
                     <div class="character-info">
-                        <div class="character-name">Атака демогоргона</div>
-                        <div class="character-desc">Сразитесь с монстром из Верхопотного мира!</div>
+                        <div class="character-name">Путешествие по Хоукинсу</div>
+                        <div class="character-desc">Исследуйте город в реальном времени с другими игроками!</div>
                     </div>
                 </div>
                 
@@ -1613,6 +1227,29 @@
                         <div class="character-name">Угадай число</div>
                         <div class="character-desc">Проверьте свою интуицию!</div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Статистика -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-chart-bar"></i> СТАТИСТИКА ИГРЫ</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0;">
+                <div class="stat-box">
+                    <span class="stat-value" id="totalEggos">0</span>
+                    <span class="stat-label">Всего вафель</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="totalClicks">0</span>
+                    <span class="stat-label">Всего кликов</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="playTime">0</span>
+                    <span class="stat-label">Минут игры</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="travelPoints">0</span>
+                    <span class="stat-label">Очков пути</span>
                 </div>
             </div>
         </div>
@@ -1657,40 +1294,578 @@
     </div>
 
     <script>
-        // ========== СЕРДЕЧКИ И ЭФФЕКТЫ ==========
-        function spawnHearts(count = 20) {
-            const hearts = ['❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '🤍', '💕', '💞', '💓', '💗', '💖', '💘', '💝'];
-            const colors = ['#ff0000', '#ff6b6b', '#ff8e8e', '#ffaaaa', '#ff6bcb', '#ff8ef2'];
-            const container = document.getElementById('heartsContainer');
-            
-            for (let i = 0; i < count; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
-                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.top = Math.random() * 100 + '%';
-                heart.style.animationDuration = (Math.random() * 2 + 1) + 's';
+        // ========== СИМУЛЯЦИЯ ОНЛАЙН СИСТЕМЫ ==========
+        // В реальном проекте здесь был бы WebSocket или Firebase
+        
+        class OnlineGame {
+            constructor() {
+                this.players = {};
+                this.messages = [];
+                this.lastPlayerId = 0;
+                this.playerName = `Игрок_${Math.floor(Math.random() * 1000)}`;
+                this.playerId = this.generatePlayerId();
                 
-                container.appendChild(heart);
+                // Инициализируем себя как игрока
+                this.addPlayer(this.playerId, this.playerName, 50, 50);
                 
-                setTimeout(() => {
-                    heart.remove();
-                }, 2000);
+                // Создаем несколько NPC для демонстрации
+                this.createDemoPlayers();
+                
+                // Обновляем интерфейс каждую секунду
+                setInterval(() => this.updateOnlineDisplay(), 1000);
+                
+                // Периодически двигаем NPC
+                setInterval(() => this.moveNPCs(), 3000);
+                
+                // Периодически отправляем сообщения
+                setInterval(() => this.sendRandomMessage(), 15000);
             }
             
-            showNotification('Сердечки! 💕', '#ff6b6b');
-            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            generatePlayerId() {
+                return 'player_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            }
+            
+            addPlayer(id, name, x, y) {
+                this.players[id] = {
+                    id: id,
+                    name: name,
+                    x: x,
+                    y: y,
+                    score: 0,
+                    lastUpdate: Date.now(),
+                    isNPC: id !== this.playerId
+                };
+                
+                if (id === this.playerId) {
+                    this.addMessage(`Игрок ${name} присоединился к игре!`);
+                }
+            }
+            
+            createDemoPlayers() {
+                const npcNames = ['Майк', 'Дастин', 'Лукас', 'Макс', 'Уилл', 'Одиннадцать', 'Хоппер', 'Нэнси', 'Джонатан', 'Стив'];
+                const locations = [
+                    {x: 20, y: 20, name: 'Лаборатория'},
+                    {x: 40, y: 60, name: 'Дом Байерсов'},
+                    {x: 70, y: 30, name: 'Школа'},
+                    {x: 80, y: 70, name: 'Маллард Гейт'},
+                    {x: 10, y: 40, name: 'Лес'}
+                ];
+                
+                for (let i = 0; i < 5; i++) {
+                    const id = 'npc_' + i;
+                    const name = npcNames[Math.floor(Math.random() * npcNames.length)];
+                    const location = locations[i % locations.length];
+                    
+                    this.addPlayer(id, name, location.x, location.y);
+                }
+            }
+            
+            updatePlayerPosition(id, x, y) {
+                if (this.players[id]) {
+                    this.players[id].x = x;
+                    this.players[id].y = y;
+                    this.players[id].lastUpdate = Date.now();
+                    
+                    // Увеличиваем счет за перемещение
+                    if (id === this.playerId) {
+                        this.players[id].score += 1;
+                        travelGame.score += 1;
+                        localStorage.setItem('travelScore', travelGame.score);
+                    }
+                }
+            }
+            
+            removeInactivePlayers() {
+                const now = Date.now();
+                for (const id in this.players) {
+                    if (id !== this.playerId && this.players[id].isNPC) {
+                        // Для демо оставляем всех NPC
+                        continue;
+                    }
+                    
+                    if (now - this.players[id].lastUpdate > 30000) {
+                        if (id !== this.playerId) {
+                            this.addMessage(`Игрок ${this.players[id].name} покинул игру`);
+                        }
+                        delete this.players[id];
+                    }
+                }
+            }
+            
+            moveNPCs() {
+                for (const id in this.players) {
+                    if (this.players[id].isNPC) {
+                        const dx = (Math.random() - 0.5) * 20;
+                        const dy = (Math.random() - 0.5) * 20;
+                        
+                        let newX = this.players[id].x + dx;
+                        let newY = this.players[id].y + dy;
+                        
+                        // Ограничиваем движение в пределах карты
+                        newX = Math.max(5, Math.min(95, newX));
+                        newY = Math.max(5, Math.min(95, newY));
+                        
+                        this.players[id].x = newX;
+                        this.players[id].y = newY;
+                        this.players[id].lastUpdate = Date.now();
+                    }
+                }
+            }
+            
+            addMessage(text, playerName = 'Система') {
+                const message = {
+                    player: playerName,
+                    text: text,
+                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                };
+                
+                this.messages.push(message);
+                
+                // Ограничиваем количество сообщений
+                if (this.messages.length > 10) {
+                    this.messages.shift();
+                }
+                
+                // Обновляем отображение сообщений
+                this.updateMessagesDisplay();
+            }
+            
+            sendRandomMessage() {
+                const npcMessages = [
+                    "Кто-нибудь видел демогоргона?",
+                    "Собрал уже 1000 вафель!",
+                    "Исследую лабораторию...",
+                    "В лесу сегодня тихо",
+                    "Нужно больше Eggo!",
+                    "Нашел секретный проход!",
+                    "Кто хочет в битву героев?",
+                    "В школе происходит что-то странное...",
+                    "Майк, ты где?",
+                    "Одиннадцать, мы тебя ищем!"
+                ];
+                
+                const activeNPCs = Object.values(this.players).filter(p => p.isNPC);
+                if (activeNPCs.length > 0) {
+                    const npc = activeNPCs[Math.floor(Math.random() * activeNPCs.length)];
+                    const message = npcMessages[Math.floor(Math.random() * npcMessages.length)];
+                    this.addMessage(message, npc.name);
+                }
+            }
+            
+            sendPlayerMessage(text) {
+                this.addMessage(text, this.playerName);
+            }
+            
+            updateOnlineDisplay() {
+                this.removeInactivePlayers();
+                
+                // Обновляем количество онлайн игроков
+                const onlineCount = Object.keys(this.players).length;
+                document.getElementById('onlineCount').textContent = onlineCount;
+                
+                // Обновляем список игроков
+                this.updatePlayersList();
+                
+                // Обновляем позиции игроков на карте
+                this.updatePlayersOnMap();
+            }
+            
+            updatePlayersList() {
+                const playersList = document.getElementById('onlinePlayersList');
+                playersList.innerHTML = '';
+                
+                // Добавляем себя первым
+                const myPlayer = this.players[this.playerId];
+                if (myPlayer) {
+                    playersList.innerHTML += `
+                        <div class="online-player">
+                            <div class="player-avatar">🦸</div>
+                            <div class="player-info">
+                                <div class="player-nickname">${myPlayer.name} (Вы)</div>
+                                <div class="player-location">${this.getLocationName(myPlayer.x, myPlayer.y)}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Добавляем других игроков
+                for (const id in this.players) {
+                    if (id !== this.playerId) {
+                        const player = this.players[id];
+                        const avatar = player.isNPC ? '👤' : '🦸';
+                        
+                        playersList.innerHTML += `
+                            <div class="online-player">
+                                <div class="player-avatar">${avatar}</div>
+                                <div class="player-info">
+                                    <div class="player-nickname">${player.name}${player.isNPC ? ' (NPC)' : ''}</div>
+                                    <div class="player-location">${this.getLocationName(player.x, player.y)}</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            
+            updatePlayersOnMap() {
+                const container = document.getElementById('otherPlayersContainer');
+                container.innerHTML = '';
+                
+                for (const id in this.players) {
+                    if (id !== this.playerId) {
+                        const player = this.players[id];
+                        const playerEl = document.createElement('div');
+                        playerEl.className = 'other-player';
+                        playerEl.style.left = player.x + '%';
+                        playerEl.style.top = player.y + '%';
+                        playerEl.innerHTML = player.isNPC ? '👤' : '🦸';
+                        
+                        const nameEl = document.createElement('div');
+                        nameEl.className = 'player-name';
+                        nameEl.textContent = player.name;
+                        
+                        playerEl.appendChild(nameEl);
+                        container.appendChild(playerEl);
+                    }
+                }
+            }
+            
+            updateMessagesDisplay() {
+                const messagesContainer = document.getElementById('travelMessages');
+                messagesContainer.innerHTML = '';
+                
+                this.messages.forEach(msg => {
+                    const messageEl = document.createElement('div');
+                    messageEl.className = 'message';
+                    messageEl.innerHTML = `<span class="message-player">${msg.player}:</span> ${msg.text} <small>(${msg.time})</small>`;
+                    messagesContainer.appendChild(messageEl);
+                });
+                
+                // Прокручиваем вниз
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            getLocationName(x, y) {
+                if (x >= 15 && x <= 25 && y >= 15 && y <= 25) return 'Лаборатория';
+                if (x >= 35 && x <= 45 && y >= 55 && y <= 65) return 'Дом Байерсов';
+                if (x >= 65 && x <= 75 && y >= 25 && y <= 35) return 'Школа';
+                if (x >= 75 && x <= 85 && y >= 65 && y <= 75) return 'Маллард Гейт';
+                if (x >= 5 && x <= 15 && y >= 35 && y <= 45) return 'Лес Хоукинса';
+                
+                const distanceToCenter = Math.sqrt(Math.pow(x - 50, 2) + Math.pow(y - 50, 2));
+                if (distanceToCenter < 20) return 'Центр города';
+                if (distanceToCenter < 40) return 'Пригород';
+                return 'Окрестности';
+            }
+            
+            collectReward(x, y) {
+                // Определяем, рядом ли игрок с какой-либо точкой интереса
+                const points = [
+                    {x: 20, y: 20, name: 'Лаборатория', reward: 50},
+                    {x: 40, y: 60, name: 'Дом Байерсов', reward: 30},
+                    {x: 70, y: 30, name: 'Школа', reward: 40},
+                    {x: 80, y: 70, name: 'Маллард Гейт', reward: 60},
+                    {x: 10, y: 40, name: 'Лес', reward: 70}
+                ];
+                
+                for (const point of points) {
+                    const distance = Math.sqrt(Math.pow(x - point.x, 2) + Math.pow(y - point.y, 2));
+                    if (distance < 10) { // Если игрок рядом с точкой
+                        return {
+                            success: true,
+                            location: point.name,
+                            reward: point.reward,
+                            distance: distance
+                        };
+                    }
+                }
+                
+                return {success: false};
+            }
         }
         
-        function spawnRandomHearts() {
-            if (Math.random() < 0.02) {
+        // ========== ИГРА ПУТЕШЕСТВИЯ ==========
+        let travelGame = {
+            isActive: false,
+            playerX: 50,
+            playerY: 50,
+            score: parseInt(localStorage.getItem('travelScore')) || 0,
+            stepSize: 5,
+            lastMove: 0,
+            moveCooldown: 200 // мс
+        };
+        
+        let onlineGame = null;
+        
+        function startTravelGame() {
+            if (!onlineGame) {
+                onlineGame = new OnlineGame();
+            }
+            
+            travelGame.isActive = true;
+            document.getElementById('travelGame').classList.add('active');
+            
+            // Загружаем сохраненную позицию
+            const savedPos = localStorage.getItem('travelPosition');
+            if (savedPos) {
+                try {
+                    const pos = JSON.parse(savedPos);
+                    travelGame.playerX = pos.x;
+                    travelGame.playerY = pos.y;
+                } catch (e) {
+                    console.error('Ошибка загрузки позиции:', e);
+                }
+            }
+            
+            // Загружаем сохраненное имя
+            const savedName = localStorage.getItem('playerName');
+            if (savedName) {
+                onlineGame.playerName = savedName;
+            }
+            
+            updateTravelDisplay();
+            showNotification('Путешествие началось! Исследуйте Хоукинс! 🗺️', '#00cccc');
+            spawnHearts(10);
+            
+            // Добавляем первое сообщение
+            onlineGame.addMessage(`Добро пожаловать в Хоукинс, ${onlineGame.playerName}!`);
+            
+            // Обновляем кнопку сбора
+            updateCollectButton();
+            
+            // Добавляем обработчики клавиш
+            document.addEventListener('keydown', handleKeyPress);
+        }
+        
+        function closeTravelGame() {
+            travelGame.isActive = false;
+            document.getElementById('travelGame').classList.remove('active');
+            document.removeEventListener('keydown', handleKeyPress);
+            
+            // Сохраняем позицию
+            localStorage.setItem('travelPosition', JSON.stringify({
+                x: travelGame.playerX,
+                y: travelGame.playerY
+            }));
+            
+            showNotification('Путешествие сохранено!', '#00cccc');
+        }
+        
+        function handleKeyPress(e) {
+            if (!travelGame.isActive) return;
+            
+            const now = Date.now();
+            if (now - travelGame.lastMove < travelGame.moveCooldown) return;
+            
+            switch(e.key) {
+                case 'ArrowUp':
+                case 'w':
+                case 'W':
+                    movePlayer('up');
+                    e.preventDefault();
+                    break;
+                case 'ArrowDown':
+                case 's':
+                case 'S':
+                    movePlayer('down');
+                    e.preventDefault();
+                    break;
+                case 'ArrowLeft':
+                case 'a':
+                case 'A':
+                    movePlayer('left');
+                    e.preventDefault();
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                case 'D':
+                    movePlayer('right');
+                    e.preventDefault();
+                    break;
+                case ' ':
+                case 'Enter':
+                    collectReward();
+                    e.preventDefault();
+                    break;
+            }
+        }
+        
+        function movePlayer(direction) {
+            if (!travelGame.isActive || !onlineGame) return;
+            
+            const now = Date.now();
+            if (now - travelGame.lastMove < travelGame.moveCooldown) return;
+            
+            let newX = travelGame.playerX;
+            let newY = travelGame.playerY;
+            
+            switch(direction) {
+                case 'up':
+                    newY = Math.max(5, travelGame.playerY - travelGame.stepSize);
+                    break;
+                case 'down':
+                    newY = Math.min(95, travelGame.playerY + travelGame.stepSize);
+                    break;
+                case 'left':
+                    newX = Math.max(5, travelGame.playerX - travelGame.stepSize);
+                    break;
+                case 'right':
+                    newX = Math.min(95, travelGame.playerX + travelGame.stepSize);
+                    break;
+            }
+            
+            // Анимация движения
+            const playerEl = document.getElementById('playerCharacter');
+            playerEl.style.transform = `translate(${(newX - travelGame.playerX) * 2}px, ${(newY - travelGame.playerY) * 2}px)`;
+            
+            setTimeout(() => {
+                travelGame.playerX = newX;
+                travelGame.playerY = newY;
+                travelGame.lastMove = now;
+                
+                // Обновляем позицию в онлайн системе
+                onlineGame.updatePlayerPosition(onlineGame.playerId, newX, newY);
+                
+                // Случайные события при движении
+                if (Math.random() < 0.3) {
+                    travelGame.score += 1;
+                    localStorage.setItem('travelScore', travelGame.score);
+                }
+                
+                updateTravelDisplay();
+                playerEl.style.transform = 'translate(0, 0)';
+                
+                // Обновляем кнопку сбора
+                updateCollectButton();
+                
+                // Иногда находим вафли
+                if (Math.random() < 0.1) {
+                    const waffles = Math.floor(Math.random() * 5) + 1;
+                    game.eggos += waffles;
+                    game.totalEggos += waffles;
+                    onlineGame.addMessage(`Нашел ${waffles} вафель Eggo!`, onlineGame.playerName);
+                    createParticle(`+${waffles}`, '#ffd700', 2);
+                    updateDisplay();
+                    saveGame();
+                }
+            }, 150);
+        }
+        
+        function collectReward() {
+            if (!travelGame.isActive || !onlineGame) return;
+            
+            const reward = onlineGame.collectReward(travelGame.playerX, travelGame.playerY);
+            
+            if (reward.success) {
+                // Награда за посещение локации
+                travelGame.score += reward.reward;
+                game.eggos += reward.reward;
+                game.totalEggos += reward.reward;
+                
+                localStorage.setItem('travelScore', travelGame.score);
+                
+                // Сообщение
+                onlineGame.addMessage(`Посетил ${reward.location}! +${reward.reward} вафель`, onlineGame.playerName);
+                
+                // Эффекты
+                createParticle(`+${reward.reward}`, '#ffd700', 5);
                 spawnHearts(5);
+                
+                // Обновляем отображение
+                updateTravelDisplay();
+                updateDisplay();
+                saveGame();
+                
+                // Показываем уведомление
+                showNotification(`Посетили ${reward.location}! +${reward.reward} вафель 🎉`, '#00ff00');
+            } else {
+                // Попытка собрать награду не удалась
+                onlineGame.addMessage('Здесь нечего собирать...', onlineGame.playerName);
+                showNotification('Нет награды в этой области', '#ff9900');
             }
         }
         
-        // ========== ИГРОВЫЕ ПЕРЕМЕННЫЕ ==========
+        function visitLocation(locationName, reward) {
+            if (!travelGame.isActive || !onlineGame) return;
+            
+            // Телепортируем игрока к локации
+            const locations = {
+                'Лаборатория Хоукинса': {x: 20, y: 20},
+                'Дом Байерсов': {x: 40, y: 60},
+                'Школа Хоукинса': {x: 70, y: 30},
+                'Маллард Гейт': {x: 80, y: 70},
+                'Лес Хоукинса': {x: 10, y: 40}
+            };
+            
+            if (locations[locationName]) {
+                travelGame.playerX = locations[locationName].x;
+                travelGame.playerY = locations[locationName].y;
+                
+                // Обновляем позицию в онлайн системе
+                onlineGame.updatePlayerPosition(onlineGame.playerId, travelGame.playerX, travelGame.playerY);
+                
+                // Награда за телепортацию
+                travelGame.score += 10;
+                game.eggos += reward;
+                game.totalEggos += reward;
+                
+                localStorage.setItem('travelScore', travelGame.score);
+                
+                // Сообщение
+                onlineGame.addMessage(`Телепортировался в ${locationName}! +${reward} вафель`, onlineGame.playerName);
+                
+                // Эффекты
+                createParticle(`Телепорт!`, '#00ffcc', 5);
+                createParticle(`+${reward}`, '#ffd700', 3);
+                
+                // Обновляем отображение
+                updateTravelDisplay();
+                updateDisplay();
+                saveGame();
+                
+                // Показываем уведомление
+                showNotification(`Телепорт в ${locationName}! +${reward} вафель 🚀`, '#00cccc');
+                
+                // Обновляем кнопку сбора
+                updateCollectButton();
+            }
+        }
+        
+        function updateTravelDisplay() {
+            // Обновляем позицию игрока
+            const playerEl = document.getElementById('playerCharacter');
+            playerEl.style.left = travelGame.playerX + '%';
+            playerEl.style.top = travelGame.playerY + '%';
+            
+            // Обновляем статистику
+            document.getElementById('travelScore').textContent = travelGame.score;
+            document.getElementById('travelPlayerName').textContent = onlineGame ? onlineGame.playerName : 'Гость';
+            document.getElementById('playerPosition').textContent = `${Math.round(travelGame.playerX)}%, ${Math.round(travelGame.playerY)}%`;
+            document.getElementById('travelEggos').textContent = game.eggos;
+            document.getElementById('playerName').textContent = onlineGame ? onlineGame.playerName : 'Вы';
+            
+            // Обновляем общую статистику
+            document.getElementById('travelPoints').textContent = travelGame.score;
+        }
+        
+        function updateCollectButton() {
+            if (!onlineGame) return;
+            
+            const reward = onlineGame.collectReward(travelGame.playerX, travelGame.playerY);
+            const btn = document.getElementById('collectBtn');
+            
+            if (reward.success) {
+                btn.innerHTML = `<i class="fas fa-gift"></i> (${reward.reward})`;
+                btn.style.background = 'linear-gradient(135deg, #00ff00, #00cc00)';
+                btn.title = `Собрать награду в ${reward.location}`;
+            } else {
+                btn.innerHTML = `<i class="fas fa-gift"></i>`;
+                btn.style.background = 'linear-gradient(135deg, #0f3460, #1a1a2e)';
+                btn.title = 'Нет награды поблизости';
+            }
+        }
+        
+        // ========== ОСНОВНЫЕ ФУНКЦИИ КЛИКЕРА ==========
         let game = {
             eggos: 0,
             perSecond: 0,
@@ -1707,536 +1882,6 @@
             eleven: { cost: 1000, count: 0, production: 15 }
         };
         
-        // ========== ДЕМОГОРГОН ИГРА ==========
-        let demogorgon = {
-            health: 100,
-            maxHealth: 100,
-            reward: 500,
-            isActive: false
-        };
-        
-        // ========== БИТВА ГЕРОЕВ ==========
-        let heroFight = {
-            playerHealth: 100,
-            playerMaxHealth: 100,
-            enemyHealth: 150,
-            enemyMaxHealth: 150,
-            isActive: false,
-            specialAvailable: true,
-            specialCooldown: false,
-            reward: 1000,
-            fightLog: []
-        };
-        
-        // ========== ИГРА В КОСТИ ==========
-        let diceGame = {
-            bet: 10,
-            minBet: 10,
-            maxBet: 100,
-            isActive: false,
-            balance: 0
-        };
-        
-        // ========== ИГРА В УГАДЫВАНИЕ ==========
-        let guessGame = {
-            targetNumber: 0,
-            attempts: 10,
-            maxAttempts: 10,
-            isActive: false,
-            reward: 200,
-            minNumber: 1,
-            maxNumber: 100
-        };
-        
-        // ========== ФУНКЦИЯ СБРОСА ИГРЫ ==========
-        function resetGame() {
-            if (confirm('Вы уверены? Это сбросит весь прогресс игры, включая вафли и улучшения!')) {
-                localStorage.removeItem('hawkinsClickerSave');
-                localStorage.removeItem('hawkinsClickerRecord');
-                
-                for (let i = 100; i <= 50000; i *= (i < 1000 ? 5 : 2)) {
-                    localStorage.removeItem('achievement_' + i);
-                }
-                
-                game = {
-                    eggos: 0,
-                    perSecond: 0,
-                    totalClicks: 0,
-                    totalEggos: 0,
-                    startTime: Date.now(),
-                    playTime: 0,
-                    record: 0
-                };
-                
-                upgrades = {
-                    hopper: { cost: 50, count: 0, production: 1 },
-                    dustin: { cost: 200, count: 0, production: 5 },
-                    eleven: { cost: 1000, count: 0, production: 15 }
-                };
-                
-                demogorgon.isActive = false;
-                heroFight.isActive = false;
-                diceGame.isActive = false;
-                guessGame.isActive = false;
-                
-                document.getElementById('demogorgonGame').classList.remove('active');
-                document.getElementById('heroFightGame').classList.remove('active');
-                document.getElementById('diceGame').classList.remove('active');
-                document.getElementById('guessGame').classList.remove('active');
-                
-                updateDisplay();
-                showNotification('Игра сброшена! Начинаем заново! 🔄', '#ff0000');
-                spawnHearts(10);
-            }
-        }
-        
-        // ========== ДЕМОГОРГОН ИГРА ==========
-        function startDemogorgonGame() {
-            demogorgon.isActive = true;
-            demogorgon.health = 100;
-            document.getElementById('demogorgonGame').classList.add('active');
-            updateDemogorgonDisplay();
-            showNotification('Демогоргон появился! Атакуйте его! 👹', '#ff0000');
-            createParticle('👹 Демогоргон!', '#ff0000', 5);
-        }
-        
-        function closeDemoGame() {
-            document.getElementById('demogorgonGame').classList.remove('active');
-            demogorgon.isActive = false;
-        }
-        
-        function attackDemogorgon() {
-            if (!demogorgon.isActive) return;
-            
-            const damage = Math.floor(Math.random() * 16) + 10;
-            demogorgon.health -= damage;
-            
-            if (demogorgon.health < 0) demogorgon.health = 0;
-            
-            createParticle(`-${damage}`, '#ff0000', 1);
-            spawnHearts(1);
-            showNotification(`Вы нанесли ${damage} урона демогоргону!`, '#ff0000');
-            
-            const demoEl = document.querySelector('.demogorgon');
-            demoEl.style.transform = 'scale(0.8)';
-            setTimeout(() => demoEl.style.transform = 'scale(1)', 200);
-            
-            updateDemogorgonDisplay();
-            
-            if (demogorgon.health <= 0) {
-                game.eggos += demogorgon.reward;
-                game.totalEggos += demogorgon.reward;
-                showNotification(`Победа! Вы получили ${demogorgon.reward} вафель! 🎉`, '#06d6a0');
-                createParticle(`+${demogorgon.reward}`, '#ffd700', 3);
-                spawnHearts(15);
-                setTimeout(closeDemoGame, 2000);
-                updateDisplay();
-                saveGame();
-            }
-        }
-        
-        function updateDemogorgonDisplay() {
-            const healthPercent = (demogorgon.health / demogorgon.maxHealth) * 100;
-            document.getElementById('demoHealthBar').style.width = healthPercent + '%';
-            document.getElementById('demoHealth').textContent = demogorgon.health;
-            document.getElementById('demoReward').textContent = demogorgon.reward;
-        }
-        
-        // ========== БИТВА ГЕРОЕВ ==========
-        function startHeroFight() {
-            heroFight.isActive = true;
-            heroFight.playerHealth = 100;
-            heroFight.enemyHealth = 150;
-            heroFight.specialAvailable = true;
-            heroFight.specialCooldown = false;
-            heroFight.fightLog = [];
-            
-            document.getElementById('heroFightGame').classList.add('active');
-            document.getElementById('attackBtn').disabled = false;
-            document.getElementById('specialBtn').disabled = false;
-            document.getElementById('specialBtn').innerHTML = '<i class="fas fa-star"></i> Супер-удар (40 урона)';
-            
-            updateHeroFightDisplay();
-            updateFightLog('⚔️ Битва началась! Одиннадцать против Векенды!', 'special');
-            showNotification('Битва началась! Одиннадцать против Векенды! ⚔️', '#00aaff');
-            createParticle('⚔️ Битва!', '#00aaff', 5);
-            spawnHearts(5);
-        }
-        
-        function closeHeroFight() {
-            document.getElementById('heroFightGame').classList.remove('active');
-            heroFight.isActive = false;
-        }
-        
-        function heroAttack() {
-            if (!heroFight.isActive) return;
-            
-            const playerDamage = Math.floor(Math.random() * 16) + 10;
-            heroFight.enemyHealth -= playerDamage;
-            if (heroFight.enemyHealth < 0) heroFight.enemyHealth = 0;
-            
-            const enemyFighter = document.getElementById('enemyFighter');
-            enemyFighter.style.transform = 'translateX(10px)';
-            setTimeout(() => enemyFighter.style.transform = 'translateX(0)', 200);
-            
-            updateFightLog(`Одиннадцать использует телекинез! Нанесено ${playerDamage} урона!`, 'player');
-            
-            setTimeout(() => {
-                if (heroFight.enemyHealth > 0) {
-                    const enemyDamage = Math.floor(Math.random() * 11) + 5;
-                    heroFight.playerHealth -= enemyDamage;
-                    if (heroFight.playerHealth < 0) heroFight.playerHealth = 0;
-                    
-                    const playerFighter = document.getElementById('playerFighter');
-                    playerFighter.style.transform = 'translateX(-10px)';
-                    setTimeout(() => playerFighter.style.transform = 'translateX(0)', 200);
-                    
-                    updateFightLog(`Векенда атакует! Нанесено ${enemyDamage} урона!`, 'enemy');
-                    
-                    createParticle(`-${enemyDamage}`, '#00ff00', 1);
-                }
-            }, 300);
-            
-            createParticle(`-${playerDamage}`, '#ff0000', 1);
-            spawnHearts(1);
-            
-            updateHeroFightDisplay();
-            checkHeroFightResult();
-        }
-        
-        function heroSpecial() {
-            if (!heroFight.isActive || !heroFight.specialAvailable || heroFight.specialCooldown) return;
-            
-            const specialDamage = 40;
-            heroFight.enemyHealth -= specialDamage;
-            if (heroFight.enemyHealth < 0) heroFight.enemyHealth = 0;
-            
-            heroFight.specialAvailable = false;
-            heroFight.specialCooldown = true;
-            document.getElementById('specialBtn').disabled = true;
-            document.getElementById('specialBtn').innerHTML = '<i class="fas fa-clock"></i> Перезарядка...';
-            
-            const enemyFighter = document.getElementById('enemyFighter');
-            enemyFighter.style.transform = 'scale(1.2)';
-            enemyFighter.style.boxShadow = '0 0 30px #ff00ff';
-            setTimeout(() => {
-                enemyFighter.style.transform = 'scale(1)';
-                enemyFighter.style.boxShadow = '';
-            }, 500);
-            
-            updateFightLog(`СУПЕР-УДАР! Одиннадцать использует всю силу! Нанесено ${specialDamage} урона!`, 'special');
-            
-            let cooldown = 15;
-            const cooldownInterval = setInterval(() => {
-                if (!heroFight.isActive) {
-                    clearInterval(cooldownInterval);
-                    return;
-                }
-                
-                document.getElementById('specialBtn').innerHTML = `<i class="fas fa-clock"></i> ${cooldown} сек...`;
-                cooldown--;
-                
-                if (cooldown < 0) {
-                    clearInterval(cooldownInterval);
-                    if (heroFight.isActive) {
-                        heroFight.specialAvailable = true;
-                        heroFight.specialCooldown = false;
-                        document.getElementById('specialBtn').disabled = false;
-                        document.getElementById('specialBtn').innerHTML = '<i class="fas fa-star"></i> Супер-удар (40 урона)';
-                        updateFightLog('Супер-удар перезаряжен! ⚡', 'special');
-                    }
-                }
-            }, 1000);
-            
-            createParticle(`СУПЕР-${specialDamage}!`, '#ff00ff', 5);
-            spawnHearts(3);
-            
-            showNotification(`Супер-удар! ${specialDamage} урона! ⚡`, '#ff00ff');
-            
-            setTimeout(() => {
-                if (heroFight.enemyHealth > 0) {
-                    const enemyDamage = Math.floor(Math.random() * 16) + 10;
-                    heroFight.playerHealth -= enemyDamage;
-                    if (heroFight.playerHealth < 0) heroFight.playerHealth = 0;
-                    
-                    updateFightLog(`Векенда контратакует! Нанесено ${enemyDamage} урона!`, 'enemy');
-                    createParticle(`-${enemyDamage}`, '#00ff00', 1);
-                    
-                    updateHeroFightDisplay();
-                    checkHeroFightResult();
-                }
-            }, 1000);
-            
-            updateHeroFightDisplay();
-            checkHeroFightResult();
-        }
-        
-        function updateFightLog(message, type = 'player') {
-            heroFight.fightLog.push({ message, type, time: Date.now() });
-            
-            const logContainer = document.getElementById('fightLog');
-            const logEntry = document.createElement('div');
-            logEntry.className = `log-entry log-${type}`;
-            logEntry.textContent = message;
-            
-            logContainer.appendChild(logEntry);
-            logContainer.scrollTop = logContainer.scrollHeight;
-            
-            if (heroFight.fightLog.length > 10) {
-                heroFight.fightLog.shift();
-                if (logContainer.firstChild) {
-                    logContainer.removeChild(logContainer.firstChild);
-                }
-            }
-        }
-        
-        function updateHeroFightDisplay() {
-            const playerPercent = (heroFight.playerHealth / heroFight.playerMaxHealth) * 100;
-            const enemyPercent = (heroFight.enemyHealth / heroFight.enemyMaxHealth) * 100;
-            
-            document.getElementById('playerHealthBar').style.width = playerPercent + '%';
-            document.getElementById('enemyHealthBar').style.width = enemyPercent + '%';
-            document.getElementById('playerHealth').textContent = heroFight.playerHealth;
-            document.getElementById('enemyHealth').textContent = heroFight.enemyHealth;
-            
-            const playerFighter = document.getElementById('playerFighter');
-            const enemyFighter = document.getElementById('enemyFighter');
-            
-            if (playerPercent < 30) {
-                playerFighter.style.animation = 'pulse 0.5s infinite alternate';
-            } else {
-                playerFighter.style.animation = '';
-            }
-            
-            if (enemyPercent < 30) {
-                enemyFighter.style.animation = 'pulse 0.5s infinite alternate';
-            } else {
-                enemyFighter.style.animation = '';
-            }
-        }
-        
-        function checkHeroFightResult() {
-            if (heroFight.enemyHealth <= 0) {
-                game.eggos += heroFight.reward;
-                game.totalEggos += heroFight.reward;
-                updateFightLog(`🎉 ПОБЕДА! Вы получили ${heroFight.reward} вафель!`, 'special');
-                showNotification(`Победа! Вы получили ${heroFight.reward} вафель! 🏆`, '#06d6a0');
-                createParticle(`+${heroFight.reward}`, '#ffd700', 5);
-                spawnHearts(20);
-                
-                setTimeout(() => {
-                    closeHeroFight();
-                    updateDisplay();
-                    saveGame();
-                }, 3000);
-            } else if (heroFight.playerHealth <= 0) {
-                updateFightLog('💀 Поражение! Векенда победил!', 'enemy');
-                showNotification('Вы проиграли битву! Попробуйте еще раз! 😢', '#ff0000');
-                setTimeout(closeHeroFight, 3000);
-            }
-        }
-        
-        // ========== ИГРА В КОСТИ ==========
-        function startDiceGame() {
-            diceGame.isActive = true;
-            diceGame.bet = 10;
-            
-            document.getElementById('diceGame').classList.add('active');
-            document.getElementById('dice1').textContent = '?';
-            document.getElementById('dice2').textContent = '?';
-            document.getElementById('diceResult').textContent = 'Сделайте ставку и бросьте кости!';
-            document.getElementById('betAmount').textContent = diceGame.bet;
-            document.getElementById('diceBalance').textContent = game.eggos;
-            document.getElementById('rollBtn').disabled = false;
-            
-            showNotification('Игра в кости началась! Сделайте ставку! 🎲', '#ff9900');
-            createParticle('🎲 Кости!', '#ff9900', 3);
-        }
-        
-        function closeDiceGame() {
-            document.getElementById('diceGame').classList.remove('active');
-            diceGame.isActive = false;
-        }
-        
-        function increaseBet() {
-            if (diceGame.bet + 10 <= diceGame.maxBet && diceGame.bet + 10 <= game.eggos) {
-                diceGame.bet += 10;
-                document.getElementById('betAmount').textContent = diceGame.bet;
-            }
-        }
-        
-        function decreaseBet() {
-            if (diceGame.bet - 10 >= diceGame.minBet) {
-                diceGame.bet -= 10;
-                document.getElementById('betAmount').textContent = diceGame.bet;
-            }
-        }
-        
-        function rollDice() {
-            if (!diceGame.isActive || game.eggos < diceGame.bet) {
-                showNotification('Недостаточно вафель для ставки!', '#ff0000');
-                return;
-            }
-            
-            game.eggos -= diceGame.bet;
-            updateDisplay();
-            
-            const dice1 = document.getElementById('dice1');
-            const dice2 = document.getElementById('dice2');
-            const rollBtn = document.getElementById('rollBtn');
-            
-            dice1.classList.add('rolling');
-            dice2.classList.add('rolling');
-            rollBtn.disabled = true;
-            
-            let rolls = 0;
-            const rollInterval = setInterval(() => {
-                dice1.textContent = Math.floor(Math.random() * 6) + 1;
-                dice2.textContent = Math.floor(Math.random() * 6) + 1;
-                rolls++;
-                
-                if (rolls > 10) {
-                    clearInterval(rollInterval);
-                    
-                    const dice1Value = parseInt(dice1.textContent);
-                    const dice2Value = parseInt(dice2.textContent);
-                    const sum = dice1Value + dice2Value;
-                    
-                    dice1.classList.remove('rolling');
-                    dice2.classList.remove('rolling');
-                    
-                    let result = '';
-                    let winnings = 0;
-                    
-                    if (sum === 7 || sum === 11) {
-                        winnings = diceGame.bet * 2;
-                        game.eggos += winnings;
-                        result = `🎉 Выигрыш! ${diceGame.bet} × 2 = ${winnings} вафель!`;
-                        createParticle(`+${winnings}`, '#00ff00', 5);
-                        spawnHearts(10);
-                    } else if (sum === 2 || sum === 12) {
-                        winnings = 0;
-                        result = `💀 Проигрыш! Выпало ${sum}`;
-                        createParticle(`-${diceGame.bet}`, '#ff0000', 3);
-                    } else {
-                        winnings = diceGame.bet;
-                        game.eggos += winnings;
-                        result = `🔁 Ничья! Возврат ставки: ${winnings} вафель`;
-                        createParticle(`+${winnings}`, '#ffff00', 3);
-                    }
-                    
-                    document.getElementById('diceResult').textContent = result;
-                    document.getElementById('diceBalance').textContent = game.eggos;
-                    rollBtn.disabled = false;
-                    
-                    showNotification(result, winnings > diceGame.bet ? '#00ff00' : (winnings === diceGame.bet ? '#ffff00' : '#ff0000'));
-                    
-                    updateDisplay();
-                    saveGame();
-                }
-            }, 100);
-        }
-        
-        // ========== ИГРА В УГАДЫВАНИЕ ЧИСЕЛ ==========
-        function startGuessGame() {
-            guessGame.isActive = true;
-            guessGame.targetNumber = Math.floor(Math.random() * 100) + 1;
-            guessGame.attempts = guessGame.maxAttempts;
-            
-            document.getElementById('guessGame').classList.add('active');
-            document.getElementById('guessInput').value = '';
-            document.getElementById('guessFeedback').textContent = 'Введите число от 1 до 100';
-            document.getElementById('guessHint').textContent = `У вас ${guessGame.attempts} попыток`;
-            document.getElementById('attemptsLeft').textContent = guessGame.attempts;
-            document.getElementById('guessBtn').disabled = false;
-            
-            showNotification('Игра "Угадай число" началась! 🔢', '#9933ff');
-            createParticle('🔢 Угадай число!', '#9933ff', 3);
-        }
-        
-        function closeGuessGame() {
-            document.getElementById('guessGame').classList.remove('active');
-            guessGame.isActive = false;
-        }
-        
-        function makeGuess() {
-            if (!guessGame.isActive || guessGame.attempts <= 0) return;
-            
-            const input = document.getElementById('guessInput');
-            const guess = parseInt(input.value);
-            
-            if (isNaN(guess) || guess < 1 || guess > 100) {
-                showNotification('Введите число от 1 до 100!', '#ff0000');
-                return;
-            }
-            
-            guessGame.attempts--;
-            document.getElementById('attemptsLeft').textContent = guessGame.attempts;
-            
-            let feedback = '';
-            let color = '';
-            
-            if (guess === guessGame.targetNumber) {
-                feedback = `🎉 Поздравляем! Вы угадали число ${guessGame.targetNumber}!`;
-                color = '#00ff00';
-                
-                game.eggos += guessGame.reward;
-                game.totalEggos += guessGame.reward;
-                
-                createParticle(`+${guessGame.reward}`, '#ffd700', 5);
-                spawnHearts(15);
-                
-                document.getElementById('guessBtn').disabled = true;
-                setTimeout(() => {
-                    closeGuessGame();
-                    updateDisplay();
-                    saveGame();
-                }, 3000);
-            } else if (guessGame.attempts === 0) {
-                feedback = `💀 Игра окончена! Загаданное число было ${guessGame.targetNumber}`;
-                color = '#ff0000';
-                document.getElementById('guessBtn').disabled = true;
-            } else {
-                if (guess < guessGame.targetNumber) {
-                    feedback = `📈 Слишком маленькое! Попробуйте больше`;
-                } else {
-                    feedback = `📉 Слишком большое! Попробуйте меньше`;
-                }
-                color = guessGame.attempts <= 3 ? '#ff9900' : '#ffff00';
-            }
-            
-            document.getElementById('guessFeedback').textContent = feedback;
-            document.getElementById('guessFeedback').style.color = color;
-            
-            if (guess !== guessGame.targetNumber && guessGame.attempts > 0) {
-                const difference = Math.abs(guess - guessGame.targetNumber);
-                let hint = '';
-                if (difference <= 5) hint = '🔥 Очень близко!';
-                else if (difference <= 10) hint = '👌 Близко!';
-                else if (difference <= 20) hint = '🤔 Неплохо';
-                else hint = '🧐 Далеко...';
-                
-                document.getElementById('guessHint').textContent = `${hint} Осталось попыток: ${guessGame.attempts}`;
-            }
-            
-            createParticle(guess.toString(), color, 1);
-            
-            if (guess === guessGame.targetNumber) {
-                showNotification(`Победа! Вы получили ${guessGame.reward} вафель! 🎉`, '#00ff00');
-            }
-        }
-        
-        function restartGuessGame() {
-            startGuessGame();
-        }
-        
-        // ========== ИГРА НА ПАМЯТЬ ==========
-        function startMemoryGame() {
-            showNotification('Игра "Память" скоро будет добавлена! 🧠', '#00aaff');
-            createParticle('🧠 Память!', '#00aaff', 3);
-        }
-        
-        // ========== ОСНОВНЫЕ ФУНКЦИИ КЛИКЕРА ==========
         function clickEggo() {
             game.eggos += 1;
             game.totalClicks += 1;
@@ -2286,10 +1931,7 @@
             document.getElementById('totalEggos').textContent = formatNumber(game.totalEggos);
             document.getElementById('totalClicks').textContent = game.totalClicks;
             document.getElementById('recordEggos').textContent = formatNumber(game.record);
-            
-            const minutes = Math.floor((Date.now() - game.startTime) / 60000);
-            game.playTime = minutes;
-            document.getElementById('playTime').textContent = minutes;
+            document.getElementById('playTime').textContent = Math.floor((Date.now() - game.startTime) / 60000);
             
             for (const [key, upg] of Object.entries(upgrades)) {
                 document.getElementById(key + 'Cost').textContent = upg.cost;
@@ -2455,6 +2097,33 @@
             }
         }
         
+        // ========== СЕРДЕЧКИ ==========
+        function spawnHearts(count = 20) {
+            const hearts = ['❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '🤍', '💕', '💞', '💓', '💗', '💖', '💘', '💝'];
+            const colors = ['#ff0000', '#ff6b6b', '#ff8e8e', '#ffaaaa', '#ff6bcb', '#ff8ef2'];
+            const container = document.getElementById('heartsContainer');
+            
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 2000);
+            }
+            
+            showNotification('Сердечки! 💕', '#ff6b6b');
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        }
+        
         // ========== АВТОМАТИЧЕСКОЕ ПРОИЗВОДСТВО ==========
         function startAutoProduction() {
             setInterval(() => {
@@ -2467,9 +2136,6 @@
                     if (Math.random() < 0.1) {
                         createParticle(`+${game.perSecond}`, '#ffd700', 1);
                     }
-                    if (Math.random() < 0.05) {
-                        spawnRandomHearts();
-                    }
                 }
             }, 1000);
         }
@@ -2478,12 +2144,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadGame();
             
-            setInterval(() => {
-                game.playTime = Math.floor((Date.now() - game.startTime) / 60000);
-                document.getElementById('playTime').textContent = game.playTime;
-            }, 60000);
-            
-            setInterval(saveGame, 30000);
+            // Загружаем счет путешествия
+            travelGame.score = parseInt(localStorage.getItem('travelScore')) || 0;
+            document.getElementById('travelPoints').textContent = travelGame.score;
             
             setTimeout(() => {
                 if (game.totalClicks === 0) {
@@ -2491,32 +2154,24 @@
                     spawnHearts(5);
                 }
             }, 1000);
-            
-            setInterval(() => {
-                if (!demogorgon.isActive && Math.random() < 0.3) {
-                    startDemogorgonGame();
-                }
-            }, 300000);
-            
-            setInterval(() => {
-                if (!heroFight.isActive && Math.random() < 0.2) {
-                    startHeroFight();
-                }
-            }, 420000);
-            
-            setInterval(spawnRandomHearts, 10000);
-            
-            const playerImg = document.querySelector('.player-icon');
-            const enemyImg = document.querySelector('.enemy-icon');
-            
-            playerImg.onerror = function() {
-                this.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%2300ff00"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="24" fill="white">🦸</text></svg>';
-            };
-            
-            enemyImg.onerror = function() {
-                this.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23ff0000"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="24" fill="white">👹</text></svg>';
-            };
         });
+        
+        // ========== ДРУГИЕ ИГРЫ (заглушки) ==========
+        function startHeroFight() {
+            showNotification('Битва героев скоро будет доступна! ⚔️', '#00aaff');
+        }
+        
+        function startDiceGame() {
+            showNotification('Игра в кости скоро будет доступна! 🎲', '#ff9900');
+        }
+        
+        function startGuessGame() {
+            showNotification('Угадай число скоро будет доступно! 🔢', '#9933ff');
+        }
+        
+        function startDemogorgonGame() {
+            showNotification('Демогоргон скоро появится! 👹', '#ff0000');
+        }
     </script>
 </body>
 </html>
