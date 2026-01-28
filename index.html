@@ -419,6 +419,54 @@
             font-weight: bold;
         }
         
+        /* СТИЛИ ДЛЯ ДРУГИХ ИГР */
+        .character-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-10px);
+            border-color: #8b0000;
+            box-shadow: 0 10px 25px rgba(139, 0, 0, 0.3);
+        }
+        
+        .character-info {
+            padding: 20px;
+        }
+        
+        .character-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .character-desc {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .section {
+            margin: 60px 0;
+        }
+        
+        .section-title {
+            font-family: 'Creepster', cursive;
+            font-size: 2.5rem;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
         /* СЕРДЕЧКИ И ЭФФЕКТЫ */
         .hearts-container {
             position: fixed;
@@ -506,6 +554,23 @@
         .clicker-toggle:hover {
             background: #a30000;
             transform: rotate(180deg);
+        }
+        
+        .sound-toggle {
+            background: #006666;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .sound-toggle:hover {
+            background: #008888;
         }
         
         .clicker-stats {
@@ -1102,7 +1167,12 @@
     <div class="clicker-container" id="clickerPanel">
         <div class="clicker-header">
             <h2 class="clicker-title">EGGO КЛИКЕР</h2>
-            <button class="clicker-toggle" onclick="toggleClicker()">‹</button>
+            <div>
+                <button class="sound-toggle" onclick="toggleSound()" id="soundBtn" title="Звук">
+                    🔊
+                </button>
+                <button class="clicker-toggle" onclick="toggleClicker()">‹</button>
+            </div>
         </div>
         
         <div class="clicker-stats">
@@ -1289,14 +1359,20 @@
                         <div class="character-desc">Информация о тюленях</div>
                     </div>
                 </div>
+                
+                <div class="character-card" onclick="window.open('https://docs.google.com/spreadsheets/d/16u1MWHhRiBd7RiTi1Eel_n1hO1VTXp1Ncus8FnXirb4/edit?gid=0#gid=0', '_blank')">
+                    <div style="background: linear-gradient(135deg, #6a11cb, #2575fc); height: 150px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">📊</div>
+                    <div class="character-info">
+                        <div class="character-name">Список услуг</div>
+                        <div class="character-desc">Таблица с ценами на услуги</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         // ========== СИМУЛЯЦИЯ ОНЛАЙН СИСТЕМЫ ==========
-        // В реальном проекте здесь был бы WebSocket или Firebase
-        
         class OnlineGame {
             constructor() {
                 this.players = {};
@@ -1897,6 +1973,9 @@
                 spawnHearts(1);
             }
             
+            // Воспроизводим звук клика
+            playClickSound();
+            
             updateDisplay();
             saveGame();
             checkAchievements();
@@ -1915,12 +1994,179 @@
                 showNotification(`Куплено улучшение: ${getUpgradeName(type)}!`, '#06d6a0');
                 createParticle('Улучшено!', '#06d6a0', 3);
                 spawnHearts(5);
+                playUpgradeSound();
                 
                 updateDisplay();
                 saveGame();
             } else {
                 showNotification('Недостаточно вафель!', '#ef476f');
                 createParticle('Нет вафель!', '#ef476f', 1);
+                playErrorSound();
+            }
+        }
+        
+        // ========== ФУНКЦИЯ СБРОСА ИГРЫ ==========
+        function resetGame() {
+            if (confirm('ТОЧНО начать заново? ВСЕ данные будут удалены!')) {
+                showResetAnimation();
+                
+                // Сбрасываем данные кликера
+                resetGameData();
+                
+                // Сбрасываем данные путешествия
+                travelGame = {
+                    isActive: false,
+                    playerX: 50,
+                    playerY: 50,
+                    score: 0,
+                    stepSize: 5,
+                    lastMove: 0,
+                    moveCooldown: 200
+                };
+                
+                // Очищаем сохранения
+                localStorage.removeItem('hawkinsClickerSave');
+                localStorage.removeItem('hawkinsClickerRecord');
+                localStorage.removeItem('travelScore');
+                localStorage.removeItem('travelPosition');
+                
+                // Очищаем достижения
+                localStorage.removeItem('achieve_100');
+                localStorage.removeItem('achieve_1000');
+                localStorage.removeItem('achieve_10000');
+                
+                // Перезагружаем игру
+                updateDisplay();
+                updateTravelDisplay();
+                
+                setTimeout(() => {
+                    showNotification('ВСЕ ДАННЫЕ УДАЛЕНЫ! Перезагрузка...', '#ff0000');
+                    spawnHearts(20);
+                    
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                }, 1000);
+            }
+        }
+        
+        function resetGameData() {
+            game = {
+                eggos: 0,
+                perSecond: 0,
+                totalClicks: 0,
+                totalEggos: 0,
+                startTime: Date.now(),
+                playTime: 0,
+                record: 0
+            };
+            
+            upgrades = {
+                hopper: { cost: 50, count: 0, production: 1 },
+                dustin: { cost: 200, count: 0, production: 5 },
+                eleven: { cost: 1000, count: 0, production: 15 }
+            };
+            
+            updateDisplay();
+            showNotification('Данные игры сброшены!', '#ff6b6b');
+        }
+        
+        function showResetAnimation() {
+            // Создаем эффект взрыва
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    createParticle('💥', '#ff0000', 3);
+                }, i * 50);
+            }
+            
+            // Мигание экрана
+            document.body.style.backgroundColor = '#ff0000';
+            setTimeout(() => document.body.style.backgroundColor = '#0a0a0a', 100);
+            setTimeout(() => document.body.style.backgroundColor = '#ff0000', 200);
+            setTimeout(() => document.body.style.backgroundColor = '#0a0a0a', 300);
+        }
+        
+        // ========== СИСТЕМА ЗВУКОВ ==========
+        function toggleSound() {
+            const soundBtn = document.getElementById('soundBtn');
+            if (localStorage.getItem('soundEnabled') === 'false') {
+                localStorage.setItem('soundEnabled', 'true');
+                soundBtn.innerHTML = '🔊';
+                showNotification('Звук включен', '#06d6a0');
+                playClickSound();
+            } else {
+                localStorage.setItem('soundEnabled', 'false');
+                soundBtn.innerHTML = '🔇';
+                showNotification('Звук выключен', '#666');
+            }
+        }
+        
+        function playClickSound() {
+            if (localStorage.getItem('soundEnabled') === 'false') return;
+            
+            // Создаем простой звук клика
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                gainNode.gain.value = 0.1;
+                
+                oscillator.start();
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            } catch (e) {
+                console.log('Аудио не поддерживается');
+            }
+        }
+        
+        function playUpgradeSound() {
+            if (localStorage.getItem('soundEnabled') === 'false') return;
+            
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 0.2);
+                gainNode.gain.value = 0.1;
+                
+                oscillator.start();
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                console.log('Аудио не поддерживается');
+            }
+        }
+        
+        function playErrorSound() {
+            if (localStorage.getItem('soundEnabled') === 'false') return;
+            
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.1);
+                gainNode.gain.value = 0.1;
+                
+                oscillator.start();
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            } catch (e) {
+                console.log('Аудио не поддерживается');
             }
         }
         
@@ -1930,7 +2176,6 @@
             document.getElementById('perSecond').textContent = game.perSecond;
             document.getElementById('totalEggos').textContent = formatNumber(game.totalEggos);
             document.getElementById('totalClicks').textContent = game.totalClicks;
-            document.getElementById('recordEggos').textContent = formatNumber(game.record);
             document.getElementById('playTime').textContent = Math.floor((Date.now() - game.startTime) / 60000);
             
             for (const [key, upg] of Object.entries(upgrades)) {
@@ -2032,24 +2277,6 @@
             startAutoProduction();
         }
         
-        function resetGameData() {
-            game = {
-                eggos: 0,
-                perSecond: 0,
-                totalClicks: 0,
-                totalEggos: 0,
-                startTime: Date.now(),
-                playTime: 0,
-                record: 0
-            };
-            
-            upgrades = {
-                hopper: { cost: 50, count: 0, production: 1 },
-                dustin: { cost: 200, count: 0, production: 5 },
-                eleven: { cost: 1000, count: 0, production: 15 }
-            };
-        }
-        
         // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
         function formatNumber(num) {
             if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
@@ -2147,6 +2374,16 @@
             // Загружаем счет путешествия
             travelGame.score = parseInt(localStorage.getItem('travelScore')) || 0;
             document.getElementById('travelPoints').textContent = travelGame.score;
+            
+            // Инициализируем звук
+            if (localStorage.getItem('soundEnabled') === null) {
+                localStorage.setItem('soundEnabled', 'true');
+            }
+            
+            const soundBtn = document.getElementById('soundBtn');
+            if (localStorage.getItem('soundEnabled') === 'false') {
+                soundBtn.innerHTML = '🔇';
+            }
             
             setTimeout(() => {
                 if (game.totalClicks === 0) {
