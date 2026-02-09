@@ -467,40 +467,6 @@
             gap: 15px;
         }
         
-        /* СЕРДЕЧКИ И ЭФФЕКТЫ */
-        .hearts-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9998;
-        }
-        
-        .heart {
-            position: absolute;
-            font-size: 20px;
-            pointer-events: none;
-            z-index: 9998;
-            opacity: 0;
-            animation: floatHeart linear forwards;
-        }
-        
-        @keyframes floatHeart {
-            0% {
-                transform: translateY(0) rotate(0deg) scale(0);
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg) scale(1);
-                opacity: 0;
-            }
-        }
-        
         /* КЛИКЕР */
         .clicker-container {
             position: fixed;
@@ -668,6 +634,9 @@
         
         .clicker-upgrades {
             margin: 25px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
         }
         
         .upgrades-title {
@@ -678,6 +647,10 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            background: rgba(139, 0, 0, 0.3);
+            padding: 8px 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffd700;
         }
         
         .upgrade {
@@ -698,7 +671,7 @@
         .upgrade:hover {
             background: rgba(255,255,255,0.1);
             border-color: #8b0000;
-            transform: translateX(-10px);
+            transform: translateX(-5px);
         }
         
         .upgrade-locked {
@@ -713,9 +686,9 @@
         }
         
         .upgrade-icon {
-            font-size: 2rem;
-            width: 50px;
-            height: 50px;
+            font-size: 1.8rem;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -731,33 +704,39 @@
         .upgrade-name {
             font-weight: 700;
             color: #fff;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
         .upgrade-desc {
             color: #06d6a0;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             margin-top: 3px;
         }
         
         .upgrade-cost {
             color: #ffd700;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
         .upgrade-count {
             background: #8b0000;
             color: white;
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1rem;
             margin-left: 10px;
+        }
+        
+        .upgrade-required {
+            font-size: 0.7rem;
+            color: #ff6b6b;
+            margin-top: 3px;
         }
         
         /* НОТИФИКАЦИИ */
@@ -1003,6 +982,10 @@
                 flex-direction: column;
                 align-items: center;
             }
+            
+            .clicker-upgrades {
+                max-height: 300px;
+            }
         }
     </style>
 </head>
@@ -1037,10 +1020,6 @@
             <button class="game-btn" onclick="startGuessGame()">
                 <div class="game-icon">🔢</div>
                 <div>Угадай число</div>
-            </button>
-            <button class="game-btn" onclick="spawnHearts()">
-                <div class="game-icon">❤️</div>
-                <div>Сердечки!</div>
             </button>
             <button class="game-btn" onclick="startDemogorgonGame()">
                 <div class="game-icon">👹</div>
@@ -1160,9 +1139,6 @@
         </div>
     </div>
     
-    <!-- Сердечки -->
-    <div class="hearts-container" id="heartsContainer"></div>
-    
     <!-- Кликер -->
     <div class="clicker-container" id="clickerPanel">
         <div class="clicker-header">
@@ -1196,37 +1172,147 @@
         
         <div class="clicker-upgrades">
             <div class="upgrades-title">
-                <i class="fas fa-arrow-up"></i> УЛУЧШЕНИЯ
+                <i class="fas fa-fist-raised"></i> АКТИВНЫЕ УЛУЧШЕНИЯ
             </div>
             
             <div class="upgrade" onclick="buyUpgrade('hopper')" id="upgradeHopper">
                 <div class="upgrade-icon">🚨</div>
                 <div class="upgrade-info">
                     <div class="upgrade-name">Шериф Хоппер</div>
-                    <div class="upgrade-desc">+1 вафля в секунду</div>
+                    <div class="upgrade-desc">+1 вафля за клик</div>
                 </div>
                 <div class="upgrade-cost" id="hopperCost">50</div>
                 <div class="upgrade-count" id="hopperCount">0</div>
             </div>
             
-            <div class="upgrade" onclick="buyUpgrade('dustin')" id="upgradeDustin">
-                <div class="upgrade-icon">👓</div>
+            <div class="upgrade" onclick="buyUpgrade('mike')" id="upgradeMike">
+                <div class="upgrade-icon">👦</div>
                 <div class="upgrade-info">
-                    <div class="upgrade-name">Дастин</div>
-                    <div class="upgrade-desc">+5 вафель в секунду</div>
+                    <div class="upgrade-name">Майк</div>
+                    <div class="upgrade-desc">+2 вафли за клик</div>
+                    <div class="upgrade-required" id="mikeRequired">Требуется: Шериф Хоппер</div>
                 </div>
-                <div class="upgrade-cost" id="dustinCost">200</div>
-                <div class="upgrade-count" id="dustinCount">0</div>
+                <div class="upgrade-cost" id="mikeCost">100</div>
+                <div class="upgrade-count" id="mikeCount">0</div>
             </div>
             
             <div class="upgrade" onclick="buyUpgrade('eleven')" id="upgradeEleven">
                 <div class="upgrade-icon">🦸</div>
                 <div class="upgrade-info">
                     <div class="upgrade-name">Одиннадцать</div>
-                    <div class="upgrade-desc">+15 вафель в секунду</div>
+                    <div class="upgrade-desc">+5 вафель за клик</div>
+                    <div class="upgrade-required" id="elevenRequired">Требуется: Майк</div>
                 </div>
-                <div class="upgrade-cost" id="elevenCost">1000</div>
+                <div class="upgrade-cost" id="elevenCost">500</div>
                 <div class="upgrade-count" id="elevenCount">0</div>
+            </div>
+            
+            <div class="upgrade" onclick="buyUpgrade('demogorgon')" id="upgradeDemogorgon">
+                <div class="upgrade-icon">👹</div>
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Демогоргон</div>
+                    <div class="upgrade-desc">+10 вафель за клик, шанс крита x3</div>
+                    <div class="upgrade-required" id="demogorgonRequired">Требуется: Одиннадцать</div>
+                </div>
+                <div class="upgrade-cost" id="demogorgonCost">2000</div>
+                <div class="upgrade-count" id="demogorgonCount">0</div>
+            </div>
+            
+            <div class="upgrades-title" style="margin-top: 20px;">
+                <i class="fas fa-clock"></i> ПАССИВНЫЕ УЛУЧШЕНИЯ
+            </div>
+            
+            <div class="upgrade" onclick="buyUpgrade('dustin')" id="upgradeDustin">
+                <div class="upgrade-icon">👓</div>
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Дастин</div>
+                    <div class="upgrade-desc">+1 вафля в секунду</div>
+                </div>
+                <div class="upgrade-cost" id="dustinCost">200</div>
+                <div class="upgrade-count" id="dustinCount">0</div>
+            </div>
+            
+            <div class="upgrade" onclick="buyUpgrade('lucas')" id="upgradeLucas">
+                <div class="upgrade-icon">🏹</div>
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Лукас</div>
+                    <div class="upgrade-desc">+3 вафли в секунду</div>
+                    <div class="upgrade-required" id="lucasRequired">Требуется: Дастин</div>
+                </div>
+                <div class="upgrade-cost" id="lucasCost">500</div>
+                <div class="upgrade-count" id="lucasCount">0</div>
+            </div>
+            
+            <div class="upgrade" onclick="buyUpgrade('will')" id="upgradeWill">
+                <div class="upgrade-icon">🎨</div>
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Уилл</div>
+                    <div class="upgrade-desc">+5 вафель в секунду</div>
+                    <div class="upgrade-required" id="willRequired">Требуется: Лукас</div>
+                </div>
+                <div class="upgrade-cost" id="willCost">1500</div>
+                <div class="upgrade-count" id="willCount">0</div>
+            </div>
+            
+            <div class="upgrades-title" style="margin-top: 20px;">
+                <i class="fas fa-star"></i> СПЕЦИАЛЬНЫЕ УЛУЧШЕНИЯ
+            </div>
+            
+            <div class="upgrade" onclick="buyUpgrade('nancy')" id="upgradeNancy">
+                <div class="upgrade-icon">📸</div>
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Нэнси</div>
+                    <div class="upgrade-desc">+5% шанс критического удара</div>
+                </div>
+                <div class="upgrade-cost" id="nancyCost">1000</div>
+                <div class="upgrade-count" id="nancyCount">0</div>
+            </div>
+            
+            <div class="upgrade" onclick="buyUpgrade('steve')" id="upgradeSteve">
+                <div class="upgrade-icon">🧹</div>
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Стив</div>
+                    <div class="upgrade-desc">Криты дают x2.5</div>
+                    <div class="upgrade-required" id="steveRequired">Требуется: Нэнси</div>
+                </div>
+                <div class="upgrade-cost" id="steveCost">3000</div>
+                <div class="upgrade-count" id="steveCount">0</div>
+            </div>
+            
+            <div class="upgrade" onclick="buyUpgrade('joyce')" id="upgradeJoyce">
+                <div class="upgrade-icon">🔦</div>
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Джойс</div>
+                    <div class="upgrade-desc">Шанс найти x10 вафель</div>
+                    <div class="upgrade-required" id="joyceRequired">Требуется: Стив</div>
+                </div>
+                <div class="upgrade-cost" id="joyceCost">5000</div>
+                <div class="upgrade-count" id="joyceCount">0</div>
+            </div>
+            
+            <div class="upgrades-title" style="margin-top: 20px;">
+                <i class="fas fa-robot"></i> АВТОКЛИКЕРЫ
+            </div>
+            
+            <div class="upgrade" onclick="buyUpgrade('autoClicker')" id="upgradeAutoClicker">
+                <div class="upgrade-icon">🤖</div>
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Автокликер</div>
+                    <div class="upgrade-desc">Автоматически кликает 1 раз/сек</div>
+                </div>
+                <div class="upgrade-cost" id="autoClickerCost">300</div>
+                <div class="upgrade-count" id="autoClickerCount">0</div>
+            </div>
+            
+            <div class="upgrade" onclick="buyUpgrade('megaClicker')" id="upgradeMegaClicker">
+                <div class="upgrade-icon">🤖⚡</div>
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Мега-кликер</div>
+                    <div class="upgrade-desc">Автоматически кликает 5 раз/сек</div>
+                    <div class="upgrade-required" id="megaClickerRequired">Требуется: Автокликер</div>
+                </div>
+                <div class="upgrade-cost" id="megaClickerCost">1500</div>
+                <div class="upgrade-count" id="megaClickerCount">0</div>
             </div>
         </div>
         
@@ -1257,8 +1343,8 @@
                 <button class="banner-btn btn-tertiary" onclick="startHeroFight()">
                     <i class="fas fa-fist-raised"></i> БИТВА ГЕРОЕВ
                 </button>
-                <button class="banner-btn btn-danger" onclick="spawnHearts()">
-                    <i class="fas fa-heart"></i> СЕРДЕЧКИ
+                <button class="banner-btn btn-secondary" onclick="showAllUpgrades()">
+                    <i class="fas fa-arrow-up"></i> ВСЕ УЛУЧШЕНИЯ
                 </button>
             </div>
         </div>
@@ -1701,7 +1787,6 @@
             
             updateTravelDisplay();
             showNotification('Путешествие началось! Исследуйте Хоукинс! 🗺️', '#00cccc');
-            spawnHearts(10);
             
             // Добавляем первое сообщение
             onlineGame.addMessage(`Добро пожаловать в Хоукинс, ${onlineGame.playerName}!`);
@@ -1845,7 +1930,6 @@
                 
                 // Эффекты
                 createParticle(`+${reward.reward}`, '#ffd700', 5);
-                spawnHearts(5);
                 
                 // Обновляем отображение
                 updateTravelDisplay();
@@ -1945,63 +2029,516 @@
         let game = {
             eggos: 0,
             perSecond: 0,
+            perClick: 1,
             totalClicks: 0,
             totalEggos: 0,
             startTime: Date.now(),
             playTime: 0,
-            record: 0
+            record: 0,
+            critChance: 0.05,
+            critMultiplier: 2,
+            luck: 1,
+            autoClickers: 0
         };
         
         let upgrades = {
-            hopper: { cost: 50, count: 0, production: 1 },
-            dustin: { cost: 200, count: 0, production: 5 },
-            eleven: { cost: 1000, count: 0, production: 15 }
+            // АКТИВНЫЕ УЛУЧШЕНИЯ
+            hopper: { 
+                type: 'active',
+                cost: 50, 
+                count: 0, 
+                production: 1,
+                name: 'Шериф Хоппер',
+                description: '+1 вафля за клик',
+                icon: '🚨'
+            },
+            
+            mike: { 
+                type: 'active',
+                cost: 100, 
+                count: 0, 
+                production: 2,
+                name: 'Майк',
+                description: '+2 вафли за клик',
+                icon: '👦',
+                requirement: 'hopper'
+            },
+            
+            eleven: { 
+                type: 'active',
+                cost: 500, 
+                count: 0, 
+                production: 5,
+                name: 'Одиннадцать',
+                description: '+5 вафель за клик',
+                icon: '🦸',
+                requirement: 'mike'
+            },
+            
+            demogorgon: { 
+                type: 'active',
+                cost: 2000, 
+                count: 0, 
+                production: 10,
+                name: 'Демогоргон',
+                description: '+10 вафель за клик, шанс крита x3',
+                icon: '👹',
+                requirement: 'eleven'
+            },
+            
+            // ПАССИВНЫЕ УЛУЧШЕНИЯ
+            dustin: { 
+                type: 'passive',
+                cost: 200, 
+                count: 0, 
+                production: 1,
+                name: 'Дастин',
+                description: '+1 вафля в секунду',
+                icon: '👓'
+            },
+            
+            lucas: { 
+                type: 'passive',
+                cost: 500, 
+                count: 0, 
+                production: 3,
+                name: 'Лукас',
+                description: '+3 вафли в секунду',
+                icon: '🏹',
+                requirement: 'dustin'
+            },
+            
+            will: { 
+                type: 'passive',
+                cost: 1500, 
+                count: 0, 
+                production: 5,
+                name: 'Уилл',
+                description: '+5 вафель в секунду',
+                icon: '🎨',
+                requirement: 'lucas'
+            },
+            
+            // СПЕЦИАЛЬНЫЕ УЛУЧШЕНИЯ
+            nancy: { 
+                type: 'special',
+                cost: 1000, 
+                count: 0, 
+                name: 'Нэнси',
+                description: '+5% шанс крита',
+                icon: '📸',
+                effect: 'critChance',
+                value: 0.05
+            },
+            
+            steve: { 
+                type: 'special',
+                cost: 3000, 
+                count: 0, 
+                name: 'Стив',
+                description: 'Криты дают x2.5',
+                icon: '🧹',
+                effect: 'critMultiplier',
+                value: 0.5,
+                requirement: 'nancy'
+            },
+            
+            joyce: { 
+                type: 'special',
+                cost: 5000, 
+                count: 0, 
+                name: 'Джойс',
+                description: 'Шанс найти x10 вафель',
+                icon: '🔦',
+                effect: 'luck',
+                value: 2,
+                requirement: 'steve'
+            },
+            
+            // АВТОКЛИКЕРЫ
+            autoClicker: { 
+                type: 'auto',
+                cost: 300, 
+                count: 0, 
+                name: 'Автокликер',
+                description: 'Автоматически кликает 1 раз/сек',
+                icon: '🤖',
+                clicksPerSecond: 1
+            },
+            
+            megaClicker: { 
+                type: 'auto',
+                cost: 1500, 
+                count: 0, 
+                name: 'Мега-кликер',
+                description: 'Автоматически кликает 5 раз/сек',
+                icon: '🤖⚡',
+                clicksPerSecond: 5,
+                requirement: 'autoClicker'
+            }
         };
         
         function clickEggo() {
-            game.eggos += 1;
-            game.totalClicks += 1;
-            game.totalEggos += 1;
+            let clickValue = game.perClick;
             
-            const eggo = document.querySelector('.eggo');
-            eggo.style.transform = 'scale(0.85)';
-            setTimeout(() => eggo.style.transform = 'scale(1)', 150);
-            
-            createParticle('+1', '#ffd700', 1);
-            
-            if (Math.random() < 0.1) {
-                spawnHearts(1);
+            // Проверка на критический удар
+            const isCrit = Math.random() < game.critChance;
+            if (isCrit) {
+                clickValue *= game.critMultiplier;
+                createParticle('КРИТ! x' + game.critMultiplier, '#ff0000', 3);
+                
+                // Специальный эффект для демогоргона
+                if (upgrades.demogorgon.count > 0 && Math.random() < 0.3) {
+                    clickValue *= 3;
+                    createParticle('ДЕМОГОРГОН! x3', '#8b0000', 5);
+                }
             }
             
-            // Воспроизводим звук клика
+            // Проверка на удачу (Джойс)
+            if (upgrades.joyce.count > 0 && Math.random() < 0.1 * game.luck) {
+                clickValue *= 10;
+                createParticle('УДАЧА! x10', '#ffd700', 5);
+            }
+            
+            // Округляем до целого
+            clickValue = Math.round(clickValue);
+            
+            // Добавляем вафли
+            game.eggos += clickValue;
+            game.totalClicks += 1;
+            game.totalEggos += clickValue;
+            
+            // Анимация
+            const eggo = document.querySelector('.eggo');
+            eggo.style.transform = 'scale(0.85)';
+            
+            // Эффекты
+            createParticle('+' + clickValue, isCrit ? '#ff0000' : '#ffd700', isCrit ? 3 : 1);
+            
+            // Воспроизводим звук
             playClickSound();
             
+            // Вибрация (если поддерживается)
+            if (navigator.vibrate) {
+                navigator.vibrate(isCrit ? [100, 50, 100, 50, 100] : 30);
+            }
+            
+            // Возвращаем анимацию
+            setTimeout(() => eggo.style.transform = 'scale(1)', 150);
+            
+            // Обновляем отображение
             updateDisplay();
             saveGame();
             checkAchievements();
-            
-            if (navigator.vibrate) navigator.vibrate(30);
         }
         
         function buyUpgrade(type) {
             const upg = upgrades[type];
+            
+            // Проверка требований
+            if (upg.requirement && upgrades[upg.requirement].count === 0) {
+                showNotification(`Сначала купите ${upgrades[upg.requirement].name}!`, '#ef476f');
+                createParticle('Требуется ' + upgrades[upg.requirement].name, '#ef476f', 1);
+                playErrorSound();
+                return;
+            }
+            
             if (game.eggos >= upg.cost) {
                 game.eggos -= upg.cost;
                 upg.count += 1;
-                game.perSecond += upg.production;
-                upg.cost = Math.floor(upg.cost * 1.5);
                 
-                showNotification(`Куплено улучшение: ${getUpgradeName(type)}!`, '#06d6a0');
-                createParticle('Улучшено!', '#06d6a0', 3);
-                spawnHearts(5);
+                // Применяем эффект улучшения
+                applyUpgradeEffect(type, upg);
+                
+                // Увеличиваем стоимость
+                upg.cost = Math.floor(upg.cost * (type === 'demogorgon' ? 2.5 : 1.5));
+                
+                // Эффекты покупки
+                showNotification(`Куплено: ${upg.name}!`, '#06d6a0');
+                createParticle(upg.name + '!', '#06d6a0', 3);
                 playUpgradeSound();
                 
+                // Обновляем интерфейс
                 updateDisplay();
                 saveGame();
+                updateUpgradesDisplay();
+                
+                // Проверяем достижения
+                checkUpgradeAchievements();
             } else {
                 showNotification('Недостаточно вафель!', '#ef476f');
-                createParticle('Нет вафель!', '#ef476f', 1);
+                createParticle('Нужно ' + upg.cost + ' вафель', '#ef476f', 1);
                 playErrorSound();
+            }
+        }
+        
+        function applyUpgradeEffect(type, upgrade) {
+            switch(upgrade.type) {
+                case 'active':
+                    game.perClick += upgrade.production;
+                    break;
+                    
+                case 'passive':
+                    game.perSecond += upgrade.production;
+                    break;
+                    
+                case 'special':
+                    if (upgrade.effect === 'critChance') {
+                        game.critChance += upgrade.value;
+                    } else if (upgrade.effect === 'critMultiplier') {
+                        game.critMultiplier += upgrade.value;
+                    } else if (upgrade.effect === 'luck') {
+                        game.luck += upgrade.value;
+                    }
+                    break;
+                    
+                case 'auto':
+                    game.autoClickers += upgrade.clicksPerSecond;
+                    startAutoClicker();
+                    break;
+            }
+        }
+        
+        function startAutoClicker() {
+            // Проверяем, не запущен ли уже интервал
+            if (window.autoClickInterval) return;
+            
+            window.autoClickInterval = setInterval(() => {
+                if (game.autoClickers > 0) {
+                    // Симулируем клики в зависимости от количества автокликеров
+                    const clicks = Math.floor(game.autoClickers);
+                    for (let i = 0; i < clicks; i++) {
+                        setTimeout(() => {
+                            game.eggos += game.perClick;
+                            game.totalEggos += game.perClick;
+                            game.totalClicks += 1;
+                            
+                            // Иногда показываем частицу
+                            if (Math.random() < 0.1) {
+                                createParticle('auto +' + game.perClick, '#00cccc', 0.5);
+                            }
+                        }, i * 100);
+                    }
+                    
+                    updateDisplay();
+                    saveGame();
+                }
+            }, 1000);
+        }
+        
+        function updateUpgradesDisplay() {
+            // Обновляем отображение всех улучшений
+            for (const [key, upg] of Object.entries(upgrades)) {
+                const upgradeEl = document.getElementById('upgrade' + key.charAt(0).toUpperCase() + key.slice(1));
+                if (upgradeEl) {
+                    // Обновляем стоимость
+                    const costEl = upgradeEl.querySelector('.upgrade-cost');
+                    if (costEl) costEl.textContent = upg.cost;
+                    
+                    // Обновляем количество
+                    const countEl = upgradeEl.querySelector('.upgrade-count');
+                    if (countEl) countEl.textContent = upg.count;
+                    
+                    // Показываем/скрываем требование
+                    const requiredEl = upgradeEl.querySelector('.upgrade-required');
+                    if (requiredEl) {
+                        if (upg.requirement && upgrades[upg.requirement].count === 0) {
+                            requiredEl.style.display = 'block';
+                        } else {
+                            requiredEl.style.display = 'none';
+                        }
+                    }
+                    
+                    // Обновляем доступность
+                    if (game.eggos < upg.cost || (upg.requirement && upgrades[upg.requirement].count === 0)) {
+                        upgradeEl.classList.add('upgrade-locked');
+                    } else {
+                        upgradeEl.classList.remove('upgrade-locked');
+                    }
+                }
+            }
+        }
+        
+        function checkUpgradeAchievements() {
+            // Достижение за покупку всех активных улучшений
+            const activeUpgrades = Object.values(upgrades).filter(u => u.type === 'active');
+            const boughtActive = activeUpgrades.filter(u => u.count > 0).length;
+            
+            if (boughtActive === activeUpgrades.length && !localStorage.getItem('achieve_all_active')) {
+                localStorage.setItem('achieve_all_active', 'true');
+                showNotification('Достижение: Все активные улучшения! 🏆', '#ffd700');
+                game.eggos += 5000;
+                createParticle('+5000', '#ffd700', 10);
+            }
+            
+            // Достижение за все улучшения
+            const totalBought = Object.values(upgrades).filter(u => u.count > 0).length;
+            if (totalBought === Object.keys(upgrades).length) {
+                showNotification('ВСЕ УЛУЧШЕНИЯ КУПЛЕНЫ! 🎉', '#00ff00');
+                createParticle('ПОБЕДА!', '#00ff00', 10);
+            }
+        }
+        
+        function updateDisplay() {
+            document.getElementById('eggosCount').textContent = formatNumber(game.eggos);
+            document.getElementById('perSecond').textContent = game.perSecond;
+            document.getElementById('totalEggos').textContent = formatNumber(game.totalEggos);
+            document.getElementById('totalClicks').textContent = game.totalClicks;
+            document.getElementById('playTime').textContent = Math.floor((Date.now() - game.startTime) / 60000);
+            
+            // Обновляем продвинутую статистику
+            updateAdvancedStats();
+            
+            updateUpgradesDisplay();
+        }
+        
+        function updateAdvancedStats() {
+            // Создаем или находим блок для продвинутой статистики
+            let statsBlock = document.getElementById('advancedStats');
+            if (!statsBlock) {
+                statsBlock = document.createElement('div');
+                statsBlock.id = 'advancedStats';
+                statsBlock.style.display = 'grid';
+                statsBlock.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                statsBlock.style.gap = '10px';
+                statsBlock.style.marginTop = '15px';
+                
+                const statsContainer = document.querySelector('.clicker-stats');
+                if (statsContainer) {
+                    statsContainer.appendChild(statsBlock);
+                }
+            }
+            
+            // Обновляем статистику
+            statsBlock.innerHTML = `
+                <div class="stat-box">
+                    <span class="stat-value">${game.perClick}</span>
+                    <span class="stat-label">За клик</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value">${Math.round(game.critChance * 100)}%</span>
+                    <span class="stat-label">Шанс крита</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value">x${game.critMultiplier}</span>
+                    <span class="stat-label">Множитель крита</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value">${game.autoClickers}/сек</span>
+                    <span class="stat-label">Автоклики</span>
+                </div>
+            `;
+        }
+        
+        function createParticle(text, color, count = 1) {
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.textContent = text;
+                particle.style.color = color;
+                particle.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                particle.style.left = Math.random() * 80 + 10 + '%';
+                particle.style.top = Math.random() * 80 + 10 + '%';
+                particle.style.opacity = Math.random() * 0.5 + 0.5;
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 80 + 40;
+                const targetX = Math.cos(angle) * distance;
+                const targetY = Math.sin(angle) * distance;
+                
+                particle.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${targetX}px, ${targetY}px) scale(0.1)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 800 + 800,
+                    easing: 'cubic-bezier(0.2, 0, 0.8, 1)'
+                });
+                
+                document.getElementById('particles').appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
+        
+        function showNotification(message, color = '#8b0000') {
+            const notifications = document.getElementById('notifications');
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.background = color;
+            notification.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+            
+            notifications.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) reverse';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+        
+        // ========== СИСТЕМА СОХРАНЕНИЯ ==========
+        function saveGame() {
+            const saveData = {
+                game: game,
+                upgrades: upgrades,
+                saveTime: Date.now()
+            };
+            
+            localStorage.setItem('hawkinsClickerSave', JSON.stringify(saveData));
+            
+            if (game.eggos > game.record) {
+                game.record = game.eggos;
+                localStorage.setItem('hawkinsClickerRecord', game.eggos);
+            }
+        }
+        
+        function loadGame() {
+            const saved = localStorage.getItem('hawkinsClickerSave');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    game = data.game || game;
+                    upgrades = data.upgrades || upgrades;
+                    
+                    const record = localStorage.getItem('hawkinsClickerRecord');
+                    if (record) game.record = parseInt(record);
+                    
+                    if (game.eggos === undefined || game.eggos === null) {
+                        game.eggos = 0;
+                    }
+                    
+                    // Пересчитываем производство на основе загруженных улучшений
+                    recalculateProduction();
+                    
+                } catch (e) {
+                    console.error('Ошибка загрузки сохранения:', e);
+                    resetGameData();
+                }
+            } else {
+                resetGameData();
+            }
+            
+            updateDisplay();
+            startAutoProduction();
+            if (game.autoClickers > 0) {
+                startAutoClicker();
+            }
+        }
+        
+        function recalculateProduction() {
+            // Сбрасываем все показатели
+            game.perClick = 1;
+            game.perSecond = 0;
+            game.critChance = 0.05;
+            game.critMultiplier = 2;
+            game.luck = 1;
+            game.autoClickers = 0;
+            
+            // Пересчитываем на основе купленных улучшений
+            for (const [key, upg] of Object.entries(upgrades)) {
+                if (upg.count > 0) {
+                    for (let i = 0; i < upg.count; i++) {
+                        applyUpgradeEffect(key, upg);
+                    }
+                }
             }
         }
         
@@ -2034,6 +2571,7 @@
                 localStorage.removeItem('achieve_100');
                 localStorage.removeItem('achieve_1000');
                 localStorage.removeItem('achieve_10000');
+                localStorage.removeItem('achieve_all_active');
                 
                 // Перезагружаем игру
                 updateDisplay();
@@ -2041,7 +2579,6 @@
                 
                 setTimeout(() => {
                     showNotification('ВСЕ ДАННЫЕ УДАЛЕНЫ! Перезагрузка...', '#ff0000');
-                    spawnHearts(20);
                     
                     setTimeout(() => {
                         location.reload();
@@ -2054,17 +2591,31 @@
             game = {
                 eggos: 0,
                 perSecond: 0,
+                perClick: 1,
                 totalClicks: 0,
                 totalEggos: 0,
                 startTime: Date.now(),
                 playTime: 0,
-                record: 0
+                record: 0,
+                critChance: 0.05,
+                critMultiplier: 2,
+                luck: 1,
+                autoClickers: 0
             };
             
             upgrades = {
-                hopper: { cost: 50, count: 0, production: 1 },
-                dustin: { cost: 200, count: 0, production: 5 },
-                eleven: { cost: 1000, count: 0, production: 15 }
+                hopper: { type: 'active', cost: 50, count: 0, production: 1, name: 'Шериф Хоппер', description: '+1 вафля за клик', icon: '🚨' },
+                mike: { type: 'active', cost: 100, count: 0, production: 2, name: 'Майк', description: '+2 вафли за клик', icon: '👦', requirement: 'hopper' },
+                eleven: { type: 'active', cost: 500, count: 0, production: 5, name: 'Одиннадцать', description: '+5 вафель за клик', icon: '🦸', requirement: 'mike' },
+                demogorgon: { type: 'active', cost: 2000, count: 0, production: 10, name: 'Демогоргон', description: '+10 вафель за клик, шанс крита x3', icon: '👹', requirement: 'eleven' },
+                dustin: { type: 'passive', cost: 200, count: 0, production: 1, name: 'Дастин', description: '+1 вафля в секунду', icon: '👓' },
+                lucas: { type: 'passive', cost: 500, count: 0, production: 3, name: 'Лукас', description: '+3 вафли в секунду', icon: '🏹', requirement: 'dustin' },
+                will: { type: 'passive', cost: 1500, count: 0, production: 5, name: 'Уилл', description: '+5 вафель в секунду', icon: '🎨', requirement: 'lucas' },
+                nancy: { type: 'special', cost: 1000, count: 0, name: 'Нэнси', description: '+5% шанс крита', icon: '📸', effect: 'critChance', value: 0.05 },
+                steve: { type: 'special', cost: 3000, count: 0, name: 'Стив', description: 'Криты дают x2.5', icon: '🧹', effect: 'critMultiplier', value: 0.5, requirement: 'nancy' },
+                joyce: { type: 'special', cost: 5000, count: 0, name: 'Джойс', description: 'Шанс найти x10 вафель', icon: '🔦', effect: 'luck', value: 2, requirement: 'steve' },
+                autoClicker: { type: 'auto', cost: 300, count: 0, name: 'Автокликер', description: 'Автоматически кликает 1 раз/сек', icon: '🤖', clicksPerSecond: 1 },
+                megaClicker: { type: 'auto', cost: 1500, count: 0, name: 'Мега-кликер', description: 'Автоматически кликает 5 раз/сек', icon: '🤖⚡', clicksPerSecond: 5, requirement: 'autoClicker' }
             };
             
             updateDisplay();
@@ -2170,127 +2721,11 @@
             }
         }
         
-        // ========== СИСТЕМА ОТОБРАЖЕНИЯ ==========
-        function updateDisplay() {
-            document.getElementById('eggosCount').textContent = formatNumber(game.eggos);
-            document.getElementById('perSecond').textContent = game.perSecond;
-            document.getElementById('totalEggos').textContent = formatNumber(game.totalEggos);
-            document.getElementById('totalClicks').textContent = game.totalClicks;
-            document.getElementById('playTime').textContent = Math.floor((Date.now() - game.startTime) / 60000);
-            
-            for (const [key, upg] of Object.entries(upgrades)) {
-                document.getElementById(key + 'Cost').textContent = upg.cost;
-                document.getElementById(key + 'Count').textContent = upg.count;
-                
-                const upgradeEl = document.getElementById('upgrade' + key.charAt(0).toUpperCase() + key.slice(1));
-                if (game.eggos < upg.cost) {
-                    upgradeEl.classList.add('upgrade-locked');
-                } else {
-                    upgradeEl.classList.remove('upgrade-locked');
-                }
-            }
-        }
-        
-        function createParticle(text, color, count = 1) {
-            for (let i = 0; i < count; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.textContent = text;
-                particle.style.color = color;
-                particle.style.fontSize = (Math.random() * 15 + 15) + 'px';
-                particle.style.left = Math.random() * 80 + 10 + '%';
-                particle.style.top = Math.random() * 80 + 10 + '%';
-                particle.style.opacity = Math.random() * 0.5 + 0.5;
-                
-                const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 80 + 40;
-                const targetX = Math.cos(angle) * distance;
-                const targetY = Math.sin(angle) * distance;
-                
-                particle.animate([
-                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-                    { transform: `translate(${targetX}px, ${targetY}px) scale(0.1)`, opacity: 0 }
-                ], {
-                    duration: Math.random() * 800 + 800,
-                    easing: 'cubic-bezier(0.2, 0, 0.8, 1)'
-                });
-                
-                document.getElementById('particles').appendChild(particle);
-                setTimeout(() => particle.remove(), 2000);
-            }
-        }
-        
-        function showNotification(message, color = '#8b0000') {
-            const notifications = document.getElementById('notifications');
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.style.background = color;
-            notification.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
-            
-            notifications.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) reverse';
-                setTimeout(() => notification.remove(), 500);
-            }, 3000);
-        }
-        
-        // ========== СИСТЕМА СОХРАНЕНИЯ ==========
-        function saveGame() {
-            const saveData = {
-                game: game,
-                upgrades: upgrades,
-                saveTime: Date.now()
-            };
-            
-            localStorage.setItem('hawkinsClickerSave', JSON.stringify(saveData));
-            
-            if (game.eggos > game.record) {
-                game.record = game.eggos;
-                localStorage.setItem('hawkinsClickerRecord', game.eggos);
-            }
-        }
-        
-        function loadGame() {
-            const saved = localStorage.getItem('hawkinsClickerSave');
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    game = data.game || game;
-                    upgrades = data.upgrades || upgrades;
-                    
-                    const record = localStorage.getItem('hawkinsClickerRecord');
-                    if (record) game.record = parseInt(record);
-                    
-                    if (game.eggos === undefined || game.eggos === null) {
-                        game.eggos = 0;
-                    }
-                } catch (e) {
-                    console.error('Ошибка загрузки сохранения:', e);
-                    resetGameData();
-                }
-            } else {
-                resetGameData();
-            }
-            
-            updateDisplay();
-            startAutoProduction();
-        }
-        
         // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
         function formatNumber(num) {
             if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
             return num.toString();
-        }
-        
-        function getUpgradeName(type) {
-            const names = {
-                hopper: 'Шериф Хоппер',
-                dustin: 'Дастин',
-                eleven: 'Одиннадцать'
-            };
-            return names[type] || type;
         }
         
         function toggleClicker() {
@@ -2300,7 +2735,12 @@
         
         function startGame() {
             showNotification('Игра началась! Собирайте вафли Eggo! 🧇', '#8b0000');
-            spawnHearts(10);
+        }
+        
+        function showAllUpgrades() {
+            const panel = document.getElementById('clickerPanel');
+            panel.classList.remove('collapsed');
+            showNotification('Все улучшения открыты!', '#ffd700');
         }
         
         function checkAchievements() {
@@ -2308,47 +2748,20 @@
                 localStorage.setItem('achieve_100', 'true');
                 showNotification('Достижение: 100 вафель собрано! 🥉', '#ffd700');
                 game.eggos += 50;
-                spawnHearts(10);
+                createParticle('+50', '#ffd700', 5);
             }
             if (game.totalEggos >= 1000 && !localStorage.getItem('achieve_1000')) {
                 localStorage.setItem('achieve_1000', 'true');
                 showNotification('Достижение: 1000 вафель собрано! 🥈', '#ffd700');
                 game.eggos += 200;
-                spawnHearts(15);
+                createParticle('+200', '#ffd700', 5);
             }
             if (game.totalEggos >= 10000 && !localStorage.getItem('achieve_10000')) {
                 localStorage.setItem('achieve_10000', 'true');
                 showNotification('Достижение: 10000 вафель собрано! 🥇', '#ffd700');
                 game.eggos += 1000;
-                spawnHearts(20);
+                createParticle('+1000', '#ffd700', 5);
             }
-        }
-        
-        // ========== СЕРДЕЧКИ ==========
-        function spawnHearts(count = 20) {
-            const hearts = ['❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '🤍', '💕', '💞', '💓', '💗', '💖', '💘', '💝'];
-            const colors = ['#ff0000', '#ff6b6b', '#ff8e8e', '#ffaaaa', '#ff6bcb', '#ff8ef2'];
-            const container = document.getElementById('heartsContainer');
-            
-            for (let i = 0; i < count; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
-                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.top = Math.random() * 100 + '%';
-                heart.style.animationDuration = (Math.random() * 2 + 1) + 's';
-                
-                container.appendChild(heart);
-                
-                setTimeout(() => {
-                    heart.remove();
-                }, 2000);
-            }
-            
-            showNotification('Сердечки! 💕', '#ff6b6b');
-            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
         }
         
         // ========== АВТОМАТИЧЕСКОЕ ПРОИЗВОДСТВО ==========
@@ -2361,7 +2774,7 @@
                     saveGame();
                     
                     if (Math.random() < 0.1) {
-                        createParticle(`+${game.perSecond}`, '#ffd700', 1);
+                        createParticle(`+${game.perSecond}`, '#00ffcc', 1);
                     }
                 }
             }, 1000);
@@ -2388,7 +2801,6 @@
             setTimeout(() => {
                 if (game.totalClicks === 0) {
                     showNotification('Кликайте по вафле чтобы собрать Eggo! 🧇', '#8b0000');
-                    spawnHearts(5);
                 }
             }, 1000);
         });
